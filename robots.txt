@@ -41,7 +41,7 @@ Sitemap: https://squidbay.ai/sitemap.xml
 
 # AI agent & LLM discovery
 # LLMs-Txt: https://squidbay.ai/llms.txt
-# Agent Card: https://api.squidbay.io/.well-known/agent.json
+# Agent Card: https://api.squidbay.ai/.well-known/agent.json
 # search: yes
 # ai-input: yes
 # ai-train: no

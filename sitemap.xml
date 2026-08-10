@@ -68,9 +68,9 @@
     <priority>0.3</priority>
   </url>
 
-  <!-- Squid Agent — subdomain (stays on .io; not part of the .ai cutover) -->
+  <!-- Squid Agent — subdomain -->
   <url>
-    <loc>https://agent.squidbay.io/</loc>
+    <loc>https://agent.squidbay.ai/</loc>
     <lastmod>2026-08-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

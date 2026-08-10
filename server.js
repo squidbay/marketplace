@@ -19,12 +19,12 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            defaultSrc: ["'self'", "https://squidbay.io", "https://*.squidbay.io"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://cdnjs.cloudflare.com", "https://static.cloudflareinsights.com"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://fonts.googleapis.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://squidbay.io"],
+            defaultSrc: ["'self'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://cdnjs.cloudflare.com", "https://static.cloudflareinsights.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://squidbay.io", "https://squidbay.ai"],
             imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'", "https://squidbay.io", "https://api.squidbay.io", "https://squidbay-api-production.up.railway.app", "https://*.squidbay.io", "https://cloudflareinsights.com"],
+            connectSrc: ["'self'", "https://squidbay.io", "https://api.squidbay.io", "https://squidbay-api-production.up.railway.app", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://cloudflareinsights.com"],
             frameSrc: ["'none'"],
             frameAncestors: ["'none'"],
             objectSrc: ["'none'"],
@@ -93,7 +93,8 @@ const imageOptions = {
 //
 // Tradeoff: parent squidbay.io re-fetches these small JS/CSS files on every
 // page load. They are <15KB each, gzipped, behind Cloudflare. Acceptable.
-const SQUIDBAY_SUBDOMAIN_RE = /^https:\/\/[a-z0-9-]+\.squidbay\.io$/;
+// Both apexes: the site answers on .io and .ai for the duration of the cutover.
+const SQUIDBAY_SUBDOMAIN_RE = /^https:\/\/[a-z0-9-]+\.squidbay\.(io|ai)$/;
 const allowSubdomainCors = (req, res, next) => {
     const origin = req.get('Origin');
 
@@ -145,7 +146,7 @@ app.get('/favicon.svg', (req, res) => {
 // Squid Agent subdomain — serve from /agent/ folder
 const squidAgentStatic = express.static(path.join(__dirname, 'agent'), staticOptions);
 app.use((req, res, next) => {
-    if (req.hostname === 'agent.squidbay.io') {
+    if (req.hostname === 'agent.squidbay.io' || req.hostname === 'agent.squidbay.ai') {
         return squidAgentStatic(req, res, () => {
             // If static file not found, serve index.html (SPA fallback)
             res.sendFile(path.join(__dirname, 'agent', 'index.html'));

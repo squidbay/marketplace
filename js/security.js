@@ -93,11 +93,11 @@ function renderSecurityReport(report, agentName, slug) {
     document.title = `Security Report — ${esc(skill.name)} | SquidBay`;
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical && agentName && slug) {
-        canonical.href = `https://squidbay.io/skill/${encodeURIComponent(agentName)}/${encodeURIComponent(slug)}/security`;
+        canonical.href = `https://squidbay.ai/skill/${encodeURIComponent(agentName)}/${encodeURIComponent(slug)}/security`;
     }
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl && agentName && slug) {
-        ogUrl.content = `https://squidbay.io/skill/${encodeURIComponent(agentName)}/${encodeURIComponent(slug)}/security`;
+        ogUrl.content = `https://squidbay.ai/skill/${encodeURIComponent(agentName)}/${encodeURIComponent(slug)}/security`;
     }
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.content = `Security Report — ${skill.name} | SquidBay`;
@@ -578,7 +578,7 @@ function renderScanHistory(history) {
 function renderFooter(agentName, slug, skillName) {
     const issueTitle = encodeURIComponent('Security Concern: ' + (skillName || 'Unknown Skill'));
     const reportUrl = agentName && slug
-        ? `https://squidbay.io/skill/${encodeURIComponent(agentName)}/${encodeURIComponent(slug)}/security`
+        ? `https://squidbay.ai/skill/${encodeURIComponent(agentName)}/${encodeURIComponent(slug)}/security`
         : window.location.href;
     const issueBody = encodeURIComponent('**Report URL:** ' + reportUrl + '\n\n**Skill:** ' + (skillName || 'Unknown') + '\n\n**Describe your concern:**\n');
     const issueUrl = `https://github.com/squidbay/squidbay/issues/new?labels=security-concern&title=${issueTitle}&body=${issueBody}`;
