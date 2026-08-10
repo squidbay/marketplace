@@ -13,7 +13,7 @@
     max-width: 520px;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 16px;
     padding: 36px 32px;
     backdrop-filter: blur(8px);
@@ -30,7 +30,7 @@
     color: var(--white); font-family: var(--font-display); font-size: 1rem;
     outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; box-sizing: border-box;
 }
-.form-input:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1); }
+.form-input:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(70, 196, 196, 0.1); }
 .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
 .form-textarea { resize: vertical; min-height: 130px; line-height: 1.5; }
 
@@ -38,14 +38,14 @@
     align-self: center; padding: 14px 48px; border-radius: 10px;
     font-size: 1rem; font-weight: 600; margin-top: 4px; cursor: pointer; transition: all 0.2s ease;
 }
-.contact-form .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(0, 217, 255, 0.3); }
+.contact-form .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(70, 196, 196, 0.3); }
 
 /* --------------------------------------------------------------------------
    Compatibility Badges
    -------------------------------------------------------------------------- */
 .compat-section { margin-top: 24px; animation: fadeInUp 0.6s ease-out 0.4s both; }
 .compat-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; opacity: 0.7; }
-.compat-label a, .compat-api-link { color: rgba(0, 217, 255, 0.65); text-decoration: none; transition: color 0.2s; }
+.compat-label a, .compat-api-link { color: rgba(70, 196, 196, 0.65); text-decoration: none; transition: color 0.2s; }
 .compat-label a:hover, .compat-api-link:hover { color: var(--primary); }
 
 /* Subtitle shimmer — soft cyan light sweep */
@@ -54,7 +54,7 @@
         90deg,
         var(--text-muted) 0%,
         var(--text-muted) 40%,
-        rgba(0, 217, 255, 0.7) 50%,
+        rgba(70, 196, 196, 0.7) 50%,
         var(--text-muted) 60%,
         var(--text-muted) 100%
     );
@@ -75,7 +75,7 @@
     background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 5px 12px; border-radius: 16px; transition: border-color 0.2s, color 0.2s;
 }
-.compat-badge:hover { border-color: rgba(0, 217, 255, 0.25); color: var(--primary); }
+.compat-badge:hover { border-color: rgba(70, 196, 196, 0.25); color: var(--primary); }
 
 /* --------------------------------------------------------------------------
    Pulse Card — Hero status panel
@@ -83,16 +83,16 @@
 .hero-pulse { animation: fadeInUp 0.6s ease-out 0.5s both; }
 
 .pulse-card {
-    background: rgba(15, 20, 25, 0.8); border: 1px solid rgba(0, 217, 255, 0.12);
+    background: rgba(15, 20, 25, 0.8); border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 16px; padding: 20px;
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     position: relative;
-    box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.06), 0 0 40px rgba(0, 217, 255, 0.06);
+    box-shadow: 0 0 0 1px rgba(70, 196, 196, 0.06), 0 0 40px rgba(70, 196, 196, 0.06);
 }
 
 /* ----------------------------------------------------------------------
    Pulse-card animated teal runner — mirrors agent.squidbay.io Surge
-   module, swapped gold (#F4C430) for our brand teal (#00D9FF).
+   module, swapped gold (#F4C430) for our brand teal (var(--primary)).
    A bright dot traces the perimeter via a rotating conic gradient,
    masked to the 2px border only. @property is required so the angle
    actually animates (CSS vars alone won't transition for gradients).
@@ -113,9 +113,9 @@
         from var(--pulse-angle),
         transparent 0deg,
         transparent 320deg,
-        rgba(0, 217, 255, 0.6) 340deg,
+        rgba(70, 196, 196, 0.6) 340deg,
         #B3F1FF 355deg,
-        rgba(0, 217, 255, 0.6) 370deg,
+        rgba(70, 196, 196, 0.6) 370deg,
         transparent 390deg
     );
     -webkit-mask:
@@ -126,8 +126,8 @@
     pointer-events: none;
     animation: pulse-electrify 4s linear infinite;
     z-index: 0;
-    filter: drop-shadow(0 0 4px rgba(0, 217, 255, 0.7))
-            drop-shadow(0 0 10px rgba(0, 217, 255, 0.4));
+    filter: drop-shadow(0 0 4px rgba(70, 196, 196, 0.7))
+            drop-shadow(0 0 10px rgba(70, 196, 196, 0.4));
 }
 
 @keyframes pulse-electrify {
@@ -210,8 +210,8 @@
     font-weight: 500;
     letter-spacing: 0.02em;
     color: var(--text-muted);
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    background: rgba(70, 196, 196, 0.05);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 20px;
     padding: 6px 14px;
     cursor: pointer;
@@ -222,8 +222,8 @@
 }
 .sa-pill:hover {
     color: var(--primary);
-    border-color: rgba(0, 217, 255, 0.45);
-    background: rgba(0, 217, 255, 0.10);
+    border-color: rgba(70, 196, 196, 0.45);
+    background: rgba(70, 196, 196, 0.10);
     transform: translateY(-1px);
 }
 .sa-pill:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
@@ -242,7 +242,7 @@
 /* Compat note (sub-row to compat-badges) */
 .compat-note { font-size: 0.72rem; color: var(--text-muted); margin-top: 10px; opacity: 0.75; }
 .compat-note a, .compat-learn-more, .compat-register-link {
-    color: rgba(0, 217, 255, 0.7);
+    color: rgba(70, 196, 196, 0.7);
     text-decoration: none;
     transition: color 0.2s;
 }
@@ -253,7 +253,7 @@
    -------------------------------------------------------------------------- */
 .whats-a-skill {
     padding: 100px 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 217, 255, 0.025) 50%, transparent 100%);
+    background: linear-gradient(180deg, transparent 0%, rgba(70, 196, 196, 0.025) 50%, transparent 100%);
 }
 .whats-grid {
     display: grid;
@@ -267,8 +267,8 @@
 .whats-prose code {
     font-family: var(--font-mono);
     font-size: 0.85em;
-    background: rgba(0, 217, 255, 0.08);
-    border: 1px solid rgba(0, 217, 255, 0.15);
+    background: rgba(70, 196, 196, 0.08);
+    border: 1px solid rgba(70, 196, 196, 0.15);
     border-radius: 4px;
     padding: 1px 6px;
     color: var(--primary);
@@ -281,13 +281,13 @@
     width: 100%;
     max-width: 340px;
     background: var(--dark);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 14px;
     padding: 22px;
-    box-shadow: 0 12px 40px rgba(0, 217, 255, 0.07);
+    box-shadow: 0 12px 40px rgba(70, 196, 196, 0.07);
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
-.skill-listing-card:hover { transform: translateY(-4px); border-color: rgba(0, 217, 255, 0.35); }
+.skill-listing-card:hover { transform: translateY(-4px); border-color: rgba(70, 196, 196, 0.35); }
 
 .skill-listing-top { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
 .skill-listing-icon { font-size: 2rem; line-height: 1; flex-shrink: 0; }
@@ -338,19 +338,19 @@
 }
 .under-hood-card {
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 14px;
     padding: 26px;
     scroll-margin-top: 100px; /* anchor offset so trust-pill clicks land below sticky nav */
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 .under-hood-card:hover {
-    border-color: rgba(0, 217, 255, 0.3);
-    background: rgba(0, 217, 255, 0.03);
+    border-color: rgba(70, 196, 196, 0.3);
+    background: rgba(70, 196, 196, 0.03);
 }
 .under-hood-card:target {
     border-color: var(--primary);
-    box-shadow: 0 0 0 1px var(--primary), 0 0 30px rgba(0, 217, 255, 0.15);
+    box-shadow: 0 0 0 1px var(--primary), 0 0 30px rgba(70, 196, 196, 0.15);
 }
 .under-hood-icon {
     width: 44px;
@@ -358,7 +358,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     border-radius: 10px;
     color: var(--primary);
     margin-bottom: 16px;
@@ -369,8 +369,8 @@
 .under-hood-card-patent:target { border-color: var(--yellow); box-shadow: 0 0 0 1px var(--yellow), 0 0 30px rgba(255, 189, 46, 0.15); }
 
 .under-hood-note {
-    background: rgba(0, 217, 255, 0.03);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    background: rgba(70, 196, 196, 0.03);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-left: 3px solid var(--primary);
     border-radius: 12px;
     padding: 28px 32px;
@@ -386,8 +386,8 @@
 .non-squid-callout {
     margin: 64px auto 0;
     max-width: 880px;
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(255, 189, 46, 0.03) 100%);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    background: linear-gradient(135deg, rgba(70, 196, 196, 0.05) 0%, rgba(255, 189, 46, 0.03) 100%);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 16px;
     padding: 28px 32px;
     display: flex;
@@ -418,7 +418,7 @@
     min-width: 56px;
     text-align: center;
 }
-.code-chat-user .code-chat-prefix { background: rgba(0, 217, 255, 0.12); color: var(--primary); }
+.code-chat-user .code-chat-prefix { background: rgba(70, 196, 196, 0.12); color: var(--primary); }
 .code-chat-agent .code-chat-prefix { background: rgba(255, 189, 46, 0.12); color: var(--yellow); }
 .code-chat-msg { font-size: 0.92rem; color: var(--white); line-height: 1.55; flex: 1; }
 .code-chat-msg em { color: var(--primary); font-style: normal; font-weight: 600; }
@@ -441,7 +441,7 @@
 
 .anatomy-tree {
     background: var(--darker);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
@@ -511,7 +511,7 @@
     height: 8px;
     background: var(--primary);
     border-radius: 50%;
-    box-shadow: 0 0 6px rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 6px rgba(70, 196, 196, 0.5);
 }
 .protection-list strong { color: var(--white); font-weight: 600; }
 .protection-summary { font-size: 1rem; color: var(--white); line-height: 1.65; max-width: 760px; margin-bottom: 28px; }
@@ -642,8 +642,8 @@ section > .container > .section-label {
     margin: 14px 0 14px;
 }
 .non-squid-badges .compat-badge {
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    background: rgba(70, 196, 196, 0.05);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     color: var(--text-muted);
 }
 
@@ -672,16 +672,16 @@ section > .container > .section-label {
     gap: 16px;
     padding: 22px 24px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 12px;
     transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .chat-demo-step.is-active {
     border-color: var(--primary);
-    background: rgba(0, 217, 255, 0.06);
+    background: rgba(70, 196, 196, 0.06);
     transform: translateX(4px);
-    box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.4), 0 8px 28px rgba(0, 217, 255, 0.12);
+    box-shadow: 0 0 0 1px rgba(70, 196, 196, 0.4), 0 8px 28px rgba(70, 196, 196, 0.12);
 }
 
 .chat-demo-step-num {
@@ -689,7 +689,7 @@ section > .container > .section-label {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(0, 217, 255, 0.10);
+    background: rgba(70, 196, 196, 0.10);
     color: var(--primary);
     font-family: var(--font-mono);
     font-weight: 700;
@@ -730,7 +730,7 @@ section > .container > .section-label {
 
 .seller-card {
     padding: 32px;
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.025);
     transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -738,13 +738,13 @@ section > .container > .section-label {
     flex-direction: column;
 }
 .seller-card:hover {
-    border-color: rgba(0, 217, 255, 0.45);
+    border-color: rgba(70, 196, 196, 0.45);
     transform: translateY(-4px);
-    box-shadow: 0 12px 36px rgba(0, 217, 255, 0.10);
+    box-shadow: 0 12px 36px rgba(70, 196, 196, 0.10);
 }
 
 .seller-card-squid {
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+    background: linear-gradient(135deg, rgba(70, 196, 196, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
 }
 
 .seller-card-badge {
@@ -757,7 +757,7 @@ section > .container > .section-label {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--primary);
-    background: rgba(0, 217, 255, 0.10);
+    background: rgba(70, 196, 196, 0.10);
     padding: 5px 11px;
     border-radius: 16px;
     margin-bottom: 16px;
@@ -797,14 +797,14 @@ section > .container > .section-label {
 .feature-card {
     padding: 24px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 12px;
     transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .feature-card:hover {
-    border-color: rgba(0, 217, 255, 0.35);
+    border-color: rgba(70, 196, 196, 0.35);
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(0, 217, 255, 0.08);
+    box-shadow: 0 8px 28px rgba(70, 196, 196, 0.08);
 }
 .feature-card .feature-icon {
     width: 40px;
@@ -812,7 +812,7 @@ section > .container > .section-label {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     border-radius: 8px;
     color: var(--primary);
     margin-bottom: 14px;
@@ -967,19 +967,19 @@ section > .container > .section-label {
     padding: 24px 26px !important;
     min-height: 0 !important;
     background: rgba(255, 255, 255, 0.025) !important;
-    border: 1px solid rgba(0, 217, 255, 0.12) !important;
+    border: 1px solid rgba(70, 196, 196, 0.12) !important;
     border-radius: 12px !important;
     transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .why-stripe-card:hover {
-    border-color: rgba(0, 217, 255, 0.35) !important;
+    border-color: rgba(70, 196, 196, 0.35) !important;
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(0, 217, 255, 0.08);
+    box-shadow: 0 8px 28px rgba(70, 196, 196, 0.08);
 }
 .why-stripe-icon {
     width: 38px !important;
     height: 38px !important;
-    background: rgba(0, 217, 255, 0.08) !important;
+    background: rgba(70, 196, 196, 0.08) !important;
     border-radius: 8px;
     color: var(--primary);
     margin-bottom: 14px;
@@ -1002,7 +1002,7 @@ section > .container > .section-label {
 .why-stripe-card code {
     font-family: var(--font-mono);
     font-size: 0.78em;
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     padding: 1px 6px;
     border-radius: 4px;
     color: var(--primary);
@@ -1221,7 +1221,7 @@ section > .container > .section-label {
 .skill-explainer-card {
     padding: 36px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 14px;
 }
 .skill-explainer-card p {
@@ -1235,14 +1235,14 @@ section > .container > .section-label {
 .skill-explainer-card code {
     font-family: var(--font-mono);
     font-size: 0.82em;
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     padding: 1px 6px;
     border-radius: 4px;
     color: var(--primary);
 }
 .skill-explainer-card .whats-meta {
     font-size: 0.9rem;
-    border-top: 1px solid rgba(0, 217, 255, 0.12);
+    border-top: 1px solid rgba(70, 196, 196, 0.12);
     padding-top: 18px;
     margin-top: 24px;
 }
@@ -1253,8 +1253,8 @@ section > .container > .section-label {
     flex-direction: column;
     gap: 24px;
     padding: 36px;
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
-    border: 1px solid rgba(0, 217, 255, 0.14);
+    background: linear-gradient(135deg, rgba(70, 196, 196, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
+    border: 1px solid rgba(70, 196, 196, 0.14);
     border-radius: 14px;
 }
 .analogy-row {
@@ -1275,8 +1275,8 @@ section > .container > .section-label {
     text-align: center;
 }
 .analogy-tile-squid {
-    background: rgba(0, 217, 255, 0.06);
-    border-color: rgba(0, 217, 255, 0.28);
+    background: rgba(70, 196, 196, 0.06);
+    border-color: rgba(70, 196, 196, 0.28);
 }
 .analogy-icon {
     font-size: 1.8rem;
@@ -1310,8 +1310,8 @@ section > .container > .section-label {
     line-height: 1.3;
 }
 .analogy-result-squid {
-    background: rgba(0, 217, 255, 0.08);
-    border-color: rgba(0, 217, 255, 0.35);
+    background: rgba(70, 196, 196, 0.08);
+    border-color: rgba(70, 196, 196, 0.35);
     color: var(--primary);
 }
 .analogy-divider {
@@ -1328,7 +1328,7 @@ section > .container > .section-label {
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(0, 217, 255, 0.18);
+    background: rgba(70, 196, 196, 0.18);
 }
 .analogy-divider-text { white-space: nowrap; }
 
@@ -1403,9 +1403,9 @@ section > .container > .section-label {
 
 /* Buying umbrella gets a subtle bg shift to differentiate from selling */
 .buying-umbrella {
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 217, 255, 0.02) 50%, transparent 100%);
-    border-top: 1px solid rgba(0, 217, 255, 0.08);
-    border-bottom: 1px solid rgba(0, 217, 255, 0.08);
+    background: linear-gradient(180deg, transparent 0%, rgba(70, 196, 196, 0.02) 50%, transparent 100%);
+    border-top: 1px solid rgba(70, 196, 196, 0.08);
+    border-bottom: 1px solid rgba(70, 196, 196, 0.08);
 }
 
 /* --------------------------------------------------------------------------
@@ -1414,7 +1414,7 @@ section > .container > .section-label {
 .anatomy-block {
     margin-top: 80px;
     padding-top: 64px;
-    border-top: 1px solid rgba(0, 217, 255, 0.10);
+    border-top: 1px solid rgba(70, 196, 196, 0.10);
 }
 .anatomy-block .section-label,
 .anatomy-block .anatomy-h3,
@@ -1446,7 +1446,7 @@ section > .container > .section-label {
 .anatomy-tree-wrap {
     overflow-x: hidden;
     background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 12px;
 }
 .anatomy-tree-wrap .anatomy-pre {
@@ -1472,7 +1472,7 @@ section > .container > .section-label {
     gap: 14px;
     padding: 12px 16px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.10);
+    border: 1px solid rgba(70, 196, 196, 0.10);
     border-radius: 8px;
     align-items: start;
 }
@@ -1496,7 +1496,7 @@ section > .container > .section-label {
 .see-it-block {
     margin-top: 80px;
     padding-top: 64px;
-    border-top: 1px solid rgba(0, 217, 255, 0.10);
+    border-top: 1px solid rgba(70, 196, 196, 0.10);
 }
 .see-it-block > .section-label,
 .see-it-h3 {
@@ -1609,7 +1609,7 @@ section > .container > .section-label {
 .stripe-v2-strip {
     margin-top: 72px;
     padding-top: 48px;
-    border-top: 1px solid rgba(0, 217, 255, 0.10);
+    border-top: 1px solid rgba(70, 196, 196, 0.10);
     text-align: center;
 }
 .stripe-v2-strip .section-label {
@@ -1635,8 +1635,8 @@ section > .container > .section-label {
     align-items: center;
     gap: 8px;
     padding: 8px 14px;
-    background: rgba(0, 217, 255, 0.06);
-    border: 1px solid rgba(0, 217, 255, 0.18);
+    background: rgba(70, 196, 196, 0.06);
+    border: 1px solid rgba(70, 196, 196, 0.18);
     border-radius: 24px;
     color: var(--text-muted);
     font-size: 0.85rem;
@@ -1666,7 +1666,7 @@ section > .container > .section-label {
 .contact-copy-col {
     padding: 32px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.14);
+    border: 1px solid rgba(70, 196, 196, 0.14);
     border-radius: 14px;
 }
 .contact-copy-lede {
@@ -1688,7 +1688,7 @@ section > .container > .section-label {
     align-items: baseline;
     gap: 14px;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 217, 255, 0.10);
+    border-bottom: 1px solid rgba(70, 196, 196, 0.10);
 }
 .contact-alt-list li:last-child { border-bottom: none; }
 .contact-alt-label {
@@ -1919,7 +1919,7 @@ section > .container > .section-label {
     gap: 14px;
     align-items: flex-start;
     padding-bottom: 18px;
-    border-bottom: 1px solid rgba(0, 217, 255, 0.08);
+    border-bottom: 1px solid rgba(70, 196, 196, 0.08);
 }
 .skill-explainer-points li:last-child {
     border-bottom: none;
@@ -1931,8 +1931,8 @@ section > .container > .section-label {
     width: 26px;
     height: 26px;
     border-radius: 6px;
-    background: rgba(0, 217, 255, 0.10);
-    border: 1px solid rgba(0, 217, 255, 0.25);
+    background: rgba(70, 196, 196, 0.10);
+    border: 1px solid rgba(70, 196, 196, 0.25);
     color: var(--primary);
     font-family: var(--font-mono);
     font-size: 0.78rem;
@@ -1957,8 +1957,8 @@ section > .container > .section-label {
 
 .skill-urls-module {
     padding: 18px 20px;
-    background: rgba(0, 217, 255, 0.04);
-    border: 1px solid rgba(0, 217, 255, 0.16);
+    background: rgba(70, 196, 196, 0.04);
+    border: 1px solid rgba(70, 196, 196, 0.16);
     border-left: 3px solid var(--primary);
     border-radius: 10px;
 }
@@ -1968,7 +1968,7 @@ section > .container > .section-label {
     font-size: 0.65rem;
     font-weight: 700;
     color: var(--primary);
-    background: rgba(0, 217, 255, 0.10);
+    background: rgba(70, 196, 196, 0.10);
     padding: 3px 8px;
     border-radius: 4px;
     margin-bottom: 10px;
@@ -1983,7 +1983,7 @@ section > .container > .section-label {
 .skill-urls-module code {
     font-family: var(--font-mono);
     font-size: 0.78em;
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     padding: 1px 6px;
     border-radius: 4px;
     color: var(--primary);
@@ -2057,7 +2057,7 @@ section > .container > .section-label {
 .anatomy-longhaul {
     margin-top: 36px !important;
     padding: 36px 32px !important;
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), transparent);
+    background: linear-gradient(135deg, rgba(70, 196, 196, 0.05), transparent);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     max-width: 1100px;
@@ -2113,7 +2113,7 @@ section > .container > .section-label {
    ---------------------------------------------------------------------------- */
 .sa-pipeline {
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(0, 217, 255, 0.16);
+    border: 1px solid rgba(70, 196, 196, 0.16);
     border-radius: 14px;
     padding: 28px 28px 24px;
     margin: 32px auto 0;
@@ -2158,8 +2158,8 @@ section > .container > .section-label {
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--primary);
-    background: rgba(0, 217, 255, 0.10);
-    border: 1px solid rgba(0, 217, 255, 0.28);
+    background: rgba(70, 196, 196, 0.10);
+    border: 1px solid rgba(70, 196, 196, 0.28);
     border-radius: 50%;
     width: 22px;
     height: 22px;
@@ -2182,7 +2182,7 @@ section > .container > .section-label {
 .buying-why-squid {
     margin-top: 18px !important;
     padding-top: 18px;
-    border-top: 1px solid rgba(0, 217, 255, 0.12);
+    border-top: 1px solid rgba(70, 196, 196, 0.12);
     font-size: 0.88rem !important;
     line-height: 1.65 !important;
 }
@@ -2354,8 +2354,8 @@ section > .container > .section-label {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(0, 217, 255, 0.10);
-    border: 1px solid rgba(0, 217, 255, 0.22);
+    background: rgba(70, 196, 196, 0.10);
+    border: 1px solid rgba(70, 196, 196, 0.22);
     color: var(--primary);
     display: inline-flex;
     align-items: center;
@@ -2451,13 +2451,13 @@ section > .container > .section-label {
     padding: 22px;
     background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg, 12px);
+    border-radius: var(--radius-card);
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 .sa-carousel-track .sa-feature:hover {
-    border-color: rgba(0, 217, 255, 0.4);
+    border-color: rgba(70, 196, 196, 0.4);
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(0, 217, 255, 0.10);
+    box-shadow: 0 8px 28px rgba(70, 196, 196, 0.10);
 }
 .sa-carousel-track .sa-feature .feature-icon {
     width: 40px;
@@ -2469,7 +2469,7 @@ section > .container > .section-label {
     align-items: center;
     justify-content: center;
     margin-bottom: 14px;
-    box-shadow: 0 4px 16px rgba(0, 217, 255, 0.22);
+    box-shadow: 0 4px 16px rgba(70, 196, 196, 0.22);
 }
 .sa-carousel-track .sa-feature h3 { font-size: 1rem; margin-bottom: 8px; color: var(--white); }
 .sa-carousel-track .sa-feature p { font-size: 0.87rem; line-height: 1.55; color: var(--text-muted); margin: 0; }
@@ -2481,8 +2481,8 @@ section > .container > .section-label {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(0, 217, 255, 0.10);
-    border: 1px solid rgba(0, 217, 255, 0.30);
+    background: rgba(70, 196, 196, 0.10);
+    border: 1px solid rgba(70, 196, 196, 0.30);
     color: var(--primary);
     font-size: 1.4rem;
     line-height: 1;
@@ -2494,7 +2494,7 @@ section > .container > .section-label {
     z-index: 2;
     padding: 0;
 }
-.sa-carousel-btn:hover { background: rgba(0, 217, 255, 0.20); border-color: var(--primary); }
+.sa-carousel-btn:hover { background: rgba(70, 196, 196, 0.20); border-color: var(--primary); }
 .sa-carousel-prev { left: 0; }
 .sa-carousel-next { right: 0; }
 
@@ -2512,7 +2512,7 @@ section > .container > .section-label {
 }
 .carousel-dot.active {
     background: var(--primary);
-    box-shadow: 0 0 8px rgba(0, 217, 255, 0.60);
+    box-shadow: 0 0 8px rgba(70, 196, 196, 0.60);
 }
 
 

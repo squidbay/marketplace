@@ -120,7 +120,7 @@
 .endpoint-card {
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 24px;
     margin-bottom: 24px;
     max-width: 100%;
@@ -143,13 +143,13 @@
 }
 
 .endpoint-method.post {
-    background: rgba(0, 217, 255, 0.2);
+    background: rgba(70, 196, 196, 0.2);
     color: var(--primary);
 }
 
 .endpoint-method.put {
-    background: rgba(183, 148, 246, 0.2);
-    color: var(--purple);
+    background: rgba(94, 168, 201, 0.2);
+    color: var(--blue);
 }
 
 .endpoint-method.delete {
@@ -241,8 +241,8 @@
 
 /* Base URL highlight box */
 .base-url-box {
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(70, 196, 196, 0.05);
+    border: 1px solid rgba(70, 196, 196, 0.2);
     border-radius: var(--radius-md);
     padding: 20px 24px;
     margin-bottom: 24px;

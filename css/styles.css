@@ -4,49 +4,21 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   CSS Variables - Deep Ocean Theme
+   Design tokens live in /design-system/ — DELIBERATELY NOT DECLARED HERE.
+
+   This file used to open with its own `:root` block declaring --primary,
+   --black, --radius-*, --font-display and the rest ("Deep Ocean Theme"). Those
+   are now defined once, in /design-system/tokens/, and the design system is
+   explicit that tokens.css is the law: "never redeclare a token."
+
+   A second declaration is not a harmless duplicate. Whichever stylesheet loads
+   last silently wins, so the same token resolves to a different colour
+   depending on link order — and that is invisible until one page looks wrong.
+   Deleting the block is what makes /design-system/ actually authoritative
+   rather than merely present.
+
+   Every page loads /design-system/styles.css BEFORE this file.
    -------------------------------------------------------------------------- */
-:root {
-    /* Primary - Teal/Cyan accent */
-    --primary: #00D9FF;
-    --primary-dark: #00B8D9;
-    --primary-light: #33E5FF;
-    --primary-glow: rgba(0, 217, 255, 0.15);
-    
-    /* Background - Deep ocean */
-    --black: #0A0E14;
-    --dark: #0F1419;
-    --darker: #0C1015;
-    --gray: #1C2630;
-    --gray-light: #2A3744;
-    
-    /* Text */
-    --text-muted: #7B8FA3;
-    --white: #E8F4F8;
-    
-    /* Accents */
-    --green: #00D26A;
-    --red: #FF5F57;
-    --yellow: #FFBD2E;
-    --purple: #B794F6;
-    --ink: #1E3A5F;
-    
-    /* Fonts */
-    --font-display: 'Inter', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-    
-    /* Radius */
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    --radius-full: 100px;
-    
-    /* Transitions */
-    --transition-fast: 0.15s ease;
-    --transition-base: 0.2s ease;
-    --transition-slow: 0.3s ease;
-}
 
 /* --------------------------------------------------------------------------
    Reset & Base
@@ -84,7 +56,7 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(ellipse at 20% 20%, rgba(0, 217, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 20%, rgba(70, 196, 196, 0.03) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 80%, rgba(30, 58, 95, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: -2;
@@ -301,7 +273,7 @@ nav .container {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 30px rgba(0, 217, 255, 0.3);
+    box-shadow: 0 6px 30px rgba(70, 196, 196, 0.3);
 }
 
 .btn-secondary {
@@ -322,7 +294,7 @@ nav .container {
 }
 
 .btn-outline:hover {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.1);
 }
 
 /* --------------------------------------------------------------------------
@@ -514,7 +486,7 @@ nav .container {
 .flow-card {
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 32px;
     position: relative;
     transition: all var(--transition-slow);
@@ -522,7 +494,7 @@ nav .container {
 
 .flow-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 8px 40px rgba(0, 217, 255, 0.1);
+    box-shadow: 0 8px 40px rgba(70, 196, 196, 0.1);
     transform: translateY(-4px);
 }
 
@@ -589,7 +561,7 @@ nav .container {
     max-width: 480px;
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
@@ -647,7 +619,7 @@ nav .container {
 }
 
 .chat-badge {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.1);
     color: var(--primary);
     padding: 4px 10px;
     border-radius: var(--radius-full);
@@ -975,7 +947,7 @@ nav .container {
 .code-block {
     background: var(--darker);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     overflow: hidden;
     max-width: 100%;
 }
@@ -1022,7 +994,7 @@ code {
 .code-comment { color: #546E7A; }
 .code-keyword { color: #FF7B72; }
 .code-string { color: var(--primary); }
-.code-function { color: var(--purple); }
+.code-function { color: var(--blue); }
 .code-number { color: #F78C6C; }
 .code-property { color: #82AAFF; }
 
@@ -1044,14 +1016,14 @@ code {
 .feature-card {
     background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 40px 32px;
     transition: all var(--transition-slow);
 }
 
 .feature-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 8px 40px rgba(0, 217, 255, 0.08);
+    box-shadow: 0 8px 40px rgba(70, 196, 196, 0.08);
 }
 
 .feature-icon {
@@ -1088,7 +1060,7 @@ code {
     background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
     border: 1px solid var(--gray);
     border-left: 4px solid var(--primary);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 48px;
     max-width: 800px;
     margin: 0 auto;
@@ -1140,7 +1112,7 @@ code {
 .why-stripe-card {
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 32px;
     transition: all var(--transition-slow);
 }
@@ -1167,7 +1139,7 @@ code {
 .why-stripe-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.15) 0%, rgba(0, 217, 255, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(70, 196, 196, 0.15) 0%, rgba(70, 196, 196, 0.05) 100%);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -1391,12 +1363,12 @@ code {
 
 .toggle-feedback.agent {
     border-color: var(--primary);
-    background: rgba(0, 217, 255, 0.05);
+    background: rgba(70, 196, 196, 0.05);
 }
 
 .toggle-feedback.human {
-    border-color: var(--purple);
-    background: rgba(183, 148, 246, 0.05);
+    border-color: var(--blue);
+    background: rgba(94, 168, 201, 0.05);
 }
 
 .toggle-feedback-header {
@@ -1413,7 +1385,7 @@ code {
 }
 
 .toggle-feedback.human .toggle-feedback-header {
-    color: var(--purple);
+    color: var(--blue);
 }
 
 .toggle-feedback p {
@@ -1877,7 +1849,7 @@ footer .container {
     background: var(--gray);
     border-color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.2);
+    box-shadow: 0 8px 30px rgba(70, 196, 196, 0.2);
 }
 
 .back-to-top.visible {
@@ -2345,7 +2317,7 @@ pre, code, .code-block-small, .agent-code-block pre {
 
     /* Pricing sidebar — tighter on mobile */
     .pricing-card {
-        border-radius: var(--radius-lg);
+        border-radius: var(--radius-card);
     }
 
     .pricing-tier {
@@ -2374,7 +2346,7 @@ pre, code, .code-block-small, .agent-code-block pre {
         padding: 16px;
         margin: 8px;
         max-height: 95vh;
-        border-radius: var(--radius-lg);
+        border-radius: var(--radius-card);
     }
 
     .invoice-header h3 {
@@ -2842,8 +2814,8 @@ pre, code, .code-block-small, .agent-code-block pre {
     gap: 12px;
     padding: 12px 16px;
     border-radius: 10px;
-    background: rgba(0, 217, 255, 0.04);
-    border: 1px solid rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.04);
+    border: 1px solid rgba(70, 196, 196, 0.1);
     text-decoration: none !important;
     transition: all 0.2s;
     cursor: pointer;
@@ -2851,8 +2823,8 @@ pre, code, .code-block-small, .agent-code-block pre {
     box-sizing: border-box;
 }
 .pulse-cta:hover {
-    background: rgba(0, 217, 255, 0.08);
-    border-color: rgba(0, 217, 255, 0.25);
+    background: rgba(70, 196, 196, 0.08);
+    border-color: rgba(70, 196, 196, 0.25);
     text-decoration: none !important;
 }
 .pulse-cta, .pulse-cta:hover, .pulse-cta:active, .pulse-cta:visited,
@@ -2883,8 +2855,8 @@ pre, code, .code-block-small, .agent-code-block pre {
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%,
         rgba(0, 255, 136, 0.15),
-        rgba(0, 217, 255, 0.08) 40%,
-        rgba(0, 217, 255, 0.03) 70%,
+        rgba(70, 196, 196, 0.08) 40%,
+        rgba(70, 196, 196, 0.03) 70%,
         transparent 100%);
     border: 1px solid rgba(0, 255, 136, 0.12);
     animation: bubbleRise linear forwards;

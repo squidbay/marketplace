@@ -150,9 +150,9 @@
                 nav.style.background = 'rgba(10, 14, 20, 0.98)';
                 nav.style.backdropFilter = 'blur(10px)';
                 nav.style.webkitBackdropFilter = 'blur(10px)';
-                nav.style.borderBottom = '1px solid #1C2630';
+                nav.style.borderBottom = '1px solid var(--border-subtle)';
             } else {
-                nav.style.background = '#0A0E14';
+                nav.style.background = 'var(--black)';
                 nav.style.backdropFilter = 'none';
                 nav.style.webkitBackdropFilter = 'none';
                 nav.style.borderBottom = 'none';

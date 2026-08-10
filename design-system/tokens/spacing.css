@@ -1,0 +1,38 @@
+/* ==========================================================================
+   SquidBay — Spacing, Radius, Layout · ABYSSAL TEAL · v1.0 · 2026-07-31
+   The 8px grid. Radius is BUBBLE GEOMETRY: pills are structural (buttons,
+   composer, avatars, status, tier tags); rectangles (--radius-md) own tables,
+   inputs, and dense admin cells. The legacy large-radius token is RETIRED.
+   ========================================================================== */
+:root {
+    /* --- Spacing scale (8px grid) --- */
+    --space-0: 0;
+    --space-1: 4px;     /* tight inline gaps, icon-to-text */
+    --space-2: 8px;     /* small gaps, icon padding */
+    --space-3: 12px;    /* between related elements */
+    --space-4: 16px;    /* between paragraphs, card padding-y */
+    --space-5: 20px;    /* between list elements */
+    --space-6: 24px;    /* card padding, between subsections */
+    --space-8: 32px;    /* between sections inside a card */
+    --space-10: 40px;   /* major page elements (mobile) */
+    --space-12: 48px;   /* section padding-y (mobile) */
+    --space-16: 64px;   /* major page elements (desktop) */
+    --space-20: 80px;   /* section padding-y (desktop) */
+    --space-24: 96px;   /* hero padding, generous gaps */
+    --space-32: 128px;  /* top of page, dramatic spacing */
+
+    /* --- Border radius (bubble geometry) --- */
+    --radius-sm: 6px;                    /* badges, code chips */
+    --radius-md: 10px;                   /* inputs, table cells, rect containers */
+    --radius-card: 20px;                 /* cards, panels */
+    --radius-pill: 100px;                /* buttons, composer, avatars, status */
+    --radius-xl: var(--radius-card);     /* legacy alias */
+    --radius-full: var(--radius-pill);   /* legacy alias */
+
+    /* --- Layout --- */
+    --container: 1200px;
+    --gutter: 24px;
+    --container-max: var(--container);   /* legacy alias */
+    --container-pad: var(--gutter);      /* legacy alias */
+    --content-max: 65ch;                 /* long-form reading width */
+}
