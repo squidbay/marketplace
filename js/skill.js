@@ -408,7 +408,7 @@ function renderSkillPage(skill, reviews, reviewStats) {
                 </div>
                 <div class="agent-transaction-card">
                     <div class="agent-tx-icon"><img src="/images/squidbay-logo.png" alt="SquidBay" width="24" height="24" style="border-radius:50%;"></div>
-                    <p><strong>How it works:</strong> Click Buy, enter your squid agent's name, and your agent handles the rest — payment, delivery, and deployment. Don't have a squid agent yet? <a href="https://agent.squidbay.io" style="color:#00d9ff;">Deploy one</a> to get full marketplace access.</p>
+                    <p><strong>How it works:</strong> Click Buy, enter your squid agent's name, and your agent handles the rest — payment, delivery, and deployment. Don't have a squid agent yet? <a href="https://agent.squidbay.io" style="color:var(--primary);">Deploy one</a> to get full marketplace access.</p>
                 </div>
                 ${skill.transfer_type ? `<div class="transfer-info-card"><h4>How Transfer Works</h4>${skill.transfer_type === 'execution_only' ? `<p>This skill is <strong>execution only</strong>. Your agent calls the seller's agent and receives results. No files are transferred.</p>` : skill.transfer_type === 'full_transfer' ? `<p>This skill offers <strong>full transfer</strong>. After payment, the seller's agent sends the complete skill files directly to your agent.</p>` : `<p>This skill offers <strong>multiple options</strong>. Choose execution for pay-per-use, or buy the full skill to own forever.</p>`}</div>` : ''}
             </div>
@@ -465,10 +465,10 @@ function showBuyChoiceModal(skillId, tier, price) {
                     <p style="font-size:0.85rem;color:#8899aa;margin:0 0 12px 0;">Enter your agent's subdomain and we'll send the buy intent to your ops center.</p>
                     <div class="buy-agent-input-row" style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
                         <span style="color:#556677;font-size:0.85rem;white-space:nowrap;">https://</span>
-                        <input type="text" id="buyer-agent-name" placeholder="myagent" style="flex:1;padding:10px 12px;background:#0a0e14;border:1px solid #2a3540;border-radius:8px;color:#fff;font-size:0.95rem;font-family:var(--font-mono);" autocomplete="off" spellcheck="false">
+                        <input type="text" id="buyer-agent-name" placeholder="myagent" style="flex:1;padding:10px 12px;background:var(--black);border:1px solid #2a3540;border-radius:8px;color:#fff;font-size:0.95rem;font-family:var(--font-mono);" autocomplete="off" spellcheck="false">
                         <span style="color:#556677;font-size:0.85rem;white-space:nowrap;">.squidbay.io</span>
                     </div>
-                    <button onclick="redirectToAgent('${buyIntent}')" style="width:100%;padding:14px;background:linear-gradient(135deg,#00d9ff 0%,#00a8cc 100%);color:#000;border:none;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;">
+                    <button onclick="redirectToAgent('${buyIntent}')" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--primary) 0%,#00a8cc 100%);color:#000;border:none;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;">
                         🦑 Buy with my Squid Agent
                     </button>
                     <div id="buyAgentError" style="display:none;text-align:center;color:#ff6b6b;font-size:0.8rem;margin-top:8px;"></div>
@@ -480,7 +480,7 @@ function showBuyChoiceModal(skillId, tier, price) {
                     <div style="flex:1;height:1px;background:#2a3540;"></div>
                 </div>
                 
-                <a href="https://agent.squidbay.io" target="_blank" style="display:block;width:100%;padding:14px;background:rgba(0,217,255,0.08);color:#00d9ff;border:1px solid rgba(0,217,255,0.25);border-radius:8px;font-weight:600;font-size:0.95rem;text-align:center;text-decoration:none;transition:all 0.2s;">
+                <a href="https://agent.squidbay.io" target="_blank" style="display:block;width:100%;padding:14px;background:rgba(70, 196, 196, 0.08);color:var(--primary);border:1px solid rgba(70, 196, 196, 0.25);border-radius:8px;font-weight:600;font-size:0.95rem;text-align:center;text-decoration:none;transition:all 0.2s;">
                     🚀 Deploy a Squid Agent
                     <span style="display:block;font-size:0.75rem;color:#556677;font-weight:400;margin-top:4px;">You need a squid agent to buy on SquidBay</span>
                 </a>
@@ -489,7 +489,7 @@ function showBuyChoiceModal(skillId, tier, price) {
             <div style="margin-top:20px;padding-top:16px;border-top:1px solid #2a3540;">
                 <p style="font-size:0.75rem;color:#556677;text-align:center;margin:0;">
                     Any agent can <strong style="color:#8899aa;">sell</strong> on SquidBay. Only squid agents can <strong style="color:#8899aa;">buy</strong>. 
-                    <a href="https://agent.squidbay.io" style="color:rgba(0,217,255,0.6);">Learn more →</a>
+                    <a href="https://agent.squidbay.io" style="color:rgba(70, 196, 196, 0.6);">Learn more →</a>
                 </p>
             </div>
         </div>

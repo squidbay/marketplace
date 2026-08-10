@@ -1,0 +1,94 @@
+/* ==========================================================================
+   SquidBay — Effects · ABYSSAL TEAL · v1.0 · 2026-07-31
+   Shadows, teal glows (budget: ONE glowing element per view), motion,
+   surface textures, bubble columns. Motion is communication, never decoration.
+   ========================================================================== */
+:root {
+    /* --- Transitions: 0.15s micro / 0.2s state / 0.3s panel, ease --- */
+    --t-micro: 0.15s ease;           /* @kind other */
+    --t-state: 0.2s ease;            /* @kind other */
+    --t-panel: 0.3s ease;            /* @kind other */
+    --transition-fast: var(--t-micro);   /* legacy alias */
+    --transition-base: var(--t-state);   /* legacy alias */
+    --transition-slow: var(--t-panel);   /* legacy alias */
+    --ease-panel: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+
+    /* --- Elevation (neutral, deep + soft — never grey) --- */
+    --shadow-1: 0 4px 16px rgba(0, 0, 0, 0.35);
+    --shadow-2: 0 8px 40px rgba(0, 0, 0, 0.45);
+    --shadow-sm: var(--shadow-1);        /* legacy alias */
+    --shadow-md: var(--shadow-2);        /* legacy alias */
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.45);
+
+    /* --- Teal glows (a whisper, not a disco; ONE per view) --- */
+    --glow-primary: 0 4px 24px rgba(70, 196, 196, 0.16);
+    --focus-ring: 0 0 0 3px rgba(70, 196, 196, 0.18);  /* EVERY focusable */
+    --glow-sm: var(--glow-primary);      /* legacy alias */
+    --glow-md: 0 6px 30px rgba(70, 196, 196, 0.18);
+    --glow-focus: var(--focus-ring);     /* legacy alias */
+    --glow-text: 0 0 24px rgba(70, 196, 196, 0.12);
+
+    /* --- Card hover lift --- */
+    --hover-lift: translateY(-2px);      /* @kind other */
+    --hover-lift-lg: translateY(-4px);   /* @kind other */
+}
+
+/* Trench backdrop — the signature SquidBay backdrop: faint teal + ink radials
+   over the page base, plus a fractal-noise grain at ~2%. */
+.ocean-bg {
+    position: relative;
+    background: var(--black);
+}
+.ocean-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(70, 196, 196, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(30, 58, 95, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+.ocean-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMjU2IDI1NicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZmlsdGVyIGlkPSdub2lzZSc+PGZlVHVyYnVsZW5jZSB0eXBlPSdmcmFjdGFsTm9pc2UnIGJhc2VGcmVxdWVuY3k9JzAuOScgbnVtT2N0YXZlcz0nNCcgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNub2lzZSknLz48L3N2Zz4=");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Shimmer keyframes for the Skeleton primitive (loading placeholders). */
+@keyframes sb-shimmer {
+    0%   { background-position: 180% 0; }
+    100% { background-position: -80% 0; }
+}
+
+/* Spin keyframe for the Spinner primitive (loaders are the ONLY legal rotation). */
+@keyframes sb-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Bubble columns — marketing + loading surfaces ONLY (never admin, chat, or
+   native shells). Max 4 bubbles per view, one column. Recipe: absolute circles
+   7–30px, border 1px rgba(70,196,196,0.16–0.35), optional highlight
+   radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
+   animation: sbRise 6.5–13s linear infinite, staggered 0–5s delays. */
+@keyframes sbRise {
+    0%   { transform: translateY(0);      opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translateY(-360px); opacity: 0; }
+}
+
+/* Reduced motion: honor the OS preference everywhere (mandatory) */
+@media (prefers-reduced-motion: reduce) {
+    [data-bubble] { animation: none !important; opacity: 0.35 !important; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

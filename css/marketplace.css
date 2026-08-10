@@ -266,7 +266,7 @@
 .skill-card {
     background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 24px;
     transition: all var(--transition-slow);
     display: flex;
@@ -280,7 +280,7 @@
 
 .skill-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 8px 40px rgba(0, 217, 255, 0.1);
+    box-shadow: 0 8px 40px rgba(70, 196, 196, 0.1);
     transform: translateY(-4px);
 }
 
@@ -319,13 +319,13 @@
 
 .skill-icon.translation,
 .skill-icon.language {
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(0, 184, 217, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(70, 196, 196, 0.2) 0%, rgba(0, 184, 217, 0.1) 100%);
     color: var(--primary);
 }
 
 .skill-icon.image {
-    background: linear-gradient(135deg, rgba(183, 148, 246, 0.2) 0%, rgba(183, 148, 246, 0.1) 100%);
-    color: var(--purple);
+    background: linear-gradient(135deg, rgba(94, 168, 201, 0.2) 0%, rgba(94, 168, 201, 0.1) 100%);
+    color: var(--blue);
 }
 
 .skill-icon.code {
@@ -477,7 +477,7 @@
 
 .btn-invoke:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(70, 196, 196, 0.3);
 }
 
 /* === Card Trust Badge (score ring — far right of header) === */
@@ -855,8 +855,8 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: rgba(0, 217, 255, 0.1);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(70, 196, 196, 0.1);
+    border: 1px solid rgba(70, 196, 196, 0.2);
     border-radius: var(--radius);
     padding: 10px 14px;
     margin-top: 12px;
@@ -907,8 +907,8 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(0, 217, 255, 0.1);
-    border: 1px solid rgba(0, 217, 255, 0.3);
+    background: rgba(70, 196, 196, 0.1);
+    border: 1px solid rgba(70, 196, 196, 0.3);
     color: var(--primary);
     padding: 8px 16px;
     border-radius: var(--radius-full);
@@ -961,8 +961,8 @@
    Tier Legend at Top of Marketplace
    -------------------------------------------------------------------------- */
 .tier-legend {
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.15);
+    background: rgba(70, 196, 196, 0.05);
+    border: 1px solid rgba(70, 196, 196, 0.15);
     border-radius: 12px;
     padding: 20px 32px;
     margin-bottom: 24px;
@@ -1004,11 +1004,11 @@
 }
 
 .legend-icon.exec {
-    background: rgba(0, 217, 255, 0.15);
+    background: rgba(70, 196, 196, 0.15);
 }
 
 .legend-icon.file {
-    background: rgba(183, 148, 246, 0.15);
+    background: rgba(94, 168, 201, 0.15);
 }
 
 .legend-icon.pkg {
@@ -1055,14 +1055,14 @@
 /* F-11: Class-based selectors (JS no longer uses inline styles) */
 .tier-badge-exec,
 .tier-badge-mini[title="Remote Execution"] {
-    background: rgba(0, 217, 255, 0.15);
-    color: #00d9ff;
+    background: rgba(70, 196, 196, 0.15);
+    color: var(--primary);
 }
 
 .tier-badge-file,
 .tier-badge-mini[title="Skill File"] {
-    background: rgba(183, 148, 246, 0.15);
-    color: #b794f6;
+    background: rgba(94, 168, 201, 0.15);
+    color: var(--blue);
 }
 
 .tier-badge-pkg,
@@ -1119,25 +1119,25 @@
 }
 
 .tier-btn.tier-exec {
-    background: rgba(0, 217, 255, 0.15);
-    color: #00d9ff;
-    border: 1px solid rgba(0, 217, 255, 0.3);
+    background: rgba(70, 196, 196, 0.15);
+    color: var(--primary);
+    border: 1px solid rgba(70, 196, 196, 0.3);
 }
 
 .tier-btn.tier-exec:hover {
-    background: rgba(0, 217, 255, 0.25);
-    border-color: #00d9ff;
+    background: rgba(70, 196, 196, 0.25);
+    border-color: var(--primary);
 }
 
 .tier-btn.tier-file {
-    background: rgba(183, 148, 246, 0.15);
-    color: #b794f6;
-    border: 1px solid rgba(183, 148, 246, 0.3);
+    background: rgba(94, 168, 201, 0.15);
+    color: var(--blue);
+    border: 1px solid rgba(94, 168, 201, 0.3);
 }
 
 .tier-btn.tier-file:hover {
-    background: rgba(183, 148, 246, 0.25);
-    border-color: #b794f6;
+    background: rgba(94, 168, 201, 0.25);
+    border-color: var(--blue);
 }
 
 .tier-btn.tier-pkg {

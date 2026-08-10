@@ -21,8 +21,11 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai"],
             scriptSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://cdnjs.cloudflare.com", "https://static.cloudflareinsights.com"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://fonts.googleapis.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://squidbay.io", "https://squidbay.ai"],
+            // fonts.googleapis.com / fonts.gstatic.com deliberately removed:
+            // both faces are self-hosted in /design-system/fonts/, so the site
+            // no longer reaches the open web to paint text.
+            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai"],
+            fontSrc: ["'self'", "https://squidbay.io", "https://squidbay.ai"],
             imgSrc: ["'self'", "data:", "https:"],
             connectSrc: ["'self'", "https://squidbay.io", "https://api.squidbay.io", "https://squidbay-api-production.up.railway.app", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://cloudflareinsights.com"],
             frameSrc: ["'none'"],

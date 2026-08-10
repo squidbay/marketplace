@@ -1,0 +1,77 @@
+/* ==========================================================================
+   SquidBay — Color System · ABYSSAL TEAL · v1.0 · 2026-07-31
+   Green-shifted trench base, one sea-glass teal accent, warm values in the
+   squid mark ONLY. Source of truth: Abyssal Teal Rebuild Package (SPEC.md +
+   tokens.css, Designer seat, 2026-07-31). tokens.css is the law — never
+   redeclare a token. Legacy alias names are NOT defined here; they are on
+   the CI kill list (retired-values.json). OLD → NEW renames: SPEC.md §1.
+   ========================================================================== */
+:root {
+    /* --- Brand accent: sea-glass teal (the ONLY interactive accent) --- */
+    --primary: #46C4C4;
+    --primary-dark: #35A3A6;       /* hover / pressed fills */
+    --primary-light: #6ED4D2;      /* text-on-dark accent, large glyphs only */
+    --primary-glow: rgba(70, 196, 196, 0.18);
+
+    /* --- Backgrounds: green-shifted trench scale (darkest -> elevated) --- */
+    --black: #06171A;              /* page base */
+    --darker: #0A1E22;             /* chat bg, sunken zones */
+    --dark: #0F262B;               /* cards, panels */
+    --gray: #214048;               /* default borders, dividers */
+    --gray-light: #2E525B;         /* hover borders, raised hairlines */
+
+    /* --- Text --- */
+    --white: #E7F3F2;              /* primary text. NEVER #FFFFFF */
+    --text-muted: #7A959B;         /* secondary text, captions, metadata */
+    --text-muted-raised: #8AA6AC;  /* muted text on --surface-raised ONLY (plain muted fails 4.5:1 there) */
+
+    /* --- Semantic accents --- */
+    --green: #17B26A;              /* online / success */
+    --red: #E5484D;                /* error GLYPHS, borders, fills — never copy */
+    --red-text: #F0716F;           /* error COPY on surfaces (contrast-safe) */
+    --yellow: #D4A72C;             /* patent gold / pending / warning */
+    --blue: #5EA8C9;               /* info / Remote Execution tier */
+    --ink: #1E3A5F;                /* deep-water radial glows only */
+
+    /* --- Squid mark (the ONLY warm values in the system) --- */
+    --squid-orange: #FF6B35;
+    --squid-amber: #F7931A;
+    --gradient-squid: linear-gradient(135deg, #FF6B35, #F7931A); /* @kind color */ /* the mark itself, nothing else */
+    --gradient-primary: linear-gradient(135deg, #46C4C4, #35A3A6); /* @kind color */
+
+    /* --- Semantic aliases — reference these in components, not raw values --- */
+    --bg-body: var(--black);
+    --bg-chat: var(--darker);
+    --surface-card: var(--dark);
+    --surface-raised: #133034;
+    --surface-overlay: rgba(3, 12, 14, 0.6);   /* + backdrop blur(4px) */
+
+    --border-subtle: #16333A;
+    --border-default: var(--gray);
+    --border-hover: var(--gray-light);
+    --border-focus: var(--primary);
+
+    --text-primary: var(--white);
+    --text-on-primary: #06171A;                /* dark text on teal fills */
+    --link: var(--primary);
+    --link-hover: var(--primary-light);
+
+    --status-online: var(--green);
+    --status-offline: var(--text-muted);       /* glyph: hollow ring */
+    --status-pending: var(--yellow);           /* glyph: clock */
+    --status-warning: var(--yellow);           /* glyph: triangle-alert */
+    --status-error: var(--red);                /* glyph: x-circle, copy in --red-text */
+    --status-success: var(--green);            /* glyph: check-circle */
+    --status-info: var(--blue);                /* glyph: info */
+
+    --price: var(--primary);                   /* USD pricing accent (Stripe Connect) */
+    --tier-full: var(--primary);               /* FULL SKILL tier tag */
+    --tier-remote: var(--blue);                /* REMOTE EXECUTION tier tag */
+    --patent-gold: var(--yellow);
+
+    /* --- Agent avatar: the squid mark on the abyss tile, faint teal rim.
+           The orange gradient disc avatar is DEAD (mark drowned on orange). --- */
+    --avatar-tile: radial-gradient(circle at 35% 30%, #0F2A2E, #06171A); /* @kind color */
+    --avatar-rim: rgba(70, 196, 196, 0.35);
+    --avatar-rim-glow: 0 0 12px rgba(70, 196, 196, 0.12);
+}

@@ -1,0 +1,42 @@
+{
+  "name": "abyssal-teal-retired-values",
+  "version": "1.1.0",
+  "purpose": "CI guardrail input. Any build containing these exact strings FAILS. No aliases, no fallbacks, no exceptions. Copied verbatim from the Abyssal Teal handoff; exempt_paths extended for this project's record files only.",
+  "retired_hex": [
+    "#00D9FF", "#00E0FF", "#00D9F5",
+    "#4CC4DC", "#7AD6E8", "#3BA8BF",
+    "#0A0E14", "#0F1419", "#12161C", "#151B23", "#18222C", "#1C2630", "#2A3744", "#38495C",
+    "#E8F4F8", "#7B8FA3", "#8B9DB0",
+    "#B47AFF", "#9D5CFF", "#8A2BE2"
+  ],
+  "retired_hex_case_insensitive": true,
+  "retired_rgb_forms": [
+    "rgba(0, 217, 255", "rgba(0,217,255",
+    "rgba(76, 196, 220", "rgba(76,196,220"
+  ],
+  "retired_token_names": [
+    "--purple", "--cyan", "--electric-cyan", "--accent-cyan",
+    "--bg-primary", "--bg-secondary", "--bg-tertiary",
+    "--bg-surface", "--bg-inset", "--border-accent", "--border-strong",
+    "--text-body", "--text-secondary", "--text-accent",
+    "--radius-lg"
+  ],
+  "retired_font_families": ["Inter", "Space Mono", "Roboto", "Arial"],
+  "retired_values_other": [
+    "letter-spacing: 2px /* legacy section-label tracking; new value is 3px */"
+  ],
+  "exempt_paths": [
+    "retired-values.json",
+    "ci/kill-list.mjs",
+    "reference/**",
+    "wireframe/**",
+    "uploads/**",
+    "**/favicon*", "**/app-icon*", "**/squidbay-icon.svg"
+  ],
+  "exempt_paths_note": "Exemption is by file path, never by value. reference/** holds the imported authority set (SPEC, tokens, wireframe copy, Andrew's pre-mapping code-source originals), wireframe/** the wireframe rendered at the bottom of the design guide (a record: it quotes retired values on purpose), and uploads/** the raw inputs. Nothing under tokens/, components/, ui_kits/, guidelines/ is exempt.",
+  "notes": [
+    "Old Deep Ocean surface scale (#0A0E14 family) is fully replaced by the trench scale in tokens/.",
+    "#E8F4F8 off-white is replaced by #E7F3F2. Both must not coexist.",
+    "Warm values #FF6B35 / #F7931A are NOT retired; they remain the squid mark, used nowhere else."
+  ]
+}

@@ -1,0 +1,123 @@
+/* ==========================================================================
+   SquidBay — Typography · ABYSSAL TEAL · v1.0 · 2026-07-31
+   Sora for ALL visible text (including the wordmark). Fragment Mono for code,
+   timestamps, USD pricing, UPPERCASE technical labels. The two legacy faces
+   are RETIRED (CI kill list). Fragment Mono ships 400 only; bold mono is banned.
+   ========================================================================== */
+
+/* Sora 400/500/600/700 + Fragment Mono 400 — SELF-HOSTED, exact same faces.
+   Previously an @import from fonts.googleapis.com. That is a hard dependency on
+   the open web on every page load: it costs a third-party DNS + TLS handshake
+   before a single glyph paints, it hands a visitor log to another origin, and in
+   any sandboxed renderer with no outbound web access the request simply fails —
+   the page renders in fallback faces and still reports itself as fine.
+   The binaries in ../fonts/ are the exact files Google serves for these faces.
+
+   Sora is a VARIABLE font: one file covers the whole 400-700 range, so all four
+   weights below point at the same binary and the browser interpolates. That is
+   why there is no separate sora-600.woff2 — there is no such file to ship.
+
+   Both faces are SIL Open Font License 1.1, which permits self-hosting. */
+
+/* --- Sora (variable, 400-700) --- */
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('../fonts/sora-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+        U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+        U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('../fonts/sora-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+        U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+        U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+        U+A720-A7FF;
+}
+
+/* --- Fragment Mono (400 only; bold mono is banned by the system) --- */
+@font-face {
+    font-family: 'Fragment Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/fragment-mono-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+        U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+        U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Fragment Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/fragment-mono-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+        U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+        U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+        U+A720-A7FF;
+}
+
+:root {
+    /* --- Font stacks --- */
+    --font-sans: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Fragment Mono', 'SF Mono', Monaco, Menlo, Consolas, monospace;
+
+    /* Aliases (house names, same face) */
+    --font-display: var(--font-sans);
+    --font-body: var(--font-sans);
+
+    /* --- Normative scale (size / line-height / tracking / weight) ---
+       display  52 / 1.08 / -0.03em / 700   ONE per view, max
+       h1       40 / 1.12 / -0.03em / 700
+       h2       32 / 1.2  / -0.02em / 700
+       h3       24 / 1.3  / -0.02em / 700
+       h4       18 / 1.4  / -0.02em / 700
+       body-lg  17 / 1.7  / 0       / 400   marketing floor
+       body     15 / 1.6  / 0       / 400   chat + native floor
+       body-sm  13.5 / 1.65 / 0     / 400   admin-table floor
+       caption  12 / 1.5  / 0       / 400   --text-muted
+       mono-label 12 / 1.4 / 3px    / 400   UPPERCASE, --primary or muted
+       mono-price 16 / 1.4 / 0      / 400   --price
+       mono-micro 10 / 1.4 / 1.5px  / 400   UPPERCASE */
+    --text-hero: clamp(2.5rem, 5vw, 3.25rem);     /* 40 -> 52  display */
+    --text-h1: clamp(2rem, 4vw, 2.5rem);          /* 32 -> 40 */
+    --text-h2: clamp(1.75rem, 3vw, 2rem);         /* 28 -> 32 */
+    --text-h3: 1.5rem;                            /* 24 */
+    --text-h4: 1.125rem;                          /* 18 */
+    --text-lg: 1.0625rem;                         /* 17 */
+    --text-base: 0.9375rem;                       /* 15 */
+    --text-sm: 0.84375rem;                        /* 13.5 */
+    --text-caption: 0.75rem;                      /* 12 */
+    --text-code: 0.84375rem;                      /* 13.5 */
+    --text-label: 0.75rem;                        /* 12  mono labels / badges */
+
+    /* --- Weights (400/500/600/700 — NOTHING above 700) --- */
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+    --weight-black: 700;          /* legacy alias — capped, 800/900 retired */
+    --weight-heavy: 700;          /* legacy alias — capped, 800/900 retired */
+
+    /* --- Line heights --- */
+    --leading-tight: 1.08;        /* display */
+    --leading-snug: 1.2;          /* headings */
+    --leading-normal: 1.4;        /* h4 / dense */
+    --leading-body: 1.6;          /* body 15px */
+    --leading-relaxed: 1.7;       /* marketing body 17px */
+
+    /* --- Letter spacing --- */
+    --tracking-display: -0.03em;  /* display + h1 */
+    --tracking-tight: -0.02em;    /* headings (+ text-wrap: balance) */
+    --tracking-snug: -0.01em;
+    --tracking-wide: 0.02em;
+    --tracking-label: 3px;        /* mono section labels, UPPERCASE (2px retired) */
+}

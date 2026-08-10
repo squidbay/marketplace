@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0A0E14">
+    <meta name="theme-color" content="var(--black)">
     <title>Squid Agent: Run Your Whole Life From One Chat. Your Agent. Yours.</title>
     <meta name="description" content="Deploy your own AI agent in 3 clicks. Three modes — Education, Personal, Business — one agent, one chat. Builds your website. Posts to socials. Reorders inventory via A2A. Reads your email. Owns its identity. Two-clock cognitive architecture with 9-task subconscious and 4-tier memory. Three recovery layers. Patent-protected skill marketplace under US Patent 18/782,822 (granted). Sell skills without writing code — your agent makes them. Cloudflare AI Gateway routes 70+ models. AES-256 encrypted at rest, only you have the key. You own everything.">
     <meta name="keywords" content="AI agent, deploy AI agent, Cloudflare AI Gateway, agent-as-identity, two clocks, subconscious mind, cognitive architecture, 4-tier memory, relationship health, website builder, Stripe Connect, Stripe v2, Agentic Commerce, MPP, SPT, US Patent 18/782,822, post-quantum encryption, ML-KEM, FN-DSA, SquidBay, skill marketplace, A2A protocol, Tree-sitter scanner, Anthropic skill standard">
@@ -38,9 +38,6 @@
     <meta name="agent-card" content="https://api.squidbay.io/.well-known/agent.json">
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- DNS pre-warming for the shared component server. Preconnect only — NO preload/prefetch.
          Preload tags caused a navigation bug: when visiting squidbay.ai first then clicking
@@ -52,6 +49,8 @@
     <link rel="preconnect" href="https://squidbay.ai" crossorigin>
 
     <!-- Styles -->
+    <!-- Design system: tokens + self-hosted Sora / Fragment Mono. No web fonts. -->
+    <link rel="stylesheet" href="/design-system/styles.css">
     <link rel="stylesheet" href="https://squidbay.ai/css/styles.css">
     <link rel="stylesheet" href="squid.css">
 

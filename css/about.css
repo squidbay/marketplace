@@ -42,7 +42,7 @@
         .why-visual {
             background: var(--dark);
             border: 1px solid var(--gray);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-card);
             padding: 40px;
         }
         .why-comparison {
@@ -136,7 +136,7 @@
         .team-card {
             background: var(--dark);
             border: 1px solid var(--gray);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-card);
             padding: 40px;
             text-align: center;
             transition: all var(--transition-slow);
@@ -144,7 +144,7 @@
         .team-card:hover {
             border-color: var(--primary);
             transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.1);
+            box-shadow: 0 12px 40px rgba(70, 196, 196, 0.1);
         }
         .team-photo {
             width: 140px;
@@ -263,7 +263,7 @@
             transform: translateX(-50%);
             width: 2px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--primary), var(--purple));
+            background: linear-gradient(to bottom, var(--primary), var(--blue));
             opacity: 0.3;
         }
         .era {
@@ -276,7 +276,7 @@
         .era-content {
             background: var(--dark);
             border: 1px solid var(--gray);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-card);
             padding: 28px;
         }
         .era:nth-child(odd) .era-content {
@@ -335,7 +335,7 @@
         .insight-card {
             background: var(--dark);
             border: 1px solid var(--gray);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-card);
             padding: 32px;
             text-align: center;
             transition: all var(--transition-slow);
@@ -348,7 +348,7 @@
             width: 64px;
             height: 64px;
             margin: 0 auto 16px;
-            background: rgba(0, 217, 255, 0.1);
+            background: rgba(70, 196, 196, 0.1);
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -368,9 +368,9 @@
         .vision-box {
             max-width: 800px;
             margin: 0 auto;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(168, 85, 247, 0.1));
+            background: linear-gradient(135deg, rgba(70, 196, 196, 0.1), rgba(168, 85, 247, 0.1));
             border: 1px solid var(--primary);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-card);
             padding: 48px;
             text-align: center;
         }
@@ -492,13 +492,13 @@
     gap: 18px;
     padding: 22px 24px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(0, 217, 255, 0.16);
+    border: 1px solid rgba(70, 196, 196, 0.16);
     border-radius: 12px;
     transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
 }
 .why-pillar:hover {
-    border-color: rgba(0, 217, 255, 0.40);
-    background: rgba(0, 217, 255, 0.04);
+    border-color: rgba(70, 196, 196, 0.40);
+    background: rgba(70, 196, 196, 0.04);
     transform: translateX(4px);
 }
 .why-pillar-num {
@@ -506,7 +506,7 @@
     width: 44px;
     height: 44px;
     border-radius: 10px;
-    background: rgba(0, 217, 255, 0.10);
+    background: rgba(70, 196, 196, 0.10);
     color: var(--primary);
     font-family: var(--font-mono);
     font-weight: 700;
