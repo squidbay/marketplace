@@ -1,0 +1,21 @@
+name = "squidbot-chat"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+# ── vars are IDENTIFIERS, not credentials ────────────────────────────────────
+# Account and gateway IDs are not secrets — they appear in the gateway URL and
+# are useless without a key. Anything that authenticates is a secret, set with
+# `wrangler secret put` and never written here:
+#
+#   wrangler secret put CLAUDE_API_KEY                # required
+#   wrangler secret put CLOUDFLARE_AI_GATEWAY_TOKEN   # only if the gateway is
+#                                                     # set to Authenticated
+[vars]
+CF_ACCOUNT_ID = "d41593267b9908b65780b8904e5cd2fe"
+CF_GATEWAY_ID = "squidbay"
+MODEL = "claude-sonnet-5"
+
+# Origin allowlist. The widget is public, so the endpoint is public — but it
+# should only answer the surfaces we actually ship. Add squidbay.ai's apex and
+# www the moment the domain serves from this account.
+ALLOWED_ORIGINS = "https://squidbay-ai-preview.andrew-415.workers.dev,https://squidbay.ai,https://www.squidbay.ai,http://localhost:8901"
