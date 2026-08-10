@@ -6,9 +6,9 @@
  * --primary, --primary-dark, --primary-glow
  * --black, --dark, --darker, --gray, --gray-light
  * --text-muted, --white
- * --green, --red, --yellow, --purple
+ * --green, --red, --yellow, --blue
  * --font-display, --font-mono
- * --radius-sm, --radius-md, --radius-lg, --radius-xl, --radius-full
+ * --radius-sm, --radius-md, --radius-card, --radius-pill
  * --transition-fast, --transition-base, --transition-slow
  */
 
@@ -74,7 +74,7 @@
     align-items: center;
     justify-content: center;
     background: var(--primary-glow);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     flex-shrink: 0;
 }
 
@@ -99,7 +99,7 @@
 }
 
 .skill-category {
-    background: rgba(0, 217, 255, 0.15);
+    background: rgba(70, 196, 196, 0.15);
     color: var(--primary);
     padding: 4px 12px;
     border-radius: var(--radius-full);
@@ -215,7 +215,7 @@
 .skill-details {
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 24px;
     margin-bottom: 32px;
 }
@@ -288,7 +288,7 @@
     justify-content: space-between;
     gap: 12px;
     padding: 16px 20px;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     border: 1px solid;
     margin-bottom: 24px;
     text-decoration: none;
@@ -473,7 +473,7 @@
 
 /* FIX: Override styles.css global .pricing-header { margin-bottom: 40px } */
 .pricing-card .pricing-header {
-    background: rgba(0, 217, 255, 0.05);
+    background: rgba(70, 196, 196, 0.05);
     padding: 16px 20px;
     border-bottom: 1px solid var(--gray);
     margin-bottom: 0;
@@ -508,7 +508,7 @@
 }
 
 .pricing-tier:hover {
-    background: rgba(0, 217, 255, 0.03);
+    background: rgba(70, 196, 196, 0.03);
 }
 
 .pricing-tier.disabled {
@@ -660,13 +660,13 @@
 }
 
 .buy-btn-file {
-    background: linear-gradient(135deg, #b794f6 0%, #9f7aea 100%);
+    background: linear-gradient(135deg, var(--blue) 0%, #9f7aea 100%);
     color: var(--black);
 }
 
 .buy-btn-file:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(183, 148, 246, 0.4);
+    box-shadow: 0 4px 20px rgba(94, 168, 201, 0.4);
 }
 
 .buy-btn-pkg {
@@ -974,7 +974,7 @@
 }
 
 .invoice-note {
-    background: rgba(0, 217, 255, 0.05);
+    background: rgba(70, 196, 196, 0.05);
     border-left: 3px solid var(--primary);
     padding: 12px;
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
@@ -1038,8 +1038,8 @@
 .agent-processing {
     text-align: center;
     padding: 16px;
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(70, 196, 196, 0.05);
+    border: 1px solid rgba(70, 196, 196, 0.2);
     border-radius: var(--radius-md);
     margin-bottom: 20px;
 }
@@ -1167,8 +1167,8 @@
 
 .invoice-tier-badge {
     display: inline-block;
-    background: rgba(0, 217, 255, 0.15);
-    border: 1px solid rgba(0, 217, 255, 0.3);
+    background: rgba(70, 196, 196, 0.15);
+    border: 1px solid rgba(70, 196, 196, 0.3);
     color: var(--primary);
     padding: 6px 16px;
     border-radius: var(--radius-full);
@@ -1203,9 +1203,9 @@
     justify-content: center;
     gap: 8px;
     padding: 24px 16px;
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.15);
-    border-radius: var(--radius-lg);
+    background: rgba(70, 196, 196, 0.05);
+    border: 1px solid rgba(70, 196, 196, 0.15);
+    border-radius: var(--radius-card);
     margin: 24px 0;
 }
 
@@ -1251,7 +1251,7 @@
 }
 
 .agent-node.store .agent-icon {
-    border-color: var(--purple);
+    border-color: var(--blue);
 }
 
 .agent-node.seller .agent-icon {
@@ -1337,7 +1337,7 @@
 
 .step-indicator.active {
     border-color: var(--primary);
-    background: rgba(0, 217, 255, 0.2);
+    background: rgba(70, 196, 196, 0.2);
 }
 
 .step-indicator.active::after {
@@ -1495,7 +1495,7 @@
 .review-prompt {
     background: var(--darker);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 20px;
     margin: 24px 0;
 }

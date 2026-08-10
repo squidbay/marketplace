@@ -21,8 +21,13 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'", "https://squidbay.io", "https://*.squidbay.io"],
             scriptSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://cdnjs.cloudflare.com", "https://static.cloudflareinsights.com"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://fonts.googleapis.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://squidbay.io"],
+            // fonts.googleapis.com / fonts.gstatic.com deliberately removed:
+            // both faces are self-hosted in /design-system/fonts/, so the site
+            // no longer reaches the open web to paint text. Leaving the hosts
+            // whitelisted would let a stray @import silently start working
+            // again and quietly reintroduce the dependency.
+            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io"],
+            fontSrc: ["'self'", "https://squidbay.io"],
             imgSrc: ["'self'", "data:", "https:"],
             connectSrc: ["'self'", "https://squidbay.io", "https://api.squidbay.io", "https://squidbay-api-production.up.railway.app", "https://*.squidbay.io", "https://cloudflareinsights.com"],
             frameSrc: ["'none'"],

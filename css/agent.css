@@ -49,8 +49,8 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-glow) 0%, rgba(0, 217, 255, 0.1) 100%);
-    border: 3px solid rgba(0, 217, 255, 0.3);
+    background: linear-gradient(135deg, var(--primary-glow) 0%, rgba(70, 196, 196, 0.1) 100%);
+    border: 3px solid rgba(70, 196, 196, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -156,8 +156,8 @@
 }
 
 .stat-box {
-    background: rgba(0, 217, 255, 0.03);
-    border: 1px solid rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.03);
+    border: 1px solid rgba(70, 196, 196, 0.1);
     border-radius: var(--radius-md, 8px);
     padding: 12px 8px;
     text-align: center;
@@ -202,7 +202,7 @@
 .skill-card {
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 20px;
     text-decoration: none;
     transition: all var(--transition-base);
@@ -215,7 +215,7 @@
 .skill-card:hover {
     border-color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 217, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(70, 196, 196, 0.1);
 }
 
 .skill-card .skill-name a {
@@ -389,13 +389,13 @@
 }
 
 .tier-btn-mini.tier-exec {
-    background: rgba(0, 217, 255, 0.15);
-    color: #00d9ff;
+    background: rgba(70, 196, 196, 0.15);
+    color: var(--primary);
 }
 
 .tier-btn-mini.tier-file {
-    background: rgba(183, 148, 246, 0.15);
-    color: #b794f6;
+    background: rgba(94, 168, 201, 0.15);
+    color: var(--blue);
 }
 
 .tier-btn-mini.tier-pkg {
@@ -428,7 +428,7 @@
 .review-card {
     background: var(--dark);
     border: 1px solid var(--gray);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 20px;
 }
 
@@ -478,7 +478,7 @@
 .review-reply {
     margin-top: 16px;
     padding: 16px;
-    background: rgba(0, 217, 255, 0.05);
+    background: rgba(70, 196, 196, 0.05);
     border-left: 3px solid var(--primary);
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
@@ -553,10 +553,10 @@
 }
 .view-skill-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(70, 196, 196, 0.3);
 }
 .skill-card:hover .view-skill-btn {
-    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(70, 196, 196, 0.3);
 }
 
 /* === Card Trust Badge (score ring — far right of header) === */

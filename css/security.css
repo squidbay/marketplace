@@ -3,10 +3,10 @@
  * css/security.css
  * 
  * Uses CSS variables from styles.css:
- *   --primary: #00D9FF   --green: #00D26A   --red: #FF5F57
- *   --yellow: #FFBD2E    --black: #0A0E14   --dark: #0F1419
- *   --gray: #1C2630      --gray-light: #2A3744
- *   --text-muted: #7B8FA3  --white: #E8F4F8
+ *   --primary: var(--primary)   --green: #00D26A   --red: #FF5F57
+ *   --yellow: #FFBD2E    --black: var(--black)   --dark: var(--darker)
+ *   --gray: var(--border-subtle)      --gray-light: var(--gray)
+ *   --text-muted: var(--text-muted)  --white: var(--white)
  *   --font-display, --font-mono
  *   --radius-sm/md/lg, --transition-fast/base/slow
  */
@@ -151,7 +151,7 @@
 }
 
 .security-header-meta .version-badge {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.1);
     color: var(--primary);
     padding: 2px 8px;
     border-radius: var(--radius-sm);
@@ -169,7 +169,7 @@
 }
 
 .security-header-meta .scope-badge {
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     color: var(--primary);
     padding: 2px 8px;
     border-radius: var(--radius-sm);
@@ -186,13 +186,13 @@
     align-items: center;
     gap: 24px;
     padding: 24px;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     margin-bottom: 24px;
     border: 1px solid;
 }
 
 .verdict-banner.verdict-clean {
-    background: linear-gradient(135deg, rgba(0, 210, 106, 0.06) 0%, rgba(0, 217, 255, 0.04) 100%);
+    background: linear-gradient(135deg, rgba(0, 210, 106, 0.06) 0%, rgba(70, 196, 196, 0.04) 100%);
     border-color: rgba(0, 210, 106, 0.2);
 }
 
@@ -290,8 +290,8 @@
     gap: 12px;
     padding: 14px 18px;
     margin-bottom: 20px;
-    background: rgba(0, 217, 255, 0.04);
-    border: 1px solid rgba(0, 217, 255, 0.12);
+    background: rgba(70, 196, 196, 0.04);
+    border: 1px solid rgba(70, 196, 196, 0.12);
     border-radius: 8px;
     border-left: 3px solid var(--primary);
 }
@@ -352,7 +352,7 @@
 .report-section {
     background: var(--gray);
     border: 1px solid var(--gray-light);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     margin-bottom: 16px;
     overflow: hidden;
 }
@@ -368,7 +368,7 @@
 }
 
 .section-header:hover {
-    background: rgba(0, 217, 255, 0.03);
+    background: rgba(70, 196, 196, 0.03);
 }
 
 .section-header svg {
@@ -454,7 +454,7 @@
 }
 
 .category-status.status-info {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.1);
     color: var(--primary);
 }
 
@@ -484,7 +484,7 @@
 }
 
 .category-finding-count.sev-info {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.1);
     color: var(--primary);
 }
 
@@ -590,7 +590,7 @@
 }
 
 .perm-risk.risk-neutral {
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(70, 196, 196, 0.08);
     color: var(--text-muted);
 }
 
@@ -738,7 +738,7 @@
 .report-concerns-module {
     background: var(--gray);
     border: 1px solid var(--gray-light);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-card);
     padding: 32px 24px;
     text-align: center;
     margin-top: 24px;
@@ -780,7 +780,7 @@
 }
 
 .concerns-btn:hover {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(70, 196, 196, 0.1);
     color: var(--primary);
     text-decoration: none;
 }
