@@ -1,55 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found — SquidBay</title>
-    <meta name="robots" content="noindex">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="32x32">
-    <!-- Design system: tokens + self-hosted Sora / Fragment Mono. No web fonts. -->
-    <link rel="stylesheet" href="/design-system/styles.css">
-    <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        .not-found {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 24px;
-        }
-        .not-found-content { max-width: 500px; }
-        .not-found-icon { font-size: 6rem; margin-bottom: 24px; opacity: 0.6; }
-        .not-found-content h1 { font-size: 2rem; margin-bottom: 16px; }
-        .not-found-content p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
-        .not-found-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    </style>
-</head>
-<body>
-    <div id="nav-placeholder"></div>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Page not found — SquidBay</title>
+<link rel="stylesheet" href="/design-system/styles.css"><link rel="stylesheet" href="/site.css"><script src="/site.js" defer></script>
 
-    <div class="not-found">
-        <div class="not-found-content">
-            <div class="not-found-icon"><img src="/images/squidbay-logo.png" alt="SquidBay" width="96" height="96"></div>
-            <h1>Page Not Found</h1>
-            <p>This page doesn't exist in the deep. Maybe the squid ate it.</p>
-            <div class="not-found-links">
-                <a href="/" class="btn btn-primary">Back to Home</a>
-                <a href="/marketplace" class="btn btn-secondary">Browse Marketplace</a>
-                <a href="https://agent.squidbay.io" class="btn btn-secondary">Deploy an Agent</a>
-            </div>
-        </div>
-    </div>
-
-    <div id="footer-placeholder"></div>
-
-    <script src="/js/components.js"></script>
-    <script src="/js/config.js"></script>
-    <script src="/js/main.js"></script>
-    <script>
-        // L-06: Log 404 hits for broken link visibility
-        console.warn('404 hit:', window.location.pathname + window.location.search);
-    </script>
-</body>
-</html>
+<meta name="description" content="That page does not exist.">
+<meta property="og:title" content="Page not found — SquidBay">
+<meta property="og:description" content="That page does not exist.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://squidbay.ai/images/og/404.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page not found — SquidBay">
+<meta name="twitter:description" content="That page does not exist.">
+<meta name="twitter:image" content="https://squidbay.ai/images/og/404.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<meta name="theme-color" content="#06171A">
+<meta name="robots" content="noindex">
+<script src="/js/config.js"></script>
+</head><body>
+<sb-nav></sb-nav>
+<main class="container" style="min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding-top:64px;padding-bottom:64px">
+<span style="width:64px;height:64px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim);display:flex;align-items:center;justify-content:center"><img src="/assets/squidbay-logo.png" alt="" style="width:46px;height:46px;object-fit:contain"></span>
+<span class="mono" style="font-size:12px;letter-spacing:3px;color:var(--text-muted)">404 · Nothing at this depth</span>
+<h1 style="font-size:34px">This page doesn't exist.</h1>
+<p style="font-size:15px;max-width:420px">The address may be a handle that was never claimed, or a page that moved. Every top-level path on squidbay.ai is a handle — maybe it's waiting for you.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:10px">
+<a class="btn btn-secondary" href="/">Back to squidbay.ai</a>
+<a class="btn btn-primary" href="/register">Claim this handle</a>
+</div>
+</main>
+<sb-footer></sb-footer>
+</body></html>

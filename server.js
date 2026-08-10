@@ -19,17 +19,15 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            defaultSrc: ["'self'", "https://squidbay.io", "https://*.squidbay.io"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://cdnjs.cloudflare.com", "https://static.cloudflareinsights.com"],
+            defaultSrc: ["'self'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://cdnjs.cloudflare.com", "https://static.cloudflareinsights.com"],
             // fonts.googleapis.com / fonts.gstatic.com deliberately removed:
             // both faces are self-hosted in /design-system/fonts/, so the site
-            // no longer reaches the open web to paint text. Leaving the hosts
-            // whitelisted would let a stray @import silently start working
-            // again and quietly reintroduce the dependency.
-            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io"],
-            fontSrc: ["'self'", "https://squidbay.io"],
+            // no longer reaches the open web to paint text.
+            styleSrc: ["'self'", "'unsafe-inline'", "https://squidbay.io", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai"],
+            fontSrc: ["'self'", "https://squidbay.io", "https://squidbay.ai"],
             imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'", "https://squidbay.io", "https://api.squidbay.io", "https://squidbay-api-production.up.railway.app", "https://*.squidbay.io", "https://cloudflareinsights.com"],
+            connectSrc: ["'self'", "https://squidbay.io", "https://api.squidbay.io", "https://squidbay-api-production.up.railway.app", "https://*.squidbay.io", "https://squidbay.ai", "https://*.squidbay.ai", "https://cloudflareinsights.com"],
             frameSrc: ["'none'"],
             frameAncestors: ["'none'"],
             objectSrc: ["'none'"],
@@ -98,7 +96,8 @@ const imageOptions = {
 //
 // Tradeoff: parent squidbay.io re-fetches these small JS/CSS files on every
 // page load. They are <15KB each, gzipped, behind Cloudflare. Acceptable.
-const SQUIDBAY_SUBDOMAIN_RE = /^https:\/\/[a-z0-9-]+\.squidbay\.io$/;
+// Both apexes: the site answers on .io and .ai for the duration of the cutover.
+const SQUIDBAY_SUBDOMAIN_RE = /^https:\/\/[a-z0-9-]+\.squidbay\.(io|ai)$/;
 const allowSubdomainCors = (req, res, next) => {
     const origin = req.get('Origin');
 
@@ -150,7 +149,7 @@ app.get('/favicon.svg', (req, res) => {
 // Squid Agent subdomain — serve from /agent/ folder
 const squidAgentStatic = express.static(path.join(__dirname, 'agent'), staticOptions);
 app.use((req, res, next) => {
-    if (req.hostname === 'agent.squidbay.io') {
+    if (req.hostname === 'agent.squidbay.io' || req.hostname === 'agent.squidbay.ai') {
         return squidAgentStatic(req, res, () => {
             // If static file not found, serve index.html (SPA fallback)
             res.sendFile(path.join(__dirname, 'agent', 'index.html'));
@@ -162,7 +161,7 @@ app.use((req, res, next) => {
 // Vanity URL routes — serve the HTML file, JS reads the URL path directly
 // Security report must come BEFORE skill detail (Express matches top-down)
 app.get('/skill/:agentName/:slug/security', (req, res) => {
-    res.sendFile(path.join(__dirname, 'security.html'));
+    res.sendFile(path.join(__dirname, 'security-report.html'));
 });
 
 app.get('/skill/:agentName/:slug', (req, res) => {
@@ -170,20 +169,42 @@ app.get('/skill/:agentName/:slug', (req, res) => {
 });
 
 app.get('/agent/:name', (req, res) => {
-    res.sendFile(path.join(__dirname, 'agent.html'));
+    res.sendFile(path.join(__dirname, 'seller.html'));
 });
 
 // Clean page URLs (no .html needed)
-const pages = ['marketplace', 'register', 'about', 'faq', 'help', 'privacy', 'terms', 'thanks', 'api', 'refund'];
+const pages = [
+    'marketplace', 'register', 'skill', 'seller', 'security-report',
+    'personal', 'business', 'app', 'docs', 'support', 'legal'
+];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, `${page}.html`));
     });
 });
 
-// Legacy redirect — /agents moved to /register
-app.get('/agents', (req, res) => {
-    res.redirect(301, '/register');
+// Nested legal path — the page is flat on disk, the URL is not.
+app.get('/legal/refund', (req, res) => {
+    res.sendFile(path.join(__dirname, 'legal-refund.html'));
+});
+
+// Redirects from the previous site's URLs. These pages no longer exist as
+// separate documents; each is preserved as a 301 so existing inbound links,
+// search results and shared cards land somewhere real instead of on a 404.
+const RETIRED = {
+    '/about': '/business',
+    '/faq': '/docs',
+    '/help': '/support',
+    '/privacy': '/legal',
+    '/terms': '/legal',
+    '/refund': '/legal/refund',
+    '/thanks': '/support',
+    '/security': '/security-report',
+    '/agents': '/register',
+    '/api': '/docs'
+};
+Object.entries(RETIRED).forEach(([from, to]) => {
+    app.get(from, (req, res) => res.redirect(301, to));
 });
 
 // Static HTML files (direct access still works)

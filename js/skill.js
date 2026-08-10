@@ -196,7 +196,7 @@ async function loadSkill(id) {
 }
 
 function updatePageMeta(skill, agentName, slug) {
-    var vanityUrl = 'https://squidbay.io/skill/' + encodeURIComponent(agentName) + '/' + encodeURIComponent(slug);
+    var vanityUrl = 'https://squidbay.ai/skill/' + encodeURIComponent(agentName) + '/' + encodeURIComponent(slug);
     var canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.href = vanityUrl;
     var ogUrl = document.querySelector('meta[property="og:url"]');

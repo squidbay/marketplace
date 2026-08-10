@@ -7,10 +7,19 @@
 (function() {
     'use strict';
 
-    // Subdomain detection — anything not squidbay.io or www.squidbay.io is a subdomain
+    // Subdomain detection, apex-agnostic.
+    //
+    // During the .io -> .ai cutover the site answers on BOTH apexes, so the
+    // apex cannot be a constant here. It is derived from the hostname instead,
+    // and a visitor who arrived on one TLD is kept on that TLD — sending an
+    // agent.squidbay.io visitor to squidbay.ai mid-session would bounce them
+    // through a cross-domain redirect and drop the consent cookie, which is
+    // scoped per registrable domain.
+    const APEXES = ['squidbay.ai', 'squidbay.io'];
     const hostname = window.location.hostname;
-    const isSubdomain = hostname !== 'squidbay.io' && hostname !== 'www.squidbay.io' && hostname.endsWith('squidbay.io');
-    const ORIGIN = isSubdomain ? 'https://squidbay.io' : '';
+    const apex = APEXES.find(d => hostname === d || hostname.endsWith('.' + d)) || null;
+    const isSubdomain = !!apex && hostname !== apex && hostname !== 'www.' + apex;
+    const ORIGIN = isSubdomain ? 'https://' + apex : '';
 
     // Component paths — prefixed with origin when on subdomain
     const COMPONENTS = {
@@ -43,10 +52,10 @@
             // Skip pure anchor links (e.g. #contact) — these should work on current page
             if (href.startsWith('#')) return;
             
-            // Rewrite relative paths to absolute squidbay.io URLs
+            // Rewrite relative paths to absolute URLs on the apex we are on.
             // Handles: /marketplace, /register, /about, /faq, /help, /privacy, /terms, /refund, /#contact
-            if (href.startsWith('/')) {
-                link.setAttribute('href', 'https://squidbay.io' + href);
+            if (href.startsWith('/') && ORIGIN) {
+                link.setAttribute('href', ORIGIN + href);
             }
         });
     }
@@ -60,7 +69,11 @@
         container.querySelectorAll('a').forEach(link => {
             const href = link.getAttribute('href');
             // Find the API link in the Product column and replace with Agent
-            if (href && (href === '/api' || href === 'https://squidbay.io/api') && link.textContent.trim() === 'API') {
+            // Match the API link however it is spelled: relative, or absolute on
+            // either apex — the footer is shared and its links move with the cutover.
+            const isApiLink = href === '/api' ||
+                href === 'https://squidbay.io/api' || href === 'https://squidbay.ai/api';
+            if (isApiLink && link.textContent.trim() === 'API') {
                 link.textContent = '🦑 Agent';
                 link.setAttribute('href', 'https://agent.squidbay.io');
             }

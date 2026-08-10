@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Support — SquidBay</title>
+<link rel="stylesheet" href="/design-system/styles.css"><link rel="stylesheet" href="/site.css"><script src="/site.js" defer></script>
+<style>.chat{display:flex;flex-direction:column;gap:12px;background:var(--bg-chat);border:1px solid var(--border-subtle);border-radius:var(--radius-card);padding:20px;max-width:640px}
+.bub{align-self:flex-start;max-width:85%;padding:12px 16px;font-size:15px;line-height:1.6;background:var(--surface-card);border-radius:6px 20px 20px 20px}
+.bub.me{align-self:flex-end;background:var(--darker);border-radius:20px 6px 20px 20px}
+.composer{display:flex;gap:10px;align-items:center;margin-top:6px}
+.composer input{flex:1;min-width:0;background:var(--darker);border:1px solid var(--border-default);border-radius:var(--radius-pill);padding:12px 18px;min-height:44px;color:var(--white);font-family:var(--font-sans);font-size:15px;outline:none}
+.composer input::placeholder{color:var(--text-muted)}
+.composer button{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--primary);border:none;color:var(--text-on-primary);cursor:pointer;display:flex;align-items:center;justify-content:center}</style>
+
+<link rel="canonical" href="https://squidbay.ai/support">
+<meta name="description" content="Get help with your agent, a purchase, or selling on SquidBay.">
+<meta property="og:title" content="Support — SquidBay">
+<meta property="og:description" content="Get help with your agent, a purchase, or selling on SquidBay.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://squidbay.ai/support">
+<meta property="og:image" content="https://squidbay.ai/images/og/help.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Support — SquidBay">
+<meta name="twitter:description" content="Get help with your agent, a purchase, or selling on SquidBay.">
+<meta name="twitter:image" content="https://squidbay.ai/images/og/help.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<meta name="theme-color" content="#06171A">
+<script src="/js/config.js"></script>
+</head><body>
+<sb-nav></sb-nav>
+<main class="container" style="padding-top:44px;padding-bottom:64px">
+<span class="eyebrow">Support</span>
+<h1 style="font-size:38px;margin-top:12px">Contact is a conversation</h1>
+<p style="margin-top:12px;font-size:15px;max-width:460px">No form, no ticket number. Say what happened; SquidBot answers now and a human follows where needed.</p>
+<div class="chat" style="margin-top:24px">
+<div style="display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--border-subtle)">
+<span style="width:34px;height:34px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim);display:inline-flex;align-items:center;justify-content:center"><img src="/assets/squidbay-logo.png" alt="" style="width:25px;height:25px;object-fit:contain"></span>
+<div><b style="font-size:14.5px">SquidBay support</b><div class="status" style="color:var(--green);margin-top:2px"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Online</div></div>
+</div>
+<div class="bub">Hi. What can we sort out?</div>
+<div id="thread" style="display:contents"></div>
+<div class="composer"><input id="in" placeholder="Describe what happened…"><button id="send" aria-label="Send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path></svg></button></div>
+</div>
+<p style="margin-top:16px;font-size:12.5px;max-width:600px">Three states: answered now · handed to a human (you'll get an email) · resolved with a receipt in this thread.</p>
+</main>
+<sb-footer></sb-footer>
+<script>
+const t=document.getElementById('thread'),i=document.getElementById('in');
+function send(){const v=i.value.trim();if(!v)return;
+t.insertAdjacentHTML('beforeend','<div class="bub me"></div>');t.lastElementChild.textContent=v;i.value='';
+setTimeout(()=>{t.insertAdjacentHTML('beforeend','<div class="bub">Got it. I can fix most account and billing things right here; anything deeper goes to a human with this thread attached.</div>')},700);}
+document.getElementById('send').onclick=send;i.addEventListener('keydown',e=>e.key==='Enter'&&send());
+</script>
+</body></html>

@@ -218,7 +218,8 @@
     
     // --------------------------------------------------------------------------
     // Cookie Consent
-    // Uses a real cookie on .squidbay.io so consent carries across subdomains
+    // Uses a real cookie on the serving registrable domain so consent carries
+    // across its subdomains (see consentCookieDomain below)
     // --------------------------------------------------------------------------
 
     /**
@@ -230,13 +231,30 @@
     }
 
     /**
-     * Set a cookie on .squidbay.io (works across all subdomains)
-     * Falls back to current hostname for localhost/dev
+     * Set the consent cookie on the registrable domain we are actually being
+     * served from, so consent carries across that domain's subdomains.
+     * Falls back to the current hostname for localhost/dev.
+     *
+     * Derived from the live hostname rather than hard-coded, because during the
+     * .io -> .ai cutover the site is reachable on BOTH. A browser silently
+     * DISCARDS a cookie whose `domain` is not a suffix of the current host, so
+     * hard-coding `.squidbay.ai` here while the page is served from
+     * squidbay.io would not "prepare" for the move — it would drop consent on
+     * the floor with no error, on every visit, until someone noticed.
      */
+    var CONSENT_DOMAINS = ['squidbay.ai', 'squidbay.io'];
+
+    function consentCookieDomain(hostname) {
+        for (var i = 0; i < CONSENT_DOMAINS.length; i++) {
+            var d = CONSENT_DOMAINS[i];
+            if (hostname === d || hostname.endsWith('.' + d)) return '; domain=.' + d;
+        }
+        return ''; // localhost / dev / anything else: host-only cookie
+    }
+
     function setConsentCookie(value) {
         var maxAge = 365 * 24 * 60 * 60; // 1 year
-        var hostname = window.location.hostname;
-        var domainPart = hostname.endsWith('squidbay.io') ? '; domain=.squidbay.io' : '';
+        var domainPart = consentCookieDomain(window.location.hostname);
         document.cookie = 'squidbay_cookie_consent=' + value + '; path=/' + domainPart + '; max-age=' + maxAge + '; SameSite=Lax; Secure';
     }
     
@@ -265,7 +283,7 @@
         banner.innerHTML = '\
             <div class="cookie-consent-inner">\
                 <div class="cookie-consent-text">\
-                    <p>We use cookies to improve your experience. By using SquidBay, you agree to our <a href="https://squidbay.io/privacy">Privacy Policy</a>.</p>\
+                    <p>We use cookies to improve your experience. By using SquidBay, you agree to our <a href="/privacy">Privacy Policy</a>.</p>\
                 </div>\
                 <div class="cookie-consent-buttons">\
                     <button class="btn btn-secondary btn-sm" onclick="declineCookies()">Decline</button>\

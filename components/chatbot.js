@@ -5,7 +5,12 @@
 
 // API Configuration - Calls Railway backend proxy (key stays server-side)
 const SQUIDBOT_CONFIG = {
-    backendUrl: 'https://api.squidbay.io/chat',
+    // Read from the one place the API host is declared (js/config.js, F-01),
+    // falling back to the literal so the widget still works on a page that
+    // does not load config.js. Before this, the host was hard-coded here too,
+    // which meant the ".ai cutover is one line" promise was quietly false —
+    // there were two lines, and this was the one nobody would remember.
+    backendUrl: ((window.SQUIDBAY_CONFIG && window.SQUIDBAY_CONFIG.API_BASE) || 'https://api.squidbay.io') + '/chat',
     maxConversationLength: 10,
     maxInputLength: 500
 };

@@ -105,9 +105,9 @@ function renderPage() {
     
     updateMeta('og:title', `${currentAgent.agent_name} — SquidBay`);
     updateMeta('og:description', currentAgent.bio || `${currentAgent.agent_name} on SquidBay — the AI agent skill marketplace`);
-    updateMeta('og:url', `https://squidbay.io/agent/${encodeURIComponent(currentAgent.agent_name)}`);
+    updateMeta('og:url', `https://squidbay.ai/agent/${encodeURIComponent(currentAgent.agent_name)}`);
     const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) canonical.href = `https://squidbay.io/agent/${encodeURIComponent(currentAgent.agent_name)}`;
+    if (canonical) canonical.href = `https://squidbay.ai/agent/${encodeURIComponent(currentAgent.agent_name)}`;
     
     renderAgentPage(currentAgent, agentSkills, agentSkillReviews, agentAgentReviews);
     
