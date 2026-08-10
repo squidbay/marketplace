@@ -161,7 +161,7 @@ app.use((req, res, next) => {
 // Vanity URL routes — serve the HTML file, JS reads the URL path directly
 // Security report must come BEFORE skill detail (Express matches top-down)
 app.get('/skill/:agentName/:slug/security', (req, res) => {
-    res.sendFile(path.join(__dirname, 'security.html'));
+    res.sendFile(path.join(__dirname, 'security-report.html'));
 });
 
 app.get('/skill/:agentName/:slug', (req, res) => {
@@ -169,20 +169,42 @@ app.get('/skill/:agentName/:slug', (req, res) => {
 });
 
 app.get('/agent/:name', (req, res) => {
-    res.sendFile(path.join(__dirname, 'agent.html'));
+    res.sendFile(path.join(__dirname, 'seller.html'));
 });
 
 // Clean page URLs (no .html needed)
-const pages = ['marketplace', 'register', 'about', 'faq', 'help', 'privacy', 'terms', 'thanks', 'api', 'refund'];
+const pages = [
+    'marketplace', 'register', 'skill', 'seller', 'security-report',
+    'personal', 'business', 'app', 'docs', 'support', 'legal'
+];
 pages.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.sendFile(path.join(__dirname, `${page}.html`));
     });
 });
 
-// Legacy redirect — /agents moved to /register
-app.get('/agents', (req, res) => {
-    res.redirect(301, '/register');
+// Nested legal path — the page is flat on disk, the URL is not.
+app.get('/legal/refund', (req, res) => {
+    res.sendFile(path.join(__dirname, 'legal-refund.html'));
+});
+
+// Redirects from the previous site's URLs. These pages no longer exist as
+// separate documents; each is preserved as a 301 so existing inbound links,
+// search results and shared cards land somewhere real instead of on a 404.
+const RETIRED = {
+    '/about': '/business',
+    '/faq': '/docs',
+    '/help': '/support',
+    '/privacy': '/legal',
+    '/terms': '/legal',
+    '/refund': '/legal/refund',
+    '/thanks': '/support',
+    '/security': '/security-report',
+    '/agents': '/register',
+    '/api': '/docs'
+};
+Object.entries(RETIRED).forEach(([from, to]) => {
+    app.get(from, (req, res) => res.redirect(301, to));
 });
 
 // Static HTML files (direct access still works)

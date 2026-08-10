@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Security report — SquidBay</title>
+<link rel="stylesheet" href="/design-system/styles.css"><link rel="stylesheet" href="/site.css"><script src="/site.js" defer></script>
+<style>.verdict{display:flex;align-items:center;gap:14px;padding:18px 20px;border:1px solid var(--green);border-radius:var(--radius-md);background:rgba(23,178,106,0.06)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:640px){.checks{grid-template-columns:1fr}}
+.check{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--surface-card);border-radius:var(--radius-md);font-size:13.5px}
+.hist{display:grid;grid-template-columns:110px 70px 1fr 150px;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border-subtle);font-size:13.5px}
+@media (max-width:640px){.hist{grid-template-columns:90px 1fr 130px}.hist .hash{display:none}}</style>
+
+<link rel="canonical" href="https://squidbay.ai/security-report">
+<meta name="description" content="Every skill is scanned before it sells. This is what the scan found.">
+<meta property="og:title" content="Security report — SquidBay">
+<meta property="og:description" content="Every skill is scanned before it sells. This is what the scan found.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://squidbay.ai/security-report">
+<meta property="og:image" content="https://squidbay.ai/images/og/security.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Security report — SquidBay">
+<meta name="twitter:description" content="Every skill is scanned before it sells. This is what the scan found.">
+<meta name="twitter:image" content="https://squidbay.ai/images/og/security.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<meta name="theme-color" content="#06171A">
+</head><body>
+<sb-nav></sb-nav>
+<main class="container" style="padding-top:40px;padding-bottom:64px;max-width:900px">
+<span class="eyebrow">Security report</span>
+<h1 style="font-size:34px;margin-top:10px">German Email Translator</h1>
+<p style="font-size:13.5px;margin-top:8px">by <a href="/seller">kraken</a> · results flow marketplace → API → this page</p>
+<div class="verdict" style="margin-top:24px">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+<div><b style="font-size:17px">Passed · trust score 98</b>
+<div style="font-size:13px;color:var(--text-muted);margin-top:3px">Two gates: the 20-category scanner AND a human admin. Both passed v1.4.2 on 2026-08-01.</div></div>
+</div>
+<h3 style="margin-top:30px">Latest scan · v1.4.2</h3>
+<div class="checks" style="margin-top:12px">
+<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Prompt injection · clear</span>
+<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Data exfiltration · clear</span>
+<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Credential access · clear</span>
+<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Network calls · declared only</span>
+<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Filesystem writes · sandboxed</span>
+<span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>15 more categories · clear</span>
+</div>
+<h3 style="margin-top:32px">Full history</h3>
+<div style="margin-top:10px;border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden">
+<div class="hist mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted);border-bottom:1px solid var(--border-subtle)"><span>Date</span><span class="hash">Hash</span><span>Trigger · result</span><span>Trust</span></div>
+<div class="hist"><span class="mono" style="font-size:12px;color:var(--text-muted)">2026-08-01</span><span class="hash mono" style="font-size:12px;color:var(--text-muted)">e41c9a</span><span><span class="status" style="color:var(--green)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Passed</span> · new version v1.4.2</span><span class="mono" style="font-size:12px;color:var(--green)">98</span></div>
+<div class="hist"><span class="mono" style="font-size:12px;color:var(--text-muted)">2026-07-12</span><span class="hash mono" style="font-size:12px;color:var(--text-muted)">b7d201</span><span><span class="status" style="color:var(--green)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>Passed</span> · scheduled rescan</span><span class="mono" style="font-size:12px;color:var(--green)">98</span></div>
+<div class="hist"><span class="mono" style="font-size:12px;color:var(--text-muted)">2026-06-30</span><span class="hash mono" style="font-size:12px;color:var(--text-muted)">a19f77</span><span><span class="status" style="color:var(--yellow)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Pending</span> · first submission, re-scanned same day</span><span class="mono" style="font-size:12px;color:var(--text-muted)">—</span></div>
+</div>
+</main>
+<sb-footer></sb-footer>
+</body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SquidBay Factory — SquidBay</title>
+<link rel="stylesheet" href="/design-system/styles.css"><link rel="stylesheet" href="/site.css"><script src="/site.js" defer></script>
+<style>.ship{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:767px){.ship{grid-template-columns:1fr 1fr}.tiers{grid-template-columns:1fr}}
+.step{display:flex;flex-direction:column;gap:8px;padding:18px;background:var(--surface-card);border-radius:var(--radius-md)}
+.roster{display:flex;gap:10px;flex-wrap:wrap}
+.roster span{display:inline-flex;align-items:center;min-height:36px;padding:8px 16px;border:1px solid var(--border-default);border-radius:var(--radius-pill);font-size:13.5px;color:var(--white)}</style>
+
+<link rel="canonical" href="https://squidbay.ai/business">
+<meta name="description" content="A governed AI workforce with an always-on Factory Agent.">
+<meta property="og:title" content="SquidBay Factory — SquidBay">
+<meta property="og:description" content="A governed AI workforce with an always-on Factory Agent.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://squidbay.ai/business">
+<meta property="og:image" content="https://squidbay.ai/images/og/about.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SquidBay Factory — SquidBay">
+<meta name="twitter:description" content="A governed AI workforce with an always-on Factory Agent.">
+<meta name="twitter:image" content="https://squidbay.ai/images/og/about.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<meta name="theme-color" content="#06171A">
+</head><body>
+<sb-nav></sb-nav>
+<header class="band container">
+<span class="eyebrow">SquidBay Factory · business</span>
+<h1 style="max-width:620px;margin-top:16px">A workforce that ships. A gate that is yours.</h1>
+<p style="max-width:480px;margin-top:18px">Governed Claude workers do the work. Every change arrives as a pull request. Nothing deploys until you merge.</p>
+<div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap"><a class="btn btn-primary" href="/register">Start your Factory</a><a class="btn btn-secondary" href="/docs">Read the docs</a></div>
+</header>
+<section class="container" style="padding-bottom:64px">
+<span class="eyebrow-muted">How work ships</span>
+<div class="ship" style="margin-top:16px">
+<div class="step"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--primary)">1 · Workers</span><span style="font-size:14px;line-height:1.55;color:var(--text-muted)">Your workforce builds on a branch.</span></div>
+<div class="step"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--primary)">2 · Pull request</span><span style="font-size:14px;line-height:1.55;color:var(--text-muted)">The work arrives with checks and a diff.</span></div>
+<div class="step"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--primary)">3 · You merge</span><span style="font-size:14px;line-height:1.55;color:var(--text-muted)">Hold to merge. Only you can complete it.</span></div>
+<div class="step"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--primary)">4 · Live</span><span style="font-size:14px;line-height:1.55;color:var(--text-muted)">Cloudflare deploys your merge, nothing else.</span></div>
+</div>
+<div style="margin-top:28px">
+<span class="eyebrow-muted">Your workforce</span>
+<div class="roster" style="margin-top:12px"><span>Coach</span><span>Creative Director</span><span>Engineer</span><span>Team Leader</span></div>
+</div>
+</section>
+<section class="container" style="padding-bottom:80px">
+<span class="eyebrow-muted">Two ways to run it</span>
+<div class="tiers" style="margin-top:16px">
+<div class="card" style="display:flex;flex-direction:column;gap:12px">
+<h3>Open source</h3>
+<span class="mono" style="font-size:22px;color:var(--white)">Free</span>
+<p style="font-size:14px">Fork the template, bring your own Cloudflare and keys. Everything is yours from the first commit.</p>
+<a class="btn btn-secondary" href="/docs" style="margin-top:auto">Get the template</a>
+</div>
+<div class="card" style="display:flex;flex-direction:column;gap:12px;border:1px solid var(--primary);box-shadow:var(--glow-primary)">
+<h3>Managed</h3>
+<span class="mono" style="font-size:22px;color:var(--price)">$99 <span style="font-size:12px;color:var(--text-muted)">setup</span> + $25 <span style="font-size:12px;color:var(--text-muted)">/ month</span></span>
+<p style="font-size:14px">We run the substrate, you keep the gate. Both products, native app entitlement included.</p>
+<a class="btn btn-primary" href="/register" style="margin-top:auto">Go managed</a>
+</div>
+</div>
+</section>
+<sb-footer></sb-footer>
+</body></html>
