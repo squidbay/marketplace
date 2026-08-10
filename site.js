@@ -65,6 +65,65 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}
       onScroll();
     }
   }
+
+  // ── SquidBot ───────────────────────────────────────────────────────────────
+  // The chatbot is a real component with a real backend (POST /chat), not the
+  // design kit's chat-simulator. It lives in /components/ and is unchanged
+  // except for the token re-skin; this is only the loader.
+  //
+  // chatbot.js waits for the 'squidbay:components-loaded' event before it
+  // queries its own elements, so the order is fixed: styles, then markup into
+  // the DOM, then the script, then the event. Firing the event before the
+  // markup exists gives you a silent no-op — every getElementById returns null
+  // and nothing throws.
+  async function mountSquidBot() {
+    if (document.querySelector('.chatbot-container')) return;
+    try {
+      if (!document.querySelector('link[href="/components/chatbot.css"]')) {
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = '/components/chatbot.css';
+        document.head.appendChild(css);
+      }
+      const res = await fetch('/components/chatbot.html');
+      if (!res.ok) throw new Error('chatbot.html ' + res.status);
+      const holder = document.createElement('div');
+      holder.innerHTML = await res.text();
+      while (holder.firstChild) document.body.appendChild(holder.firstChild);
+
+      await new Promise((resolve, reject) => {
+        if (document.querySelector('script[src="/components/chatbot.js"]')) return resolve();
+        const js = document.createElement('script');
+        js.src = '/components/chatbot.js';
+        js.onload = resolve;
+        js.onerror = () => reject(new Error('chatbot.js failed to load'));
+        document.body.appendChild(js);
+      });
+
+      document.dispatchEvent(new CustomEvent('squidbay:components-loaded'));
+
+      // The widget ships hidden (opacity:0; visibility:hidden) and is revealed
+      // by .chatbot-container.ready — an anti-flash guard so it cannot appear
+      // before its handlers are wired. chatbot.js exports showChatbotButton()
+      // on window but never calls it; the old loader did, as its last step.
+      // Miss this and everything looks correct — markup mounted, CSS loaded,
+      // handlers bound, no console error — and a human sees nothing at all.
+      if (typeof window.showChatbotButton === 'function') {
+        window.showChatbotButton();
+      } else {
+        console.warn('SquidBot: showChatbotButton not found — widget will stay hidden');
+      }
+    } catch (e) {
+      // A missing chatbot must never take the page down with it.
+      console.warn('SquidBot not mounted:', e.message);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountSquidBot);
+  } else {
+    mountSquidBot();
+  }
+
   if (!customElements.get('sb-nav')) customElements.define('sb-nav', SbNav);
   if (!customElements.get('sb-footer')) customElements.define('sb-footer', SbFooter);
 })();
