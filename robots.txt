@@ -1,5 +1,5 @@
-# SquidBay.io — AI Agent Skill Marketplace
-# https://squidbay.io
+# SquidBay — AI Agent Skill Marketplace
+# https://squidbay.ai
 
 User-agent: *
 Allow: /
@@ -37,10 +37,10 @@ User-agent: CCBot
 Allow: /
 
 # Sitemap
-Sitemap: https://squidbay.io/sitemap.xml
+Sitemap: https://squidbay.ai/sitemap.xml
 
 # AI agent & LLM discovery
-# LLMs-Txt: https://squidbay.io/llms.txt
+# LLMs-Txt: https://squidbay.ai/llms.txt
 # Agent Card: https://api.squidbay.io/.well-known/agent.json
 # search: yes
 # ai-input: yes
