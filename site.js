@@ -163,9 +163,19 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
   // System rules (tokens/effects.css): "marketing + loading surfaces ONLY…
   // Max 4 bubbles per view, one column." Four here, one column, right side.
   //
-  // Exactly ONE of them clings. The catch only reads as physics because the
-  // other three rise straight past it — make them all cling and it stops
-  // looking like water and starts looking like a broken animation.
+  // TWO of the four cling, on deliberately un-matched cycles (17s and 21s,
+  // offset 1s and 9s). One clinging bubble on a 13s loop meant the catch was
+  // visible for ~3s out of every 13 and you could easily watch for a minute
+  // and never see it. Two on coprime-ish cycles means a catch is almost always
+  // in progress somewhere, without the column ever pulsing in sync.
+  //
+  // Still not all four: the catch only reads as physics because other bubbles
+  // rise straight past it. Make them all cling and it stops looking like water
+  // and starts looking like a broken animation.
+  //
+  // Durations are long (12-21s) on purpose. These sit behind real content and
+  // must never pull the eye — effects.css opens with "Motion is communication,
+  // never decoration."
   //
   // Fixed + pointer-events:none + z-index 0 keeps it behind everything and
   // un-clickable. [data-bubble] is what the mandatory prefers-reduced-motion
@@ -184,10 +194,10 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
   animation-timing-function:linear;animation-iteration-count:infinite}
 @media (max-width:767px){.sb-bubbles b:nth-child(n+3){display:none}}
 </style>
-<b data-bubble style="right:9%;bottom:-30px;width:22px;height:22px;animation-name:sbRise;animation-duration:11s"></b>
-<b data-bubble style="right:13%;bottom:-30px;width:11px;height:11px;animation-name:sbRiseCling;animation-duration:13s;animation-delay:2s;border-color:rgba(70,196,196,0.3)"></b>
-<b data-bubble style="right:7%;bottom:-30px;width:15px;height:15px;animation-name:sbRise;animation-duration:9s;animation-delay:4s"></b>
-<b data-bubble style="right:15%;bottom:-30px;width:8px;height:8px;animation-name:sbRise;animation-duration:7.5s;animation-delay:1s;border-color:rgba(70,196,196,0.16)"></b>`;
+<b data-bubble style="right:9%;bottom:-30px;width:22px;height:22px;animation-name:sbRise;animation-duration:15s"></b>
+<b data-bubble style="right:13%;bottom:-30px;width:11px;height:11px;animation-name:sbRiseCling;animation-duration:17s;animation-delay:1s;border-color:rgba(70,196,196,0.3)"></b>
+<b data-bubble style="right:7%;bottom:-30px;width:15px;height:15px;animation-name:sbRise;animation-duration:12s;animation-delay:5s"></b>
+<b data-bubble style="right:16%;bottom:-30px;width:8px;height:8px;animation-name:sbRiseCling;animation-duration:21s;animation-delay:9s;border-color:rgba(70,196,196,0.16)"></b>`;
     document.body.appendChild(wrap);
   }
   if (document.readyState === 'loading') {
