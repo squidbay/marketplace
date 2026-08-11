@@ -11,8 +11,18 @@ compatibility_date = "2026-08-01"
 #   wrangler secret put CLOUDFLARE_AI_GATEWAY_TOKEN   # only if the gateway is
 #                                                     # set to Authenticated
 [vars]
-CF_ACCOUNT_ID = "d41593267b9908b65780b8904e5cd2fe"
-CF_GATEWAY_ID = "squidbay"
+# DO NOT SET THESE FOR SQUIDBOT.
+#
+# Architecture (operator ruling, 2026-08-11):
+#   Personal agents (Kraken)  -> Cloudflare AI Gateway
+#   Factory agents (SquidBot) -> Claude API direct
+#
+# SquidBot is a factory agent. It calls Anthropic directly and needs only
+# CLAUDE_API_KEY. Setting these routes it through the gateway, which is the
+# personal-agent path and wrong for this Worker. They exist here only to
+# document the split.
+# CF_ACCOUNT_ID = "d41593267b9908b65780b8904e5cd2fe"
+# CF_GATEWAY_ID = "<slug from dash.cloudflare.com/.../ai/ai-gateway>"
 MODEL = "claude-sonnet-5"
 
 # Origin allowlist. The widget is public, so the endpoint is public — but it

@@ -116,6 +116,7 @@ export default {
           gatewayId: Boolean(env.CF_GATEWAY_ID),
         },
         model: env.MODEL || null,
+        path: (env.CF_ACCOUNT_ID && env.CF_GATEWAY_ID) ? 'ai-gateway' : 'anthropic-direct',
       }, 200, cors);
     }
 
@@ -127,12 +128,8 @@ export default {
       return json({ error: 'Origin not allowed.' }, 403, cors);
     }
 
-    if (!env.CLAUDE_API_KEY || !env.CF_ACCOUNT_ID || !env.CF_GATEWAY_ID) {
-      console.error('[squidbot] missing config', {
-        claudeKey: Boolean(env.CLAUDE_API_KEY),
-        accountId: Boolean(env.CF_ACCOUNT_ID),
-        gatewayId: Boolean(env.CF_GATEWAY_ID),
-      });
+    if (!env.CLAUDE_API_KEY) {
+      console.error('[squidbot] CLAUDE_API_KEY not set');
       return json({ error: 'SquidBot is not configured yet.' }, 503, cors);
     }
 
@@ -146,8 +143,24 @@ export default {
     const v = validate(payload);
     if (v.error) return json({ error: v.error }, 400, cors);
 
-    const gatewayUrl =
-      `https://gateway.ai.cloudflare.com/v1/${env.CF_ACCOUNT_ID}/${env.CF_GATEWAY_ID}/anthropic/v1/messages`;
+    // SquidBot calls Anthropic DIRECTLY. This is the architecture, not a
+    // fallback — do not "fix" it by routing through the AI Gateway.
+    //
+    // The split (operator ruling, 2026-08-11):
+    //   Personal agents (Kraken)  -> Cloudflare AI Gateway
+    //   Factory agents (SquidBot) -> Claude API direct
+    //
+    // SquidBot is a factory agent, so it takes the direct path and needs
+    // nothing but CLAUDE_API_KEY. The gateway branch below stays only so a
+    // future personal-agent Worker can share this file.
+    //
+    // NOTE: specs/hq/CF-MIGRATION-ENV-INVENTORY.md still says "All HQ-side
+    // Anthropic inference flows through Cloudflare AI Gateway." That predates
+    // the split above and needs reconciling — flagged, not silently followed.
+    const useGateway = Boolean(env.CF_ACCOUNT_ID && env.CF_GATEWAY_ID); // personal agents only
+    const upstreamUrl = useGateway
+      ? `https://gateway.ai.cloudflare.com/v1/${env.CF_ACCOUNT_ID}/${env.CF_GATEWAY_ID}/anthropic/v1/messages`
+      : 'https://api.anthropic.com/v1/messages';
 
     const headers = {
       'Content-Type': 'application/json',
@@ -162,7 +175,7 @@ export default {
 
     let upstream;
     try {
-      upstream = await fetch(gatewayUrl, {
+      upstream = await fetch(upstreamUrl, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -173,7 +186,7 @@ export default {
         }),
       });
     } catch (e) {
-      console.error('[squidbot] gateway unreachable:', e.message);
+      console.error(`[squidbot] upstream unreachable (${useGateway ? 'gateway' : 'direct'}):`, e.message);
       return json({ error: 'SquidBot is having a moment. Try again.' }, 502, cors);
     }
 
