@@ -155,66 +155,88 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
   }
 
 
-  // ── Bubbles, scoped to cards ─────────────────────────────────────────────
-  // This is how the Abyssal Teal handoff actually does it, and it is a
-  // CONTAINMENT trick, not an animation trick:
+  // ── Bubbles — Designer spec, 2026-08-11 ──────────────────────────────────
+  // Hosts are OPT-IN, never universal. Two kinds only:
+  //   deep — the hero band, ONE per page, 4 bubbles, never reaches the top edge
+  //   edge — ONE featured card per band, 3 bubbles, crosses the edge mid-fade
   //
-  //   <div style="position:relative; overflow:hidden">        <- the card
-  //     <span data-bubble style="position:absolute; bottom:-24px;
-  //           animation: sbRise 8s linear infinite"></span>
+  // The catch is an illusion produced by --sb-travel, not by a keyframe: the
+  // bubble crosses the card's top edge at ~91% of its cycle, inside sbRise's
+  // 88->100% fade, so a half-faded ring slides through the corner radius.
+  // A hard clip at full opacity is what we shipped before, and it came from
+  // travel being too long for the container — hence --sb-h.
   //
-  // The bubble rises INSIDE the card and the card clips it at its top edge.
-  // That read — a bubble pressing against the ceiling and being absorbed — is
-  // what makes it feel like water. A fixed full-viewport layer cannot produce
-  // it, because there is no edge to catch anything: the bubble just crosses
-  // open space. Plain sbRise is all that is needed; no cling keyframe.
-  //
-  // System rule (tokens/effects.css): "Marketing + loading surfaces only.
-  // Max 4, one column, 7-30px, 6.5-13s linear." Max 4 is enforced PER CARD,
-  // and only a few cards per page carry them so the page never swarms.
-  const BUBBLE_SETS = [
-    [{l:70,b:-24,d:12,dur:8,o:0.30},{l:78,b:-30,d:20,dur:11,dl:2,o:0.22,hl:1},{l:65,b:-18,d:7,dur:6.5,dl:4.5,o:0.25}],
-    [{l:74,b:-28,d:16,dur:10,o:0.26,hl:1},{l:82,b:-20,d:9,dur:7.5,dl:3,o:0.2}],
-    [{l:68,b:-22,d:11,dur:9,dl:1.5,o:0.28},{l:79,b:-30,d:24,dur:13,dl:5,o:0.18,hl:1},{l:72,b:-16,d:7,dur:6.5,dl:2.5,o:0.24}]
-  ];
+  // Count rule is per VIEWPORT, not per container: never two hosts in one
+  // screenful. Enforced below by requiring a viewport-height gap between hosts.
+  const DEEP = ['sb-1','sb-2','sb-3','sb-4'];
+  const EDGE = ['sb-1','sb-2','sb-3'];
 
-  function mountBubbles() {
-    if (document.querySelector('[data-bubble]')) return;
-    // Cards AND page sections. The kit's rule is not "bubbles in cards" — it is
-    // "bubbles inside a container that clips them." The landing hero did it too:
-    //   <header class="band container" style="position:relative;overflow:hidden">
-    // Scoping to .card only left every hero and band empty, which reads as the
-    // bubbles having disappeared from the page.
-    const cards = [...document.querySelectorAll('header.band, section.band, main.band, .card')]
-      .filter(el => {
-        const r = el.getBoundingClientRect();
-        if (r.height < 140 || r.width < 180) return false;      // too small to read
-        if (el.querySelector('input,textarea,select')) return false; // forms can pop
-        if (el.closest('sb-nav,sb-footer,.chatbot-container')) return false;
-        return true;
-      })
-      .slice(0, 4);                                             // a few per page, not all
+  const NEVER = 'sb-nav,sb-footer,.chatbot-container,.chatbot-window,form,table';
 
-    cards.forEach((card, i) => {
-      const cs = getComputedStyle(card);
-      if (cs.position === 'static') card.style.position = 'relative';
-      card.style.overflow = 'hidden';   // THE clip that makes the catch happen
-      BUBBLE_SETS[i % BUBBLE_SETS.length].forEach(b => {
-        const el = document.createElement('span');
-        el.setAttribute('data-bubble', '');
-        el.setAttribute('aria-hidden', 'true');
-        el.style.cssText =
-          `position:absolute;left:${b.l}%;bottom:${b.b}px;width:${b.d}px;height:${b.d}px;` +
-          `border-radius:100px;border:1px solid rgba(70,196,196,${b.o});pointer-events:none;` +
-          (b.hl ? 'background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);' : '') +
-          `animation:sbRise ${b.dur}s linear ${b.dl || 0}s infinite;`;
-        card.appendChild(el);
-      });
+  function addBubbles(host, kind, classes) {
+    host.setAttribute('data-bubble-host', kind);
+    classes.forEach(c => {
+      const el = document.createElement('span');
+      el.setAttribute('data-bubble', '');
+      el.setAttribute('aria-hidden', 'true');
+      el.className = c;
+      host.appendChild(el);
     });
   }
+
+  // Edge hosts need their rendered height so the crossing lands at ~91%.
+  function sizeEdgeHosts() {
+    document.querySelectorAll('[data-bubble-host]').forEach(el => {
+      el.style.setProperty('--sb-h', Math.round(el.offsetHeight) + 'px');
+    });
+  }
+
+  function mountBubbles() {
+    if (document.querySelector('[data-bubble-host]')) return;
+    const vh = window.innerHeight || 800;
+
+    // deep: the hero band, one per page.
+    const hero = document.querySelector('header.band');
+    if (hero && !hero.closest(NEVER)) addBubbles(hero, 'deep', DEEP);
+
+    // edge: one featured card per band, and only where it cannot share a
+    // screenful with the hero or with a previous edge host.
+    // With no hero there is no predecessor to share a screenful with, so the
+    // first edge host on such a page must not be gated by the gap rule.
+    let lastHostBottom = hero ? hero.getBoundingClientRect().bottom + window.scrollY : -Infinity;
+    // Any major section, not just .band — the landing page's featured cards
+    // sit in <section class="container doors">, which is a full-screen band
+    // visually but carries no .band class.
+    // Plain `section`: the landing page's featured cards sit in
+    // <section class="container doors"> inside a wrapper div, so any
+    // parent-anchored selector misses them. Height + gap filters below do
+    // the real qualifying work.
+    document.querySelectorAll('section').forEach(band => {
+      if (band.closest(NEVER)) return;
+      const card = [...band.querySelectorAll('.card')].find(c => {
+        if (c.closest(NEVER) || c.querySelector('input,textarea,select')) return false;
+        const h = c.offsetHeight;
+        return h >= 280 && h <= 520;   // the spec's featured-card window
+      });
+      if (!card) return;
+      const top = card.getBoundingClientRect().top + window.scrollY;
+      if (top - lastHostBottom < vh * 0.5) return;  // would share a screenful
+      addBubbles(card, 'edge', EDGE);
+      lastHostBottom = card.getBoundingClientRect().bottom + window.scrollY;
+    });
+
+    sizeEdgeHosts();
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', mountBubbles);
   } else { mountBubbles(); }
+
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(sizeEdgeHosts, 150);   // --sb-h must track the card
+  }, { passive: true });
 
   if (!customElements.get('sb-nav')) customElements.define('sb-nav', SbNav);
   if (!customElements.get('sb-footer')) customElements.define('sb-footer', SbFooter);

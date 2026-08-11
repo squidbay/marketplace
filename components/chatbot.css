@@ -290,17 +290,27 @@
 }
 
 .chatbot-messages .chat-message.bot .message-text {
-    background: transparent;
+    /* Agent messages sit on --surface-card so the two speakers are
+       differentiated: agent on the card surface, user on --black, both over
+       the --darker chat background. Transparent gave the agent no bubble at
+       all, which read as the two sides using different UIs. */
+    background: var(--surface-card);
     border: none;
-    padding: 6px 0;
+    border-radius: 20px 20px 20px 6px;
+    padding: 12px 16px;
     font-size: 14px;
     line-height: 1.6;
     color: var(--white);
 }
 
 .chatbot-messages .chat-message.user .message-text {
-    background: var(--surface-raised);
+    /* --black, NOT --surface-raised: the chat standard from the ops-shell
+       board puts user messages on --black over a --darker chat background.
+       --surface-raised would also trigger the --text-muted-raised rule for
+       any secondary text inside the bubble. (Designer, 2026-08-11.) */
+    background: var(--black);
     border: 1px solid var(--border-subtle);
+    border-radius: 20px 20px 6px 20px;
     padding: 12px 16px;
     border-radius: 18px;
     border-bottom-right-radius: 4px;
