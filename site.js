@@ -9,7 +9,7 @@
       this.innerHTML = `
 <div style="border-bottom:1px solid var(--border-subtle);position:relative;z-index:50">
 <div class="container" style="display:flex;align-items:center;gap:28px;min-height:64px">
-<a href="landing.html" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-0.02em;color:var(--white)">
+<a href="/" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-0.02em;color:var(--white)">
 <img src="/assets/squidbay-logo.png" alt="" style="width:28px;height:28px;object-fit:contain">Squid<span style="color:var(--primary);margin-left:-7px">Bay</span></a>
 <span style="flex:1"></span>
 <span class="nav-links" style="display:inline-flex;align-items:center;gap:26px">
@@ -23,7 +23,7 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="color:${h === here ? 'var(--white
 <div style="position:absolute;right:0;top:0;bottom:0;width:280px;max-width:85%;background:var(--dark);box-shadow:var(--shadow-2);padding:18px;display:flex;flex-direction:column;gap:6px">
 <button class="nav-close" aria-label="Close" style="align-self:flex-end;width:44px;height:44px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:22px">×</button>
 ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:var(--radius-md);color:var(--white);font-size:16px;font-weight:600">${l}</a>`).join('')}
-<a class="btn btn-primary" href="personal.html" style="margin-top:12px">Deploy your agent</a>
+<a class="btn btn-primary" href="/personal" style="margin-top:12px">Deploy your agent</a>
 </div></div></div>
 <style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}</style>`;
       const drawer = this.querySelector('.nav-drawer');
