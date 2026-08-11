@@ -128,6 +128,46 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
     mountSquidBot();
   }
 
+
+  // ── Ambient bubble column ────────────────────────────────────────────────
+  // One shared layer instead of markup in 14 pages, so the column can never
+  // drift page to page — which is exactly what happened before: bubbles
+  // existed on index.html and nowhere else.
+  //
+  // System rules (tokens/effects.css): "marketing + loading surfaces ONLY…
+  // Max 4 bubbles per view, one column." Four here, one column, right side.
+  //
+  // Exactly ONE of them clings. The catch only reads as physics because the
+  // other three rise straight past it — make them all cling and it stops
+  // looking like water and starts looking like a broken animation.
+  //
+  // Fixed + pointer-events:none + z-index 0 keeps it behind everything and
+  // un-clickable. [data-bubble] is what the mandatory prefers-reduced-motion
+  // rule targets, so these go static at 0.35 opacity for free.
+  function mountBubbles() {
+    if (document.querySelector('.sb-bubbles')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'sb-bubbles';
+    wrap.setAttribute('aria-hidden', 'true');
+    wrap.innerHTML = `
+<style>
+.sb-bubbles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sb-bubbles b{position:absolute;display:block;border-radius:50%;
+  border:1px solid rgba(70,196,196,0.22);
+  background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
+  animation-timing-function:linear;animation-iteration-count:infinite}
+@media (max-width:767px){.sb-bubbles b:nth-child(n+3){display:none}}
+</style>
+<b data-bubble style="right:9%;bottom:-30px;width:22px;height:22px;animation-name:sbRise;animation-duration:11s"></b>
+<b data-bubble style="right:13%;bottom:-30px;width:11px;height:11px;animation-name:sbRiseCling;animation-duration:13s;animation-delay:2s;border-color:rgba(70,196,196,0.3)"></b>
+<b data-bubble style="right:7%;bottom:-30px;width:15px;height:15px;animation-name:sbRise;animation-duration:9s;animation-delay:4s"></b>
+<b data-bubble style="right:15%;bottom:-30px;width:8px;height:8px;animation-name:sbRise;animation-duration:7.5s;animation-delay:1s;border-color:rgba(70,196,196,0.16)"></b>`;
+    document.body.appendChild(wrap);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountBubbles);
+  } else { mountBubbles(); }
+
   if (!customElements.get('sb-nav')) customElements.define('sb-nav', SbNav);
   if (!customElements.get('sb-footer')) customElements.define('sb-footer', SbFooter);
 })();
