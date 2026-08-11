@@ -180,8 +180,12 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
 
   function mountBubbles() {
     if (document.querySelector('[data-bubble]')) return;
-    // Only real content cards. Skip anything that must not clip its children.
-    const cards = [...document.querySelectorAll('.card')]
+    // Cards AND page sections. The kit's rule is not "bubbles in cards" — it is
+    // "bubbles inside a container that clips them." The landing hero did it too:
+    //   <header class="band container" style="position:relative;overflow:hidden">
+    // Scoping to .card only left every hero and band empty, which reads as the
+    // bubbles having disappeared from the page.
+    const cards = [...document.querySelectorAll('header.band, section.band, main.band, .card')]
       .filter(el => {
         const r = el.getBoundingClientRect();
         if (r.height < 140 || r.width < 180) return false;      // too small to read
@@ -189,7 +193,7 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
         if (el.closest('sb-nav,sb-footer,.chatbot-container')) return false;
         return true;
       })
-      .slice(0, 3);                                             // a few per page, not all
+      .slice(0, 4);                                             // a few per page, not all
 
     cards.forEach((card, i) => {
       const cs = getComputedStyle(card);
