@@ -1540,9 +1540,14 @@
          cross-origin requests from agent.squidbay.io work. Same-origin requests from
          squidbay.ai itself also work. No preload tags above so no cache-mode mismatch
          to worry about. -->
+    <!-- components.js and main.js were dropped 2026-08-11 with the dead chrome they
+         drove (components/nav.html, components/footer.html, js/main.js). Those two
+         fragments were the ONLY source of six links that 404 on squidbay.ai — /about,
+         /help, /faq, /privacy, /terms, /refund — so the chrome they injected was worse
+         than none. The placeholders above are left empty on purpose: this page is
+         reached only at /agent/, its real entry point /agent/<name> already 404s, and
+         its replacement is the L1 agent rebuild. -->
     <script src="https://squidbay.ai/js/config.js"></script>
-    <script src="https://squidbay.ai/js/components.js"></script>
-    <script src="https://squidbay.ai/js/main.js"></script>
     <script src="squid.js"></script>
 </body>
 </html>

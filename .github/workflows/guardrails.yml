@@ -1,0 +1,40 @@
+# Design gates. These run on every pull request and on every push to main.
+name: guardrails
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  design-gates:
+    name: design gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Gate 1 — no retired hex, token name or font family anywhere in the tree.
+      # Reads retired-values.json, which is the single source of truth for what is
+      # retired. There is deliberately no second copy of that list.
+      - name: kill-list
+        run: node design-system/ci/kill-list.mjs .
+
+      # Gate 2 — one card per surface, and every local reference resolves to a file
+      # the Worker would actually serve. The second half is what matters on this repo:
+      # after deploy.yml, a dead href reaches visitors the moment it merges.
+      - name: manifest-check
+        run: node design-system/ci/manifest-check.mjs .
+
+      # Gate 3 — the same palette law, applied to pixels. kill-list reads text and is
+      # blind to an OG card rendered in the retired palette (defect D3, 2026-08-11).
+      # Outstanding known-bad cards are waived BY SHA in design-system/ci/og-waiver.json,
+      # so regenerating any card drops its waiver automatically.
+      - name: og-pixel-check
+        run: node design-system/ci/og-pixel-check.mjs .

@@ -1,0 +1,36 @@
+# What must never reach the public site.
+#
+# Workers Static Assets uploads EVERYTHING under [assets].directory, and this repo's
+# asset directory is its own root — so without this file the first automated deploy
+# would publish server.js, package.json and the entire workers/ source tree at
+# https://squidbay.ai/. The current hand-deployed site does not serve them (probed
+# 2026-08-11: all 404). This file is what keeps that true once deploys are automatic.
+#
+# Patterns are gitignore-style. .assetsignore itself is never uploaded.
+#
+# NOTE for whoever edits this next: _redirects and _headers must NOT be listed here.
+# Wrangler consumes them from the uploaded asset set, so ignoring them silently
+# disables every redirect rule they define.
+
+.git
+.github
+.gitignore
+node_modules
+.DS_Store
+**/.DS_Store
+
+# Repo machinery, not site content.
+README.md
+LICENSE
+package.json
+package-lock.json
+railway.toml
+server.js
+
+# The chat Worker's source and config are deployed as a Worker, never served as files.
+workers
+
+# CI gates run in Actions; there is no reason for them to be downloadable from the site.
+# This is the one intentional change from the current live boundary, which does serve
+# design-system/ci/kill-list.mjs. Nothing in the site fetches these at runtime (checked).
+design-system/ci

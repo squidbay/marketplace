@@ -2,20 +2,37 @@ name = "squidbot-chat"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
 
+# Which Cloudflare account wrangler deploys INTO. This is a deploy-time identifier for
+# the CLI. It is NOT the same thing as the CF_ACCOUNT_ID var below used to be — see the
+# block under [vars]. Read that before you touch either.
+account_id = "d41593267b9908b65780b8904e5cd2fe"
+
 # ── vars are IDENTIFIERS, not credentials ────────────────────────────────────
-# Account and gateway IDs are not secrets — they appear in the gateway URL and
-# are useless without a key. Anything that authenticates is a secret, set with
-# `wrangler secret put` and never written here:
+# Anything that authenticates is a secret, set with `wrangler secret put` and never
+# written here. Wrangler never deletes secrets on deploy, so CI does not carry them:
 #
 #   wrangler secret put CLAUDE_API_KEY                # required
-#   wrangler secret put CLOUDFLARE_AI_GATEWAY_TOKEN   # only if the gateway is
-#                                                     # set to Authenticated
+#
+# ── CF_ACCOUNT_ID and CF_GATEWAY_ID were REMOVED here on 2026-08-11 ──────────
+# They were not decoration. The Worker branches on them at runtime:
+#
+#     const useGateway = Boolean(env.CF_ACCOUNT_ID && env.CF_GATEWAY_ID)
+#
+# so setting them routes SquidBot through the Cloudflare AI Gateway. The operator's
+# 2026-08-11 ruling (ECOSYSTEM-UPDATE-PLAN §3, plane 1) is that SquidBot is a FACTORY
+# agent and the factory plane never routes through the Gateway — only personal agents
+# (Kraken) do. The live Worker has had both unset since it was deployed at 15:32Z on
+# 2026-08-11 and reports "path":"anthropic-direct" on /health.
+#
+# Leaving them in this file was therefore a live trap: wrangler overwrites dashboard
+# vars on every deploy, so the first automated deploy would have set them and flipped a
+# working, correctly-ruled Worker onto the wrong plane with no one touching the code.
+# If you are re-adding them, you are changing which plane SquidBot runs on. That needs
+# an operator ruling, not a config edit.
 [vars]
-CF_ACCOUNT_ID = "d41593267b9908b65780b8904e5cd2fe"
-CF_GATEWAY_ID = "squidbay"
 MODEL = "claude-sonnet-5"
 
-# Origin allowlist. The widget is public, so the endpoint is public — but it
-# should only answer the surfaces we actually ship. Add squidbay.ai's apex and
-# www the moment the domain serves from this account.
+# Origin allowlist. The widget is public, so the endpoint is public — but it should only
+# answer the surfaces we actually ship. Verified serving on squidbay.ai 2026-08-11:
+# an OPTIONS preflight from that origin returns 204 with the origin echoed back.
 ALLOWED_ORIGINS = "https://squidbay-ai-preview.andrew-415.workers.dev,https://squidbay.ai,https://www.squidbay.ai,http://localhost:8901"
