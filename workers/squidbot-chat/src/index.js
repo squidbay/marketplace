@@ -4,7 +4,23 @@
  * Rebuild brick #1: the first SquidBay service that runs on Cloudflare with no
  * Railway involvement at all. Replaces POST /chat on squidbay-api.
  *
- * Path: browser -> this Worker -> Cloudflare AI Gateway -> Anthropic.
+ * Path: browser -> this Worker -> Anthropic. The hop in the middle is chosen at
+ * runtime, and which one you get is a RULING, not a preference:
+ *
+ *   CF_ACCOUNT_ID and CF_GATEWAY_ID both set  -> Cloudflare AI Gateway
+ *   either one unset (the factory default)    -> https://api.anthropic.com direct
+ *
+ * SquidBot is a FACTORY agent, and the operator's 2026-08-11 ruling
+ * (ECOSYSTEM-UPDATE-PLAN §3, plane 1) is that the factory plane never routes
+ * through the Gateway — only personal agents (Kraken) do. So both vars are
+ * deliberately absent from wrangler.toml, the live Worker has had them unset
+ * since 15:32Z on 2026-08-11, and /health reports "path":"anthropic-direct".
+ * Setting them changes which plane SquidBot runs on; that needs an operator
+ * ruling, not a config edit. The deploy workflow's parity guard enforces this.
+ *
+ * /health echoes the live choice as `path` ("anthropic-direct" | "ai-gateway").
+ * The deploy workflow reads that exact field, before and after shipping, to
+ * prove a deploy did not move SquidBot off the ruled plane.
  *
  * The Anthropic key lives ONLY as a Worker secret. It is never in this file,
  * never in wrangler.toml, never sent to the browser, and never echoed in an
@@ -18,7 +34,9 @@
  *                                  API token: that split is a security
  *                                  boundary, not a preference.
  * Vars (wrangler.toml, not secret — these are identifiers, not credentials):
- *   CF_ACCOUNT_ID, CF_GATEWAY_ID, ALLOWED_ORIGINS, MODEL
+ *   ALLOWED_ORIGINS, MODEL
+ *   CF_ACCOUNT_ID, CF_GATEWAY_ID — deliberately NOT in wrangler.toml. Read the
+ *   path block above before adding them; they are the plane switch.
  */
 
 const ANTHROPIC_VERSION = '2023-06-01';
@@ -116,6 +134,7 @@ export default {
           gatewayId: Boolean(env.CF_GATEWAY_ID),
         },
         model: env.MODEL || null,
+        path: env.CF_ACCOUNT_ID && env.CF_GATEWAY_ID ? 'ai-gateway' : 'anthropic-direct',
       }, 200, cors);
     }
 
@@ -127,12 +146,12 @@ export default {
       return json({ error: 'Origin not allowed.' }, 403, cors);
     }
 
-    if (!env.CLAUDE_API_KEY || !env.CF_ACCOUNT_ID || !env.CF_GATEWAY_ID) {
-      console.error('[squidbot] missing config', {
-        claudeKey: Boolean(env.CLAUDE_API_KEY),
-        accountId: Boolean(env.CF_ACCOUNT_ID),
-        gatewayId: Boolean(env.CF_GATEWAY_ID),
-      });
+    // The key is the ONLY hard requirement. CF_ACCOUNT_ID / CF_GATEWAY_ID are
+    // optional by design: absent means the direct path, which is the ruled
+    // factory plane. Hard-requiring them here is what made an earlier revision
+    // 503 on exactly the configuration the operator ruled correct.
+    if (!env.CLAUDE_API_KEY) {
+      console.error('[squidbot] CLAUDE_API_KEY not set');
       return json({ error: 'SquidBot is not configured yet.' }, 503, cors);
     }
 
@@ -146,8 +165,11 @@ export default {
     const v = validate(payload);
     if (v.error) return json({ error: v.error }, 400, cors);
 
-    const gatewayUrl =
-      `https://gateway.ai.cloudflare.com/v1/${env.CF_ACCOUNT_ID}/${env.CF_GATEWAY_ID}/anthropic/v1/messages`;
+    // The plane switch. See the header block: unset vars = the ruled factory path.
+    const useGateway = Boolean(env.CF_ACCOUNT_ID && env.CF_GATEWAY_ID);
+    const upstreamUrl = useGateway
+      ? `https://gateway.ai.cloudflare.com/v1/${env.CF_ACCOUNT_ID}/${env.CF_GATEWAY_ID}/anthropic/v1/messages`
+      : 'https://api.anthropic.com/v1/messages';
 
     const headers = {
       'Content-Type': 'application/json',
@@ -162,7 +184,7 @@ export default {
 
     let upstream;
     try {
-      upstream = await fetch(gatewayUrl, {
+      upstream = await fetch(upstreamUrl, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -173,7 +195,7 @@ export default {
         }),
       });
     } catch (e) {
-      console.error('[squidbot] gateway unreachable:', e.message);
+      console.error(`[squidbot] upstream unreachable (${useGateway ? 'gateway' : 'direct'}):`, e.message);
       return json({ error: 'SquidBot is having a moment. Try again.' }, 502, cors);
     }
 
