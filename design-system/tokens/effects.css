@@ -79,7 +79,7 @@
     0%   { transform: translateY(0);      opacity: 0; }
     12%  { opacity: 1; }
     88%  { opacity: 1; }
-    100% { transform: translateY(-360px); opacity: 0; }
+    100% { transform: translateY(var(--sb-travel, -360px)); opacity: 0; }
 }
 
 /* Reduced motion: honor the OS preference everywhere (mandatory) */

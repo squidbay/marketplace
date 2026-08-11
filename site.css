@@ -44,3 +44,67 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
   .page-end     { padding-block-end:   var(--space-12); }
   .section      { padding-block: 0 var(--space-12); }
 }
+
+/* ── Bubbles — Designer spec, 2026-08-11 ──────────────────────────────────
+   Hosts are OPT-IN via data-bubble-host. Two kinds, and only two:
+     "deep" — the hero band. One per page. Bubbles fade in open water and
+              NEVER reach the top edge.
+     "edge" — ONE featured card per full-screen band, 280-520px tall.
+              Bubbles exit through the top edge mid-fade: THE CATCH.
+
+   The catch is an ILLUSION, not a keyframe. Travel is sized so the bubble
+   crosses the host's top edge at ~91% of its cycle — inside sbRise's
+   88->100% opacity fade. A half-faded ring sliding through the top radius
+   reads as catching and releasing. A hard clip at FULL opacity is the bug
+   we shipped: it happens when travel is too long for the container.
+
+   Count rule: max 4 PER VIEWPORT, not per container. Hero 4, edge card 3,
+   and never two hosts in the same screenful.                              */
+[data-bubble-host] { position: relative; overflow: hidden; }
+
+[data-bubble] {
+  position: absolute;
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+  animation: sbRise var(--sb-dur, 8s) linear var(--sb-delay, 0s) infinite;
+}
+
+/* EDGE: --sb-h is the card's rendered height, set once at mount and on
+   resize by site.js. Crossing lands at ~91% for any 280-520px card. */
+[data-bubble-host="edge"] [data-bubble] {
+  --sb-travel: calc(-1.1 * (var(--sb-h, 340px) + 36px));
+}
+/* DEEP: never reaches the top edge. Designer specified a flat -440px, which
+   assumes a hero >=560px tall. Ours is 444px, and at -440px the bubbles came
+   within 21px of the edge — close enough to read as a near-clip, which is the
+   thing "deep" exists to avoid. This preserves his stated intent (finish >=60px
+   below the top) and collapses to his exact -440px on any hero >=476px.
+   Bubbles start 24px below the container, so travel = height - 36px. */
+[data-bubble-host="deep"] [data-bubble] {
+  --sb-travel: calc(-1 * min(440px, var(--sb-h, 476px) - 36px));
+}
+
+[data-bubble-host="deep"] .sb-1 { left: 8%;  bottom: -24px; width: 12px; height: 12px;
+  border: 1px solid rgba(70,196,196,0.30); --sb-dur: 8s; }
+[data-bubble-host="deep"] .sb-2 { left: 13%; bottom: -30px; width: 20px; height: 20px;
+  border: 1px solid rgba(70,196,196,0.22);
+  background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
+  --sb-dur: 11s; --sb-delay: 2s; }
+[data-bubble-host="deep"] .sb-3 { left: 4%;  bottom: -18px; width: 7px;  height: 7px;
+  border: 1px solid rgba(70,196,196,0.25); --sb-dur: 6.5s; --sb-delay: 4.5s; }
+[data-bubble-host="deep"] .sb-4 { left: 17%; bottom: -28px; width: 30px; height: 30px;
+  border: 1px solid rgba(70,196,196,0.16);
+  background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.10), transparent);
+  --sb-dur: 13s; --sb-delay: 1s; }
+
+/* EDGE trio — the reference card verbatim. Co-prime durations (6.5/8/11)
+   make the edge-catch coincide only occasionally; that "occasionally" is
+   the remembered feel. */
+[data-bubble-host="edge"] .sb-1 { left: 70%; bottom: -24px; width: 12px; height: 12px;
+  border: 1px solid rgba(70,196,196,0.30); --sb-dur: 8s; }
+[data-bubble-host="edge"] .sb-2 { left: 78%; bottom: -30px; width: 20px; height: 20px;
+  border: 1px solid rgba(70,196,196,0.22);
+  background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
+  --sb-dur: 11s; --sb-delay: 2s; }
+[data-bubble-host="edge"] .sb-3 { left: 65%; bottom: -18px; width: 7px;  height: 7px;
+  border: 1px solid rgba(70,196,196,0.25); --sb-dur: 6.5s; --sb-delay: 4.5s; }
