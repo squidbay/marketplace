@@ -25,7 +25,10 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="color:${h === here ? 'var(--white
 ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:var(--radius-md);color:var(--white);font-size:16px;font-weight:600">${l}</a>`).join('')}
 <a class="btn btn-primary" href="/personal" style="margin-top:12px">Deploy your agent</a>
 </div></div></div>
-<style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}</style>`;
+<style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}
+/* 3 x min-width:120px + two 48px gaps = 456px, against 339px usable at 375px.
+   Side by side they wrap 2+1, which reads as a broken grid, not a centred one. */
+@media (max-width:767px){sb-footer .sb-foot-cols{flex-direction:column;gap:var(--space-8)}}</style>`;
       const drawer = this.querySelector('.nav-drawer');
       this.querySelector('.nav-burger').onclick = () => drawer.style.display = 'block';
       this.querySelector('.nav-close').onclick = () => drawer.style.display = 'none';
@@ -34,18 +37,19 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;m
   }
   class SbFooter extends HTMLElement {
     connectedCallback() {
-      const col = (t, rows) => `<div style="display:flex;flex-direction:column;gap:10px;min-width:120px"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted)">${t}</span>${rows.map(([l, h]) => `<a href="${h}" style="color:var(--text-muted);font-size:13.5px">${l}</a>`).join('')}</div>`;
+      const col = (t, rows) => `<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3);min-width:120px"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted)">${t}</span>${rows.map(([l, h]) => `<a href="${h}" style="color:var(--text-muted);font-size:13.5px">${l}</a>`).join('')}</div>`;
       this.innerHTML = `
 <footer style="border-top:1px solid var(--border-subtle);margin-top:64px">
-<div class="container" style="display:flex;flex-wrap:wrap;gap:36px;padding-top:40px;padding-bottom:32px">
-<div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px">
+<div class="container" style="display:flex;flex-direction:column;align-items:center;gap:var(--space-8);padding-top:var(--space-10);padding-bottom:var(--space-8)">
+<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3)">
 <span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px"><img src="/assets/squidbay-logo.png" alt="" style="width:24px;height:24px;object-fit:contain">Squid<span style="color:var(--primary);margin-left:-6px">Bay</span></span>
-<span style="font-size:13px;color:var(--text-muted);line-height:1.6">Work gets done. You stay the gate.</span></div>
-${col('Product', [['Factory', '/business'], ['Personal agent', '/personal'], ['Native app', '/app'], ['Marketplace', '/marketplace']])}
+<span style="font-size:13px;color:var(--text-muted);line-height:1.6">Work gets done. You stay the gate.</span>
+<span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--patent-gold)">Fire, returned.</span></div>
+<div class="sb-foot-cols" style="display:flex;justify-content:center;gap:var(--space-12)">${col('Product', [['Factory', '/business'], ['Personal agent', '/personal'], ['Native app', '/app'], ['Marketplace', '/marketplace']])}
 ${col('Company', [['Docs', '/docs'], ['Support', '/support'], ['Register', '/register']])}
-${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}
+${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
 </div>
-<div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:14px;padding-bottom:20px;border-top:1px solid var(--border-subtle)">
+<div class="container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);padding-top:var(--space-4);padding-bottom:var(--space-5);border-top:1px solid var(--border-subtle)">
 <span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted)">© 2026 SquidBay · squidbay.ai</span>
 <span style="display:inline-flex;gap:14px;color:var(--text-muted)">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
