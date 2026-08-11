@@ -84,15 +84,19 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
   --sb-travel: calc(-1 * min(440px, var(--sb-h, 476px) - 36px));
 }
 
-[data-bubble-host="deep"] .sb-1 { left: 8%;  bottom: -24px; width: 12px; height: 12px;
+/* Column mirrored to the RIGHT. Designer's spec places the hero column
+   "opposite the headline"; his literal left-% values assume a right-aligned
+   headline. Ours is left-aligned, so left-% put the bubbles behind the text.
+   Same sizes, durations, delays and <=18% column width — only the axis flips. */
+[data-bubble-host="deep"] .sb-1 { right: 8%;  bottom: -24px; width: 12px; height: 12px;
   border: 1px solid rgba(70,196,196,0.30); --sb-dur: 8s; }
-[data-bubble-host="deep"] .sb-2 { left: 13%; bottom: -30px; width: 20px; height: 20px;
+[data-bubble-host="deep"] .sb-2 { right: 13%; bottom: -30px; width: 20px; height: 20px;
   border: 1px solid rgba(70,196,196,0.22);
   background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
   --sb-dur: 11s; --sb-delay: 2s; }
-[data-bubble-host="deep"] .sb-3 { left: 4%;  bottom: -18px; width: 7px;  height: 7px;
+[data-bubble-host="deep"] .sb-3 { right: 4%;  bottom: -18px; width: 7px;  height: 7px;
   border: 1px solid rgba(70,196,196,0.25); --sb-dur: 6.5s; --sb-delay: 4.5s; }
-[data-bubble-host="deep"] .sb-4 { left: 17%; bottom: -28px; width: 30px; height: 30px;
+[data-bubble-host="deep"] .sb-4 { right: 17%; bottom: -28px; width: 30px; height: 30px;
   border: 1px solid rgba(70,196,196,0.16);
   background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.10), transparent);
   --sb-dur: 13s; --sb-delay: 1s; }
