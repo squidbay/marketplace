@@ -77,34 +77,9 @@
    animation: sbRise 6.5–13s linear infinite, staggered 0–5s delays. */
 @keyframes sbRise {
     0%   { transform: translateY(0);      opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { transform: translateY(-105vh); opacity: 0; }
-}
-
-/* Bubble cling — sbRise's sibling, for the bubble that catches on an edge.
-   ADDITIVE: sbRise is unchanged and remains the default. Use this on ONE
-   bubble in a column, never all of them — the effect reads as physics only
-   because the others rise straight past it.
-
-   Real bubbles snag on a surface, hold under their own surface tension,
-   wobble, then break free and accelerate. That is the whole trick: the
-   translateY is HELD across 38-58% (the catch) while a 1px horizontal
-   tremor keeps it alive, then it releases and covers the remaining distance
-   faster than it covered the first stretch. Linear timing throughout — the
-   pause does the work, not an easing curve. */
-@keyframes sbRiseCling {
-    0%   { transform: translateY(0) translateX(0);        opacity: 0; }
-    8%   {                                                opacity: 1; }
-    32%  { transform: translateY(-38vh) translateX(0); }
-    /* --- the catch: held at ~40vh, mid-viewport, where cards are --- */
-    38%  { transform: translateY(-40vh) translateX(1.5px); }
-    48%  { transform: translateY(-41vh) translateX(-1.5px); }
-    58%  { transform: translateY(-40vh) translateX(1px); }
-    /* --- release: breaks free and accelerates away --- */
-    68%  { transform: translateY(-62vh) translateX(0); }
-    92%  {                                                opacity: 1; }
-    100% { transform: translateY(-105vh) translateX(0);   opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translateY(-360px); opacity: 0; }
 }
 
 /* Reduced motion: honor the OS preference everywhere (mandatory) */
