@@ -82,6 +82,31 @@
     100% { transform: translateY(-360px); opacity: 0; }
 }
 
+/* Bubble cling — sbRise's sibling, for the bubble that catches on an edge.
+   ADDITIVE: sbRise is unchanged and remains the default. Use this on ONE
+   bubble in a column, never all of them — the effect reads as physics only
+   because the others rise straight past it.
+
+   Real bubbles snag on a surface, hold under their own surface tension,
+   wobble, then break free and accelerate. That is the whole trick: the
+   translateY is HELD across 38-58% (the catch) while a 1px horizontal
+   tremor keeps it alive, then it releases and covers the remaining distance
+   faster than it covered the first stretch. Linear timing throughout — the
+   pause does the work, not an easing curve. */
+@keyframes sbRiseCling {
+    0%   { transform: translateY(0) translateX(0);       opacity: 0; }
+    10%  {                                               opacity: 1; }
+    36%  { transform: translateY(-120px) translateX(0); }
+    /* --- the catch: Y held, a breath of side-to-side --- */
+    42%  { transform: translateY(-124px) translateX(1.5px); }
+    50%  { transform: translateY(-126px) translateX(-1.5px); }
+    58%  { transform: translateY(-124px) translateX(1px); }
+    /* --- release: breaks free and accelerates away --- */
+    68%  { transform: translateY(-190px) translateX(0); }
+    88%  {                                               opacity: 1; }
+    100% { transform: translateY(-380px) translateX(0);  opacity: 0; }
+}
+
 /* Reduced motion: honor the OS preference everywhere (mandatory) */
 @media (prefers-reduced-motion: reduce) {
     [data-bubble] { animation: none !important; opacity: 0.35 !important; }
