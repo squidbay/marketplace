@@ -18,8 +18,29 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
 .btn-secondary:hover{border-color:var(--primary);color:var(--white)}
 .card{background:var(--surface-card);border-radius:var(--radius-card);padding:24px;border:1px solid transparent;transition:border-color var(--t-state),transform var(--t-state),box-shadow var(--t-state)}
 .card.link:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-1)}
-section.band{padding:80px 0}
+.band{padding-block:var(--space-20)}
 .status{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
 .hairline{border:none;border-top:1px solid var(--border-subtle);margin:0}
-@media (max-width:767px){h1{font-size:36px}h2{font-size:26px}h3{font-size:20px}p{font-size:15px;line-height:1.6}section.band{padding:48px 0}.container{padding:0 18px}}
-@media (max-height:480px) and (min-width:700px){section.band{padding:32px 0}h1{font-size:32px}}
+@media (max-width:767px){h1{font-size:36px}h2{font-size:26px}h3{font-size:20px}p{font-size:15px;line-height:1.6}.band{padding-block:var(--space-12)}.container{padding-inline:var(--space-4)}}
+@media (max-height:480px) and (min-width:700px){.band{padding-block:var(--space-8)}h1{font-size:32px}}
+
+/* ── Page spacing primitives ──────────────────────────────────────────────
+   Every value resolves to a token in design-system/tokens/spacing.css.
+   Before this, the shipped site used ZERO --space-* tokens: every vertical
+   value was a hardcoded literal, which is how 14 pages drifted into five
+   different top-spacing values (including 44px, which is not on the 8px grid
+   and appeared on six pages). SPEC.md §3: "Sections: 80px desktop / 48px
+   mobile vertical; heroes up to 96-128px."                                  */
+.page-hero    { padding-block-start: var(--space-24); }  /* 96px */
+.page-content { padding-block-start: var(--space-20); }  /* 80px */
+.page-end     { padding-block-end:   var(--space-20); }  /* 80px */
+/* One side owns the seam, so two adjacent sections cannot double to 160px —
+   which is exactly what the landing page was doing (measured: 161px). */
+.section      { padding-block: 0 var(--space-20); }
+.reading      { max-width: var(--content-max); }         /* 65ch */
+@media (max-width: 767px) {
+  .page-hero    { padding-block-start: var(--space-16); }  /* 64px */
+  .page-content { padding-block-start: var(--space-12); }  /* 48px */
+  .page-end     { padding-block-end:   var(--space-12); }
+  .section      { padding-block: 0 var(--space-12); }
+}
