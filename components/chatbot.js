@@ -10,7 +10,13 @@ const SQUIDBOT_CONFIG = {
     // does not load config.js. Before this, the host was hard-coded here too,
     // which meant the ".ai cutover is one line" promise was quietly false —
     // there were two lines, and this was the one nobody would remember.
-    backendUrl: ((window.SQUIDBAY_CONFIG && window.SQUIDBAY_CONFIG.API_BASE) || 'https://api.squidbay.io') + '/chat',
+    // Cloudflare Worker, not Railway. This is rebuild brick #1: the chat path
+    // is the first SquidBay surface with no Railway service behind it.
+    //
+    // Deliberately NOT derived from SQUIDBAY_CONFIG.API_BASE — that names the
+    // legacy API host, and pointing chat at it is exactly what we are undoing.
+    // Override with window.SQUIDBOT_ENDPOINT if a surface needs a different one.
+    backendUrl: window.SQUIDBOT_ENDPOINT || 'https://squidbot-chat.andrew-415.workers.dev/chat',
     maxConversationLength: 10,
     maxInputLength: 500
 };
