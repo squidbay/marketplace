@@ -1,0 +1,121 @@
+# merge = ship.
+#
+# Before this file, marketplace had no CI and no deploy pipeline: the site changed only
+# when a human ran wrangler by hand. On 2026-08-11 that was measured, not assumed —
+# marketplace#19 and #20 merged in the morning and the live site.js still did not
+# contain their changes in the afternoon (live sha256 693a0247… vs main d968c30f…).
+#
+# The design gates run first and must pass. A red gate blocks the ship.
+
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # Never let two deploys of the same branch race each other onto the account.
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gates:
+    name: design gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node design-system/ci/kill-list.mjs .
+      - run: node design-system/ci/manifest-check.mjs .
+      - run: node design-system/ci/og-pixel-check.mjs .
+
+  site:
+    name: deploy site worker
+    needs: gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Deploy squidbay-ai-preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # Proves the deploy actually changed the live site, rather than reporting success
+      # because the command exited 0. Compares the site.js served by squidbay.ai against
+      # the site.js in this commit — the exact check that caught "merge does not ship".
+      - name: Verify the live site matches this commit
+        run: |
+          sleep 10
+          curl -sS --retry 3 --retry-delay 5 https://squidbay.ai/site.js -o /tmp/live-site.js
+          LIVE=$(sha256sum /tmp/live-site.js | cut -d' ' -f1)
+          REPO=$(sha256sum site.js | cut -d' ' -f1)
+          echo "live: $LIVE"
+          echo "repo: $REPO"
+          if [ "$LIVE" != "$REPO" ]; then
+            echo "::error::Deploy reported success but squidbay.ai is still serving different bytes."
+            exit 1
+          fi
+          echo "live site matches this commit"
+
+  chat:
+    name: deploy squidbot-chat worker
+    needs: gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ── The parity guard ────────────────────────────────────────────────────────
+      # STOP before changing this step. It exists because on 2026-08-11 the DEPLOYED
+      # squidbot-chat Worker and this repo's copy of its source were different programs:
+      #
+      #   deployed (15:32Z)  branches on CF_ACCOUNT_ID/CF_GATEWAY_ID and falls back to
+      #                      https://api.anthropic.com — /health reports
+      #                      "path":"anthropic-direct", and it answers chat today.
+      #   repo main          has no direct path at all. It always builds a gateway URL,
+      #                      and hard-requires those two vars or it 503s.
+      #
+      # So the working SquidBot exists only on Cloudflare; git never got it. Wiring this
+      # job up blind would have made the next merge silently overwrite a working Worker
+      # with one that either 503s or routes onto the AI Gateway — the plane the operator
+      # ruled the factory agent must never use (ECOSYSTEM-UPDATE-PLAN §3, plane 1).
+      #
+      # This guard refuses the deploy while that is true. It clears by itself the moment
+      # the repo source regains the direct path — no edit here required.
+      - name: Guard — repo source must not regress the live path
+        run: |
+          LIVE_PATH=$(curl -sS --retry 3 --retry-delay 5 \
+            https://squidbot-chat.andrew-415.workers.dev/health \
+            | sed -n 's/.*"path":"\([^"]*\)".*/\1/p')
+          echo "live /health path: ${LIVE_PATH:-<absent>}"
+          if [ "$LIVE_PATH" = "anthropic-direct" ] \
+             && ! grep -q 'api\.anthropic\.com' workers/squidbot-chat/src/index.js; then
+            echo "::error::REFUSING TO DEPLOY. The live Worker serves the anthropic-direct path, but workers/squidbot-chat/src/index.js contains no direct path — deploying it would take SquidBot off the ruled factory plane. Commit the deployed source (it is a four-line diff, quoted in the T2 pipeline PR) and this guard clears itself."
+            exit 1
+          fi
+          echo "parity ok — safe to deploy"
+
+      - name: Deploy squidbot-chat
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: workers/squidbot-chat
+
+      # Secrets are never touched by a deploy (wrangler does not delete them), so this
+      # asserts the Worker still answers and is still on the ruled plane afterwards.
+      - name: Verify SquidBot still answers on the ruled plane
+        run: |
+          sleep 5
+          HEALTH=$(curl -sS --retry 3 --retry-delay 5 https://squidbot-chat.andrew-415.workers.dev/health)
+          echo "$HEALTH"
+          echo "$HEALTH" | grep -q '"path":"anthropic-direct"' || {
+            echo "::error::SquidBot is no longer on the anthropic-direct path after deploy."; exit 1; }

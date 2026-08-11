@@ -5,7 +5,11 @@
   const LINKS = [['Marketplace', '/marketplace'], ['Docs', '/docs'], ['Pricing', '/business']];
   class SbNav extends HTMLElement {
     connectedCallback() {
-      const here = location.pathname.split('/').pop();
+      // LINKS hold leading-slash paths ("/marketplace"), so the old
+      // .split('/').pop() — which yields "marketplace" — could never equal one of
+      // them and no nav item ever rendered as active. Compare the same shape on
+      // both sides: strip a legacy .html suffix and any trailing slash, keeping "/".
+      const here = location.pathname.replace(/\.html$/, '').replace(/(.)\/+$/, '$1') || '/';
       this.innerHTML = `
 <div style="border-bottom:1px solid var(--border-subtle);position:relative;z-index:50">
 <div class="container" style="display:flex;align-items:center;gap:28px;min-height:64px">

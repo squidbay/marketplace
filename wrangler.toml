@@ -1,0 +1,38 @@
+# The SITE Worker — squidbay.ai's static surface.
+#
+# This file did not exist until 2026-08-11. The Worker was real and serving, but its
+# configuration lived only in whatever a human typed the last time they ran wrangler by
+# hand, which is why marketplace#19 and #20 could merge in the morning and still not be
+# on the site by the afternoon. Config in the repo is half of "merge = ship"; the other
+# half is .github/workflows/deploy.yml.
+#
+# Deployed by that workflow on push to main. Nothing here is a credential.
+
+name = "squidbay-ai-preview"
+compatibility_date = "2026-08-01"
+
+# An account ID is an identifier, not a secret — it is useless without a token, and it
+# already appears in this repo (workers/squidbot-chat/wrangler.toml) for the same reason.
+account_id = "d41593267b9908b65780b8904e5cd2fe"
+
+# ── Routing is deliberately NOT declared here ────────────────────────────────────────
+# squidbay.ai is bound to this Worker in the Cloudflare dashboard. Cloudflare's own
+# guidance: a config that declares `routes` OVERRIDES dashboard routing on every deploy,
+# and a config that declares none leaves it alone. Declaring the apex here would put the
+# live domain one typo away from every merge, for no gain — Ghost owns the binding, this
+# file owns the code and the assets.
+# `workers_dev` is left unset for the same reason: the preview hostname
+# squidbay-ai-preview.andrew-415.workers.dev is live and is named in squidbot-chat's
+# ALLOWED_ORIGINS, so setting `workers_dev = false` would silently break the widget there.
+
+[assets]
+directory = "."
+
+# Both values below were verified against the live site on 2026-08-11 before being
+# written down. They are stated explicitly so that a deploy cannot quietly change the
+# URL shape the site already has:
+#   /foo.html  → 307 → /foo      /foo → foo.html      / → index.html
+html_handling = "auto-trailing-slash"
+# A missing path serves 404.html WITH a 404 status, rather than 200-ing a shell.
+# marketplace#19 landed that honest 404 on purpose; this keeps it.
+not_found_handling = "404-page"
