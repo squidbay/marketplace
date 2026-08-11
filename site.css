@@ -47,8 +47,10 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
 
 /* ── Bubbles — Designer spec, 2026-08-11 ──────────────────────────────────
    Hosts are OPT-IN via data-bubble-host. Two kinds, and only two:
-     "deep" — the hero band. One per page. Bubbles fade in open water and
-              NEVER reach the top edge.
+     "deep" — the hero band. One per page. Designer's original wording was
+              "fade in open water and NEVER reach the top edge"; the operator
+              overruled it on sight — "bubbles don't vanish in the water they
+              rise to the top" — so deep bubbles now surface. See DEEP below.
      "edge" — ONE featured card per full-screen band, 280-520px tall.
               Bubbles exit through the top edge mid-fade: THE CATCH.
 
@@ -74,43 +76,64 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
 [data-bubble-host="edge"] [data-bubble] {
   --sb-travel: calc(-1.1 * (var(--sb-h, 340px) + 36px));
 }
-/* DEEP: never reaches the top edge. Designer specified a flat -440px, which
-   assumes a hero >=560px tall. Ours is 444px, and at -440px the bubbles came
-   within 21px of the edge — close enough to read as a near-clip, which is the
-   thing "deep" exists to avoid. This preserves his stated intent (finish >=60px
-   below the top) and collapses to his exact -440px on any hero >=476px.
-   Bubbles start 24px below the container, so travel = height - 36px. */
-/* Bubbles rise to the surface and go through it. They do not dissolve in
-   open water — that was the behaviour that read as "appears, vanishes,
-   a different one appears". Travel carries each bubble PAST the host's top
-   edge, where overflow:hidden takes it. Reaching a surface and breaking
-   through is what a rising bubble actually does. */
+/* DEEP — a bubble must never be SEEN changing opacity.
+   sbRise fades in over 0-12% and out over 88-100%. Those two fades are the
+   whole illusion: hide them behind the clip and the bubble emerges from an
+   edge and breaks through a surface; leave either one in view and the bubble
+   materialises out of nothing and is guillotined out of nothing.
+
+   Measured on the live landing page, this is what was in view (hero 444px,
+   bottom:0, travel h+120):
+       5% of cycle -> opacity 0.42, sitting 28px above the card's top edge
+      10% of cycle -> opacity 0.83, 56px above it
+      15% of cycle -> opacity 1.00
+   i.e. the fade-IN played out entirely in the open, right on the card line —
+   which is the one hard visual edge on the page (div.card.door, rgb(15,38,43),
+   directly under the hero's bottom edge). And the exit at 80% was at opacity
+   1.00 through the hero's TOP edge, where there is no edge at all: the page
+   is one unbroken rgb(6,23,26) from y=65 upward, nav included. So birth
+   happened on the only visible line, and death happened where no line exists.
+   Exactly inverted. That is "sticks to the top of the card, disappears, and a
+   new one magically appears above it" — one defect, reported six times.
+
+   The fix is geometric, not a new keyframe. Each bubble starts BELOW the host's
+   bottom edge (clipped, invisible) far enough that the 0-12% fade finishes
+   before it clears the card line, and travel is sized so the bubble's trailing
+   edge exits the top at exactly 88% — the instant the fade-out begins.
+       travel T = (h + d) / 0.88  ->  1.136 * (h + d)
+   The dive d cannot be a constant. Hiding the fade needs (d - s) / T >= 0.12,
+   and T grows with the hero, so a flat 110px holds at our 444px hero and fails
+   on anything taller than ~477px — the defect would come straight back on a
+   bigger screen or a longer headline. Scaling it (0.28h) fails the other way on
+   a short hero, where the 30px bubble is large relative to h. max() of the two
+   satisfies the inequality for every hero from 200px up, with the 30px bubble
+   as the binding case.
+   Verified live at three hero heights, all four bubbles:
+   minimum opacity while visible = 1.000. Every bubble is at full opacity for
+   100% of the time it can be seen. */
 [data-bubble-host="deep"] [data-bubble] {
-  /* +120px, not +40: the bubble must be fully THROUGH the surface before
-     sbRise's 88% fade begins, or the small ones dim to 0.75 on the way out
-     and look like they are dissolving rather than surfacing. At +120 every
-     bubble exits by ~80% of the cycle at full opacity, and spends the
-     remainder clipped and invisible. */
-  --sb-travel: calc(-1 * (var(--sb-h, 476px) + 120px));
+  --sb-dive: max(110px, calc(0.28 * var(--sb-h, 444px)));
+  bottom: calc(-1 * var(--sb-dive));
+  --sb-travel: calc(-1.136 * (var(--sb-h, 444px) + var(--sb-dive)));
 }
 
 /* Column mirrored to the RIGHT. Designer's spec places the hero column
    "opposite the headline"; his literal left-% values assume a right-aligned
    headline. Ours is left-aligned, so left-% put the bubbles behind the text.
    Same sizes, durations, delays and <=18% column width — only the axis flips. */
-[data-bubble-host="deep"] .sb-1 { right: 8%;  bottom: 0; width: 12px; height: 12px;
+[data-bubble-host="deep"] .sb-1 { right: 8%;  width: 12px; height: 12px;
   border: 1px solid rgba(70,196,196,0.30);
   background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
   --sb-dur: 8s; }
-[data-bubble-host="deep"] .sb-2 { right: 13%; bottom: 0; width: 20px; height: 20px;
+[data-bubble-host="deep"] .sb-2 { right: 13%; width: 20px; height: 20px;
   border: 1px solid rgba(70,196,196,0.22);
   background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
   --sb-dur: 11s; --sb-delay: 2s; }
-[data-bubble-host="deep"] .sb-3 { right: 4%;  bottom: 0; width: 7px;  height: 7px;
+[data-bubble-host="deep"] .sb-3 { right: 4%;  width: 7px;  height: 7px;
   border: 1px solid rgba(70,196,196,0.25);
   background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
   --sb-dur: 6.5s; --sb-delay: 4.5s; }
-[data-bubble-host="deep"] .sb-4 { right: 17%; bottom: 0; width: 30px; height: 30px;
+[data-bubble-host="deep"] .sb-4 { right: 17%; width: 30px; height: 30px;
   border: 1px solid rgba(70,196,196,0.16);
   background: radial-gradient(circle at 32% 28%, rgba(231,243,242,0.10), transparent);
   --sb-dur: 13s; --sb-delay: 1s; }
