@@ -155,50 +155,58 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
   }
 
 
-  // ── Ambient bubble column ────────────────────────────────────────────────
-  // One shared layer instead of markup in 14 pages, so the column can never
-  // drift page to page — which is exactly what happened before: bubbles
-  // existed on index.html and nowhere else.
+  // ── Bubbles, scoped to cards ─────────────────────────────────────────────
+  // This is how the Abyssal Teal handoff actually does it, and it is a
+  // CONTAINMENT trick, not an animation trick:
   //
-  // System rules (tokens/effects.css): "marketing + loading surfaces ONLY…
-  // Max 4 bubbles per view, one column." Four here, one column, right side.
+  //   <div style="position:relative; overflow:hidden">        <- the card
+  //     <span data-bubble style="position:absolute; bottom:-24px;
+  //           animation: sbRise 8s linear infinite"></span>
   //
-  // TWO of the four cling, on deliberately un-matched cycles (17s and 21s,
-  // offset 1s and 9s). One clinging bubble on a 13s loop meant the catch was
-  // visible for ~3s out of every 13 and you could easily watch for a minute
-  // and never see it. Two on coprime-ish cycles means a catch is almost always
-  // in progress somewhere, without the column ever pulsing in sync.
+  // The bubble rises INSIDE the card and the card clips it at its top edge.
+  // That read — a bubble pressing against the ceiling and being absorbed — is
+  // what makes it feel like water. A fixed full-viewport layer cannot produce
+  // it, because there is no edge to catch anything: the bubble just crosses
+  // open space. Plain sbRise is all that is needed; no cling keyframe.
   //
-  // Still not all four: the catch only reads as physics because other bubbles
-  // rise straight past it. Make them all cling and it stops looking like water
-  // and starts looking like a broken animation.
-  //
-  // Durations are long (12-21s) on purpose. These sit behind real content and
-  // must never pull the eye — effects.css opens with "Motion is communication,
-  // never decoration."
-  //
-  // Fixed + pointer-events:none + z-index 0 keeps it behind everything and
-  // un-clickable. [data-bubble] is what the mandatory prefers-reduced-motion
-  // rule targets, so these go static at 0.35 opacity for free.
+  // System rule (tokens/effects.css): "Marketing + loading surfaces only.
+  // Max 4, one column, 7-30px, 6.5-13s linear." Max 4 is enforced PER CARD,
+  // and only a few cards per page carry them so the page never swarms.
+  const BUBBLE_SETS = [
+    [{l:70,b:-24,d:12,dur:8,o:0.30},{l:78,b:-30,d:20,dur:11,dl:2,o:0.22,hl:1},{l:65,b:-18,d:7,dur:6.5,dl:4.5,o:0.25}],
+    [{l:74,b:-28,d:16,dur:10,o:0.26,hl:1},{l:82,b:-20,d:9,dur:7.5,dl:3,o:0.2}],
+    [{l:68,b:-22,d:11,dur:9,dl:1.5,o:0.28},{l:79,b:-30,d:24,dur:13,dl:5,o:0.18,hl:1},{l:72,b:-16,d:7,dur:6.5,dl:2.5,o:0.24}]
+  ];
+
   function mountBubbles() {
-    if (document.querySelector('.sb-bubbles')) return;
-    const wrap = document.createElement('div');
-    wrap.className = 'sb-bubbles';
-    wrap.setAttribute('aria-hidden', 'true');
-    wrap.innerHTML = `
-<style>
-.sb-bubbles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.sb-bubbles b{position:absolute;display:block;border-radius:50%;
-  border:1px solid rgba(70,196,196,0.22);
-  background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);
-  animation-timing-function:linear;animation-iteration-count:infinite}
-@media (max-width:767px){.sb-bubbles b:nth-child(n+3){display:none}}
-</style>
-<b data-bubble style="right:9%;bottom:-30px;width:22px;height:22px;animation-name:sbRise;animation-duration:15s"></b>
-<b data-bubble style="right:13%;bottom:-30px;width:11px;height:11px;animation-name:sbRiseCling;animation-duration:17s;animation-delay:1s;border-color:rgba(70,196,196,0.3)"></b>
-<b data-bubble style="right:7%;bottom:-30px;width:15px;height:15px;animation-name:sbRise;animation-duration:12s;animation-delay:5s"></b>
-<b data-bubble style="right:16%;bottom:-30px;width:8px;height:8px;animation-name:sbRiseCling;animation-duration:21s;animation-delay:9s;border-color:rgba(70,196,196,0.16)"></b>`;
-    document.body.appendChild(wrap);
+    if (document.querySelector('[data-bubble]')) return;
+    // Only real content cards. Skip anything that must not clip its children.
+    const cards = [...document.querySelectorAll('.card')]
+      .filter(el => {
+        const r = el.getBoundingClientRect();
+        if (r.height < 140 || r.width < 180) return false;      // too small to read
+        if (el.querySelector('input,textarea,select')) return false; // forms can pop
+        if (el.closest('sb-nav,sb-footer,.chatbot-container')) return false;
+        return true;
+      })
+      .slice(0, 3);                                             // a few per page, not all
+
+    cards.forEach((card, i) => {
+      const cs = getComputedStyle(card);
+      if (cs.position === 'static') card.style.position = 'relative';
+      card.style.overflow = 'hidden';   // THE clip that makes the catch happen
+      BUBBLE_SETS[i % BUBBLE_SETS.length].forEach(b => {
+        const el = document.createElement('span');
+        el.setAttribute('data-bubble', '');
+        el.setAttribute('aria-hidden', 'true');
+        el.style.cssText =
+          `position:absolute;left:${b.l}%;bottom:${b.b}px;width:${b.d}px;height:${b.d}px;` +
+          `border-radius:100px;border:1px solid rgba(70,196,196,${b.o});pointer-events:none;` +
+          (b.hl ? 'background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);' : '') +
+          `animation:sbRise ${b.dur}s linear ${b.dl || 0}s infinite;`;
+        card.appendChild(el);
+      });
+    });
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', mountBubbles);
