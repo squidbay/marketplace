@@ -44,3 +44,6 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
   .page-end     { padding-block-end:   var(--space-12); }
   .section      { padding-block: 0 var(--space-12); }
 }
+
+/* CI PROOF — planted retired hex, reverted in the next commit. */
+.ci-proof-planted { color: #00D9FF; }
