@@ -3,6 +3,28 @@
 // chatbot pill owns bottom-right; cyan → teal tokens).
 (function () {
   const LINKS = [['Marketplace', '/marketplace'], ['Docs', '/docs'], ['Pricing', '/business']];
+
+  // The wordmark is ONE flex item, and that is the whole point.
+  //
+  // It used to be written as `Squid<span>Bay</span>` directly inside an
+  // inline-flex parent. In a flex container a bare text run becomes its own
+  // anonymous flex ITEM, so "Squid" and "Bay" were two items with the parent's
+  // `gap` (10px nav / 9px footer) shoved between them. A `margin-left:-7px`
+  // (and -6px in the footer) dragged them back until it LOOKED like one word.
+  //
+  // It only ever looked like one. Flex items are separate boxes, so the
+  // accessibility tree, copy-paste, and every text extractor read the brand as
+  // "Squid Bay" — two words. The negative margin fixed the pixels and left the
+  // meaning broken, which is the worst kind of fix: invisible to the eye,
+  // obvious to a screen reader.
+  //
+  // Wrapping both halves in one span makes the wordmark a single flex item with
+  // "Squid" and "Bay" in normal inline flow. The gap now falls only between the
+  // logo and the word, where it belongs, so the hack is not needed — it is
+  // deleted, not neutralised. The two-tone colour is unchanged.
+  const wordmark = (px) =>
+    `<img src="/assets/squidbay-logo.png" alt="" style="width:${px}px;height:${px}px;object-fit:contain">` +
+    `<span>Squid<span style="color:var(--primary)">Bay</span></span>`;
   class SbNav extends HTMLElement {
     connectedCallback() {
       // LINKS hold leading-slash paths ("/marketplace"), so the old
@@ -14,7 +36,7 @@
 <div style="border-bottom:1px solid var(--border-subtle);position:relative;z-index:50">
 <div class="container" style="display:flex;align-items:center;gap:28px;min-height:64px">
 <a href="/" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-0.02em;color:var(--white)">
-<img src="/assets/squidbay-logo.png" alt="" style="width:28px;height:28px;object-fit:contain">Squid<span style="color:var(--primary);margin-left:-7px">Bay</span></a>
+${wordmark(28)}</a>
 <span style="flex:1"></span>
 <span class="nav-links" style="display:inline-flex;align-items:center;gap:26px">
 ${LINKS.map(([l, h]) => `<a href="${h}" style="color:${h === here ? 'var(--white)' : 'var(--text-muted)'};font-size:15px;font-weight:500">${l}</a>`).join('')}
@@ -46,7 +68,7 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;m
 <footer style="border-top:1px solid var(--border-subtle);margin-top:64px">
 <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:var(--space-8);padding-top:var(--space-10);padding-bottom:var(--space-8)">
 <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3)">
-<span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px"><img src="/assets/squidbay-logo.png" alt="" style="width:24px;height:24px;object-fit:contain">Squid<span style="color:var(--primary);margin-left:-6px">Bay</span></span>
+<span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px">${wordmark(24)}</span>
 <span style="font-size:13px;color:var(--text-muted);line-height:1.6">Work gets done. You stay the gate.</span>
 <span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--patent-gold)">Fire, returned.</span></div>
 <div class="sb-foot-cols" style="display:flex;justify-content:center;gap:var(--space-12)">${col('Product', [['Factory', '/business'], ['Personal agent', '/personal'], ['Native app', '/app'], ['Marketplace', '/marketplace']])}
