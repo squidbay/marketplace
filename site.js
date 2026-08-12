@@ -2,6 +2,15 @@
 // squidbay/squidbay components/footer.html + css/styles.css — bottom LEFT, the
 // chatbot pill owns bottom-right; cyan → teal tokens).
 (function () {
+  // The trench backdrop (.ocean-bg — the faint teal/ink radials + grain from
+  // design-system effects.css) is the platform's signature background. It was
+  // living as a hardcoded class on index.html's <body> only, so 13 of 14 pages
+  // painted flat --black with no teal filter — exactly the mismatch Andrew saw
+  // on /business. Own it here, at the same layer as the shared chrome, so a
+  // page cannot exist without it and the class cannot drift back out of sync.
+  // Idempotent: index.html still carries the attribute; add() is a no-op there.
+  document.body.classList.add('ocean-bg');
+
   const LINKS = [['Marketplace', '/marketplace'], ['Docs', '/docs'], ['Pricing', '/business']];
 
   // The wordmark is ONE flex item, and that is the whole point.
