@@ -333,15 +333,15 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
 <div class="sb-construct-card" role="dialog" aria-modal="true" aria-labelledby="sb-construct-h">
 <button class="sb-construct-x" aria-label="Close">×</button>
 <div class="sb-construct-mark"><img src="/assets/squidbay-logo.png" alt=""></div>
-<span class="mono sb-construct-tag">Under construction</span>
-<h2 id="sb-construct-h">The abyss is setting up the Bay</h2>
-<p>We're still moving things into place. Have a look around — SquidBay is being built in the open, and it gets better by the day.</p>
+<span class="mono sb-construct-tag">The tide is coming in</span>
+<h2 id="sb-construct-h">We're setting up the <span style="color:var(--primary)">Bay</span></h2>
+<p>Still moving things into place. Have a look around — SquidBay is being built in the open, and it rises a little more every day.</p>
 <button class="btn btn-primary sb-construct-go">Dive in</button>
 </div>
 <style>
 .sb-construct{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;animation:sbFade .3s ease both}
 .sb-construct-scrim{position:absolute;inset:0;background:rgba(4,15,17,0.74);backdrop-filter:blur(6px)}
-.sb-construct-card{position:relative;z-index:1;width:100%;max-width:400px;background:var(--dark);border:1px solid var(--border-subtle);border-radius:var(--radius-card);box-shadow:var(--shadow-2);padding:34px 28px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;animation:sbConstructIn .42s cubic-bezier(.2,.7,.3,1) both}
+.sb-construct-card{position:relative;z-index:1;width:100%;max-width:400px;background:radial-gradient(ellipse at 50% 0%, rgba(70,196,196,0.12), transparent 55%),var(--dark);border:1px solid var(--border-subtle);border-radius:var(--radius-card);box-shadow:var(--shadow-2);padding:34px 28px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;animation:sbConstructIn .42s cubic-bezier(.2,.7,.3,1) both}
 .sb-construct-x{position:absolute;top:10px;right:12px;background:transparent;border:none;color:var(--text-muted);font-size:24px;line-height:1;cursor:pointer;width:40px;height:40px}
 .sb-construct-mark{width:96px;height:96px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim),var(--glow-primary);display:flex;align-items:center;justify-content:center}
 .sb-construct-mark img{width:60px;height:60px;object-fit:contain;animation:sbFlair 2.6s ease-in-out infinite}
