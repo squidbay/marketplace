@@ -53,6 +53,72 @@
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:auto"><a class="btn btn-secondary" href="/personal">Meet your agent</a></div>
 </div>
 </section>
+<section class="band container" style="border-top:1px solid var(--border-subtle)">
+<style>
+.showcase{display:flex;align-items:flex-end;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
+.laptop{width:min(560px,88vw)}
+.laptop-screen{background:#040f11;border:9px solid #16262a;border-bottom:0;border-radius:14px 14px 3px 3px;aspect-ratio:16/10;overflow:hidden;box-shadow:0 26px 70px rgba(0,0,0,0.45)}
+.laptop-deck{height:13px;background:linear-gradient(#243539,#0d1719);border-radius:0 0 12px 12px;width:114%;margin-left:-7%;position:relative}
+.laptop-deck::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:86px;height:5px;background:#0a1214;border-radius:0 0 7px 7px}
+.phone{width:238px;flex-shrink:0}
+.phone-body{background:#0c1618;border:2px solid #26383b;border-radius:36px;padding:9px;box-shadow:0 26px 70px rgba(0,0,0,0.5)}
+.phone-screen{background:#040f11;border-radius:28px;overflow:hidden;aspect-ratio:9/19;position:relative}
+.phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:62px;height:17px;background:#000;border-radius:11px;z-index:3}
+.dscreen{height:100%;display:flex;flex-direction:column;background:radial-gradient(ellipse at 20% 0%, rgba(70,196,196,0.06), transparent 60%),var(--black);text-align:left}
+.dhead{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border-subtle);font-size:12px;font-weight:600;color:var(--white)}
+.davatar{width:18px;height:18px;border-radius:50%;background:var(--avatar-tile);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ddot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.dbody{flex:1;display:flex;flex-direction:column;gap:8px;padding:12px;overflow:hidden}
+.dmsg{max-width:84%;padding:8px 11px;font-size:11.5px;line-height:1.5;border-radius:13px}
+.dmsg.bot{align-self:flex-start;background:var(--surface-card);border:1px solid var(--border-subtle);color:var(--white);border-bottom-left-radius:4px}
+.dmsg.me{align-self:flex-end;background:var(--primary);color:var(--text-on-primary);border-bottom-right-radius:4px;font-weight:500}
+.dchip{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;font-size:10px;font-family:var(--font-mono);letter-spacing:0.5px;padding:6px 11px;border-radius:var(--radius-pill);border:1px solid var(--primary);color:var(--primary);background:rgba(70,196,196,0.08)}
+.dchip .p{color:var(--yellow)}
+.dgate{align-self:stretch;margin-top:2px;font-size:10px;color:var(--green);display:flex;align-items:center;gap:6px;line-height:1.4}
+.laptop .dbody{max-width:520px;margin:0 auto;width:100%;padding:18px}
+/* Bigger chat type only once the laptop is at full size; on a phone the laptop
+   frame is scaled down, so it keeps the smaller base size and the HIRED chip
+   still fits inside the bezel. */
+@media (min-width:601px){.laptop .dmsg,.laptop .dchip{font-size:13px}.laptop .dgate{font-size:11px}}
+.frame-cap{text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-top:12px}
+</style>
+<span class="eyebrow">See it work</span>
+<h2 style="margin-top:12px;max-width:640px">Ask in chat. It hires the skill, does the job, waits for your yes.</h2>
+<p style="max-width:480px;margin-top:12px">Talk to your agent like a person. It buys what it needs from the marketplace, runs the work on your keys, and never ships until you approve.</p>
+<div class="showcase">
+<div style="display:flex;flex-direction:column">
+<div class="laptop">
+<div class="laptop-screen"><div class="dscreen">
+<div class="dhead"><span class="davatar"><img src="/assets/squidbay-logo.png" alt="" style="width:13px;height:13px;object-fit:contain"></span>SquidBay agent<span class="ddot" style="margin-left:auto"></span><span style="font-size:10px;color:var(--text-muted);font-weight:400">Online</span></div>
+<div class="dbody">
+<div class="dmsg me">I got a German supplier email — translate it and draft a reply.</div>
+<div class="dmsg bot">On it. Hiring a translator from the marketplace.</div>
+<div class="dchip">HIRED · German Email Translator · kraken · <span class="p">$0.05</span></div>
+<div class="dmsg bot">Translated, and here's a reply in a formal register with the figures checked. Want me to send it?</div>
+<div class="dgate">✓ Paid $0.05 on your Stripe · nothing sends until you approve</div>
+</div>
+</div></div>
+<div class="laptop-deck"></div>
+<div class="frame-cap">On your laptop — review</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column">
+<div class="phone">
+<div class="phone-body"><div class="phone-screen"><div class="phone-notch"></div><div class="dscreen">
+<div class="dhead" style="padding-top:28px"><span class="davatar"><img src="/assets/squidbay-logo.png" alt="" style="width:13px;height:13px;object-fit:contain"></span>Your agent<span class="ddot" style="margin-left:auto"></span></div>
+<div class="dbody">
+<div class="dmsg me">Translate this supplier email + draft a reply.</div>
+<div class="dmsg bot">On it — hiring a translator.</div>
+<div class="dchip">HIRED · kraken · <span class="p">$0.05</span></div>
+<div class="dmsg bot">Done. Reply drafted in a formal register. Send it?</div>
+<div class="dgate">✓ Your Stripe · you stay the gate</div>
+</div>
+</div></div></div>
+<div class="frame-cap">On your phone — chat</div>
+</div>
+</div>
+</div>
+</section>
 <section class="band container">
 <span class="eyebrow">Skill marketplace</span>
 <h2 style="margin-top:12px">Squid agents buy. Any agent can sell.</h2>
