@@ -11,6 +11,15 @@
   // Idempotent: index.html still carries the attribute; add() is a no-op there.
   document.body.classList.add('ocean-bg');
 
+  // Some pages (the skill detail page) carry a fixed bottom purchase bar
+  // (.buybar) with the price and Sign-in. The back-to-top and the chatbot both
+  // fix themselves to the bottom corners at a much higher z-index, so on mobile
+  // they land ON TOP of that bar and cover exactly the price and the button.
+  // Tag the page so the CSS below can lift both floating controls ABOVE the bar
+  // on mobile — nothing is hidden, it just stacks in the right order. (defer =
+  // the DOM is parsed, so the bar is already present to detect.)
+  if (document.querySelector('.buybar')) document.body.classList.add('has-buybar');
+
   const LINKS = [['Marketplace', '/marketplace'], ['Docs', '/docs'], ['Pricing', '/business']];
 
   // One source of truth for the full site link map. BOTH the footer columns and
@@ -49,7 +58,12 @@
     '/marketplace': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-6h6v6"/></svg>',
     '/docs': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>',
     '/business': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0l-8-8V4a1 1 0 0 1 1-1h8.6l8.4 8.4a2 2 0 0 1 0 2z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>',
+    '/register': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
   };
+  // The drawer's own row set: the top nav (LINKS) plus Sign in. The two bottom
+  // CTAs below mirror the landing hero exactly — "Deploy a Factory" / "Meet your
+  // agent" — so the slider advertises the same two products the front door does.
+  const DRAWER_ROWS = [...LINKS, ['Sign in', '/register']];
 
   const wordmark = (px) =>
     `<img src="/assets/squidbay-logo.png" alt="" style="width:${px}px;height:${px}px;object-fit:contain">` +
@@ -81,14 +95,14 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="color:${h === here ? 'var(--white
 <button class="nav-close" aria-label="Close" style="width:40px;height:40px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:24px;line-height:1">×</button>
 </div>
 <nav style="display:flex;flex-direction:column;padding:8px 0">
-${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;gap:14px;min-height:56px;padding:0 18px;border-bottom:1px solid var(--border-subtle);color:${h === here ? 'var(--primary)' : 'var(--white)'};font-size:16px;font-weight:600">
+${DRAWER_ROWS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;gap:14px;min-height:56px;padding:0 18px;border-bottom:1px solid var(--border-subtle);color:${h === here ? 'var(--primary)' : 'var(--white)'};font-size:16px;font-weight:600">
 <span style="display:inline-flex;flex-shrink:0;color:${h === here ? 'var(--primary)' : 'var(--text-muted)'}">${NAV_ICONS[h] || ''}</span>
 <span style="flex:1">${l}</span>
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>`).join('')}
 </nav>
 <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px;padding:18px;border-top:1px solid var(--border-subtle)">
-<a class="btn btn-secondary" href="/register" style="border-color:var(--primary);color:var(--primary)">Sign in</a>
-<a class="btn btn-primary" href="/personal">Deploy your agent</a>
+<a class="btn btn-primary" href="/business">Deploy a Factory</a>
+<a class="btn btn-secondary" href="/personal" style="border-color:var(--primary);color:var(--primary)">Meet your agent</a>
 <span class="mono" style="font-size:9px;letter-spacing:1.5px;color:var(--patent-gold);text-align:center;margin-top:2px">Fire, returned.</span>
 </div>
 </div></div></div>
@@ -136,7 +150,15 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;g
 .back-to-top{position:fixed;bottom:30px;left:30px;width:48px;height:48px;background:var(--dark);border:1px solid var(--gray);border-radius:50%;color:var(--primary);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(20px);transition:all var(--t-state);z-index:9998;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
 .back-to-top:hover{background:var(--gray);border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 30px rgba(70,196,196,0.2)}
 .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
-@media (max-width:768px){.back-to-top{bottom:20px;left:20px;width:44px;height:44px}}</style>`;
+@media (max-width:768px){.back-to-top{bottom:20px;left:20px;width:44px;height:44px}}
+/* When a fixed purchase bar (.buybar, ~68px + safe-area) owns the bottom edge,
+   lift the two floating controls above it so they never cover the price or the
+   Sign-in button. Higher specificity than the chatbot's own portrait rule, so
+   no !important needed. */
+@media (max-width:768px){
+  body.has-buybar .back-to-top{bottom:calc(84px + env(safe-area-inset-bottom))}
+  body.has-buybar .chatbot-container{bottom:calc(84px + env(safe-area-inset-bottom))}
+}</style>`;
       const btt = this.querySelector('#sb-btt');
       btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
       const onScroll = () => btt.classList.toggle('visible', window.scrollY > 300);
