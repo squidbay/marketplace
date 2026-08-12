@@ -106,11 +106,17 @@ ${DRAWER_ROWS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:ce
 <span class="mono" style="font-size:9px;letter-spacing:1.5px;color:var(--patent-gold);text-align:center;margin-top:2px">Fire, returned.</span>
 </div>
 </div></div></div>
-<style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}</style>`;
+<style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}
+/* While the drawer is open, hide the floating chrome. The chatbot pill and the
+   back-to-top fix to the bottom corners at z-index ~9999 — above the drawer —
+   so the chatbot was sitting on top of the drawer's "Meet your agent" CTA. An
+   open menu owns the screen; the FABs come back the moment it closes. */
+body.drawer-open .chatbot-container,body.drawer-open .back-to-top{display:none!important}</style>`;
       const drawer = this.querySelector('.nav-drawer');
-      this.querySelector('.nav-burger').onclick = () => drawer.style.display = 'block';
-      this.querySelector('.nav-close').onclick = () => drawer.style.display = 'none';
-      this.querySelector('.nav-scrim').onclick = () => drawer.style.display = 'none';
+      const setDrawer = (open) => { drawer.style.display = open ? 'block' : 'none'; document.body.classList.toggle('drawer-open', open); };
+      this.querySelector('.nav-burger').onclick = () => setDrawer(true);
+      this.querySelector('.nav-close').onclick = () => setDrawer(false);
+      this.querySelector('.nav-scrim').onclick = () => setDrawer(false);
     }
   }
   class SbFooter extends HTMLElement {
