@@ -42,6 +42,15 @@
   // "Squid" and "Bay" in normal inline flow. The gap now falls only between the
   // logo and the word, where it belongs, so the hack is not needed — it is
   // deleted, not neutralised. The two-tone colour is unchanged.
+  // Line icons for the mobile drawer's top-nav rows, keyed by href. The drawer
+  // mirrors the top navigation only (LINKS) — NOT the footer — so it needs its
+  // own small marketplace-flavoured iconography: a storefront, a doc, a tag.
+  const NAV_ICONS = {
+    '/marketplace': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-6h6v6"/></svg>',
+    '/docs': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>',
+    '/business': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0l-8-8V4a1 1 0 0 1 1-1h8.6l8.4 8.4a2 2 0 0 1 0 2z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>',
+  };
+
   const wordmark = (px) =>
     `<img src="/assets/squidbay-logo.png" alt="" style="width:${px}px;height:${px}px;object-fit:contain">` +
     `<span>Squid<span style="color:var(--primary)">Bay</span></span>`;
@@ -66,12 +75,22 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="color:${h === here ? 'var(--white
 </div>
 <div class="nav-drawer" style="display:none;position:fixed;inset:0;z-index:60">
 <div class="nav-scrim" style="position:absolute;inset:0;background:var(--surface-overlay);backdrop-filter:blur(4px)"></div>
-<div style="position:absolute;right:0;top:0;bottom:0;width:300px;max-width:88%;background:var(--dark);box-shadow:var(--shadow-2);padding:18px;display:flex;flex-direction:column;gap:var(--space-5);overflow-y:auto">
-<button class="nav-close" aria-label="Close" style="align-self:flex-end;width:44px;height:44px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:22px">×</button>
+<div class="nav-drawer-panel" style="position:absolute;right:0;top:0;bottom:0;width:300px;max-width:88%;background:var(--dark);box-shadow:var(--shadow-2);display:flex;flex-direction:column;overflow-y:auto">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-subtle)">
+<span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px;color:var(--white)">${wordmark(22)}</span>
+<button class="nav-close" aria-label="Close" style="width:40px;height:40px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:24px;line-height:1">×</button>
+</div>
+<nav style="display:flex;flex-direction:column;padding:8px 0">
+${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;gap:14px;min-height:56px;padding:0 18px;border-bottom:1px solid var(--border-subtle);color:${h === here ? 'var(--primary)' : 'var(--white)'};font-size:16px;font-weight:600">
+<span style="display:inline-flex;flex-shrink:0;color:${h === here ? 'var(--primary)' : 'var(--text-muted)'}">${NAV_ICONS[h] || ''}</span>
+<span style="flex:1">${l}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>`).join('')}
+</nav>
+<div style="margin-top:auto;display:flex;flex-direction:column;gap:10px;padding:18px;border-top:1px solid var(--border-subtle)">
+<a class="btn btn-secondary" href="/register" style="border-color:var(--primary);color:var(--primary)">Sign in</a>
 <a class="btn btn-primary" href="/personal">Deploy your agent</a>
-${NAV_GROUPS.map(([t, rows]) => `<div style="display:flex;flex-direction:column;gap:var(--space-1)">
-<span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted);padding:0 12px">${t}</span>
-${rows.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:var(--radius-md);color:${h === here ? 'var(--primary)' : 'var(--white)'};font-size:15px;font-weight:600">${l}</a>`).join('')}</div>`).join('')}
+<span class="mono" style="font-size:9px;letter-spacing:1.5px;color:var(--patent-gold);text-align:center;margin-top:2px">Fire, returned.</span>
+</div>
 </div></div></div>
 <style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}</style>`;
       const drawer = this.querySelector('.nav-drawer');
