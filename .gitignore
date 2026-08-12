@@ -1,1 +1,16 @@
+# Dependencies
+node_modules/
+
+# Wrangler / Cloudflare local state
 workers/**/.wrangler/
+.wrangler/
+
+# OS / editor noise
+.DS_Store
+*.log
+
+# Local browser-testing + scratch artifacts — never ship these in the public repo
+.playwright-mcp/
+
+# Internal working notes — not for the public repo
+next-up.md
