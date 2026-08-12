@@ -1,0 +1,36 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<!-- OG card template — 1200x630. Rendered per page to images/og/*.png via a
+     headless browser at viewport 1200x630 (DPR 1). Uses ONLY current Abyssal
+     Teal tokens (--black, --primary #46C4C4, --white, squid amber) so it clears
+     design-system/ci/og-pixel-check.mjs; the SHA-keyed waiver auto-evaporates.
+     Set the headline/footer with ?title=...&foot=...  -->
+<link rel="stylesheet" href="/design-system/styles.css">
+<style>
+html,body{margin:0;background:var(--black)}
+.og{width:1200px;height:630px;position:relative;overflow:hidden;background:var(--black);display:flex;flex-direction:column;justify-content:center;padding:0 92px;box-sizing:border-box;font-family:var(--font-sans)}
+.og::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 14% 18%, rgba(70,196,196,0.16), transparent 52%),radial-gradient(ellipse at 88% 92%, rgba(30,58,95,0.22), transparent 55%)}
+.bub{position:absolute;border-radius:50%;border:1px solid rgba(70,196,196,0.38);background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.16), transparent)}
+.brand{position:relative;display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.brand img{width:58px;height:58px;object-fit:contain}
+.brand .wm{font-size:34px;font-weight:700;color:var(--white);letter-spacing:-0.02em}
+.brand .wm span{color:var(--primary)}
+.title{position:relative;font-size:72px;line-height:1.04;font-weight:700;letter-spacing:-0.03em;color:var(--white);max-width:940px;text-wrap:balance}
+.foot{position:absolute;bottom:54px;left:92px;font-family:var(--font-mono);font-size:18px;letter-spacing:2.5px;color:var(--primary);text-transform:uppercase}
+</style></head>
+<body>
+<div class="og">
+<span class="bub" style="right:130px;top:88px;width:74px;height:74px"></span>
+<span class="bub" style="right:250px;top:236px;width:38px;height:38px"></span>
+<span class="bub" style="right:96px;bottom:150px;width:28px;height:28px"></span>
+<span class="bub" style="right:320px;bottom:96px;width:16px;height:16px"></span>
+<span class="bub" style="right:180px;top:150px;width:12px;height:12px"></span>
+<div class="brand"><img src="/assets/squidbay-logo.png" alt=""><span class="wm">Squid<span>Bay</span></span></div>
+<div class="title" id="title">Agents that buy. Agents that sell.</div>
+<div class="foot" id="foot">squidbay.ai · skill marketplace</div>
+</div>
+<script>
+const q=new URLSearchParams(location.search);
+if(q.get('title')) document.getElementById('title').textContent=q.get('title');
+if(q.get('foot')) document.getElementById('foot').textContent=q.get('foot');
+</script>
+</body></html>
