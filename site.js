@@ -162,13 +162,20 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
 .back-to-top:hover{background:var(--gray);border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 30px rgba(70,196,196,0.2)}
 .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
 @media (max-width:768px){.back-to-top{bottom:20px;left:20px;width:44px;height:44px}}
-/* When a fixed purchase bar (.buybar, ~68px + safe-area) owns the bottom edge,
-   lift the two floating controls above it so they never cover the price or the
-   Sign-in button. Higher specificity than the chatbot's own portrait rule, so
-   no !important needed. */
-@media (max-width:768px){
-  body.has-buybar .back-to-top{bottom:calc(84px + env(safe-area-inset-bottom))}
-  body.has-buybar .chatbot-container{bottom:calc(84px + env(safe-area-inset-bottom))}
+/* A fixed purchase bar (.buybar, ~68px + safe-area) owns the bottom edge on the
+   skill page, in BOTH orientations (portrait: max-width:767px; landscape:
+   max-height:480px + min-width:700px). Two things must clear it:
+     1. the whole document — the footer is a sibling AFTER <main> and gets no
+        share of main's padding, so its copyright + GitHub/X row was sitting
+        under the bar. A body padding-bottom lifts the footer above it.
+     2. the floating chrome — back-to-top + chatbot, or they cover the price and
+        Sign-in. The earlier version gated this on max-width:768px ONLY, so
+        landscape phones (width >=700) got nothing — the reported bug.
+   !important beats the chatbot's own landscape rule in chatbot.css. */
+@media (max-width:768px), (max-height:480px) and (min-width:700px){
+  body.has-buybar{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  body.has-buybar .back-to-top{bottom:calc(84px + env(safe-area-inset-bottom))!important}
+  body.has-buybar .chatbot-container{bottom:calc(84px + env(safe-area-inset-bottom))!important}
 }</style>`;
       const btt = this.querySelector('#sb-btt');
       btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
