@@ -107,11 +107,14 @@ ${DRAWER_ROWS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:ce
 </div>
 </div></div></div>
 <style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}
-/* While the drawer is open, hide the floating chrome. The chatbot pill and the
-   back-to-top fix to the bottom corners at z-index ~9999 — above the drawer —
-   so the chatbot was sitting on top of the drawer's "Meet your agent" CTA. An
-   open menu owns the screen; the FABs come back the moment it closes. */
-body.drawer-open .chatbot-container,body.drawer-open .back-to-top{display:none!important}</style>`;
+/* While the drawer is open, hide the floating bottom chrome. The chatbot pill
+   and back-to-top fix to the corners at z-index ~9999; the skill page's fixed
+   .buybar (price + Sign in) is z-index 50 in the ROOT stacking context, while
+   the drawer's z-index 60 is trapped inside the nav wrapper's own z-index:50
+   context — so at root level the wrapper ties the buybar and the later-in-DOM
+   buybar paints on top, bleeding through the open menu. An open menu owns the
+   screen: hide all three; they come back the moment it closes. */
+body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-open .buybar{display:none!important}</style>`;
       const drawer = this.querySelector('.nav-drawer');
       const setDrawer = (open) => { drawer.style.display = open ? 'block' : 'none'; document.body.classList.toggle('drawer-open', open); };
       this.querySelector('.nav-burger').onclick = () => setDrawer(true);
