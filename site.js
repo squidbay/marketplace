@@ -318,6 +318,58 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
     rt = setTimeout(sizeEdgeHosts, 150);   // --sb-h must track the card
   }, { passive: true });
 
+  // ── "The abyss is setting up the Bay" — under-construction notice ──────────
+  // A once-per-session, dismissible modal so a first-time visitor knows the site
+  // is still being built. It uses the official squid mark with the design
+  // system's sbFlair "slow breath" (translateY + opacity, rotation stays
+  // illegal), which the DS reserves for earned moments — this is one.
+  function mountConstructionNotice() {
+    try { if (sessionStorage.getItem('sb-construct-seen')) return; } catch (e) {}
+    if (document.querySelector('.sb-construct')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'sb-construct';
+    wrap.innerHTML = `
+<div class="sb-construct-scrim"></div>
+<div class="sb-construct-card" role="dialog" aria-modal="true" aria-labelledby="sb-construct-h">
+<button class="sb-construct-x" aria-label="Close">×</button>
+<div class="sb-construct-mark"><img src="/assets/squidbay-logo.png" alt=""></div>
+<span class="mono sb-construct-tag">Under construction</span>
+<h2 id="sb-construct-h">The abyss is setting up the Bay</h2>
+<p>We're still moving things into place. Have a look around — SquidBay is being built in the open, and it gets better by the day.</p>
+<button class="btn btn-primary sb-construct-go">Dive in</button>
+</div>
+<style>
+.sb-construct{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;animation:sbFade .3s ease both}
+.sb-construct-scrim{position:absolute;inset:0;background:rgba(4,15,17,0.74);backdrop-filter:blur(6px)}
+.sb-construct-card{position:relative;z-index:1;width:100%;max-width:400px;background:var(--dark);border:1px solid var(--border-subtle);border-radius:var(--radius-card);box-shadow:var(--shadow-2);padding:34px 28px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;animation:sbConstructIn .42s cubic-bezier(.2,.7,.3,1) both}
+.sb-construct-x{position:absolute;top:10px;right:12px;background:transparent;border:none;color:var(--text-muted);font-size:24px;line-height:1;cursor:pointer;width:40px;height:40px}
+.sb-construct-mark{width:96px;height:96px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim),var(--glow-primary);display:flex;align-items:center;justify-content:center}
+.sb-construct-mark img{width:60px;height:60px;object-fit:contain;animation:sbFlair 2.6s ease-in-out infinite}
+.sb-construct-tag{font-size:10px;letter-spacing:2.5px;color:var(--patent-gold)}
+.sb-construct-card h2{font-size:24px;line-height:1.2}
+.sb-construct-card p{font-size:14px;line-height:1.6;max-width:310px}
+.sb-construct-go{margin-top:6px;min-width:150px}
+@keyframes sbFlair{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(-2px);opacity:1}}
+@keyframes sbFade{from{opacity:0}to{opacity:1}}
+@keyframes sbConstructIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sb-construct,.sb-construct-card,.sb-construct-mark img{animation:none}}
+</style>`;
+    document.body.appendChild(wrap);
+    const close = () => {
+      try { sessionStorage.setItem('sb-construct-seen', '1'); } catch (e) {}
+      wrap.remove();
+      document.removeEventListener('keydown', onKey);
+    };
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    wrap.querySelector('.sb-construct-go').onclick = close;
+    wrap.querySelector('.sb-construct-x').onclick = close;
+    wrap.querySelector('.sb-construct-scrim').onclick = close;
+    document.addEventListener('keydown', onKey);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountConstructionNotice);
+  } else { mountConstructionNotice(); }
+
   if (!customElements.get('sb-nav')) customElements.define('sb-nav', SbNav);
   if (!customElements.get('sb-footer')) customElements.define('sb-footer', SbFooter);
 })();
