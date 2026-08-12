@@ -13,6 +13,17 @@
 
   const LINKS = [['Marketplace', '/marketplace'], ['Docs', '/docs'], ['Pricing', '/business']];
 
+  // One source of truth for the full site link map. BOTH the footer columns and
+  // the mobile drawer render from this, so a link cannot be present in one and
+  // missing from the other — the drawer used to carry only the three top-nav
+  // links, which is what left the mobile slider short. Order and grouping are
+  // the footer's.
+  const NAV_GROUPS = [
+    ['Product', [['Factory', '/business'], ['Personal agent', '/personal'], ['Native app', '/app'], ['Marketplace', '/marketplace']]],
+    ['Company', [['Docs', '/docs'], ['Support', '/support'], ['Register', '/register']]],
+    ['Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']]],
+  ];
+
   // The wordmark is ONE flex item, and that is the whole point.
   //
   // It used to be written as `Squid<span>Bay</span>` directly inside an
@@ -55,15 +66,14 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="color:${h === here ? 'var(--white
 </div>
 <div class="nav-drawer" style="display:none;position:fixed;inset:0;z-index:60">
 <div class="nav-scrim" style="position:absolute;inset:0;background:var(--surface-overlay);backdrop-filter:blur(4px)"></div>
-<div style="position:absolute;right:0;top:0;bottom:0;width:280px;max-width:85%;background:var(--dark);box-shadow:var(--shadow-2);padding:18px;display:flex;flex-direction:column;gap:6px">
+<div style="position:absolute;right:0;top:0;bottom:0;width:300px;max-width:88%;background:var(--dark);box-shadow:var(--shadow-2);padding:18px;display:flex;flex-direction:column;gap:var(--space-5);overflow-y:auto">
 <button class="nav-close" aria-label="Close" style="align-self:flex-end;width:44px;height:44px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:22px">×</button>
-${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:var(--radius-md);color:var(--white);font-size:16px;font-weight:600">${l}</a>`).join('')}
-<a class="btn btn-primary" href="/personal" style="margin-top:12px">Deploy your agent</a>
+<a class="btn btn-primary" href="/personal">Deploy your agent</a>
+${NAV_GROUPS.map(([t, rows]) => `<div style="display:flex;flex-direction:column;gap:var(--space-1)">
+<span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted);padding:0 12px">${t}</span>
+${rows.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:var(--radius-md);color:${h === here ? 'var(--primary)' : 'var(--white)'};font-size:15px;font-weight:600">${l}</a>`).join('')}</div>`).join('')}
 </div></div></div>
-<style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}
-/* 3 x min-width:120px + two 48px gaps = 456px, against 339px usable at 375px.
-   Side by side they wrap 2+1, which reads as a broken grid, not a centred one. */
-@media (max-width:767px){sb-footer .sb-foot-cols{flex-direction:column;gap:var(--space-8)}}</style>`;
+<style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}</style>`;
       const drawer = this.querySelector('.nav-drawer');
       this.querySelector('.nav-burger').onclick = () => drawer.style.display = 'block';
       this.querySelector('.nav-close').onclick = () => drawer.style.display = 'none';
@@ -72,7 +82,7 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;m
   }
   class SbFooter extends HTMLElement {
     connectedCallback() {
-      const col = (t, rows) => `<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3);min-width:120px"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted)">${t}</span>${rows.map(([l, h]) => `<a href="${h}" style="color:var(--text-muted);font-size:13.5px">${l}</a>`).join('')}</div>`;
+      const col = (t, rows) => `<div class="foot-col"><span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted)">${t}</span>${rows.map(([l, h]) => `<a href="${h}">${l}</a>`).join('')}</div>`;
       this.innerHTML = `
 <footer style="border-top:1px solid var(--border-subtle);margin-top:64px">
 <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:var(--space-8);padding-top:var(--space-10);padding-bottom:var(--space-8)">
@@ -80,9 +90,7 @@ ${LINKS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:center;m
 <span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px">${wordmark(24)}</span>
 <span style="font-size:13px;color:var(--text-muted);line-height:1.6">Work gets done. You stay the gate.</span>
 <span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--patent-gold)">Fire, returned.</span></div>
-<div class="sb-foot-cols" style="display:flex;justify-content:center;gap:var(--space-12)">${col('Product', [['Factory', '/business'], ['Personal agent', '/personal'], ['Native app', '/app'], ['Marketplace', '/marketplace']])}
-${col('Company', [['Docs', '/docs'], ['Support', '/support'], ['Register', '/register']])}
-${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
+<div class="sb-foot-cols">${NAV_GROUPS.map(([t, rows]) => col(t, rows)).join('')}</div>
 </div>
 <div class="container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);padding-top:var(--space-4);padding-bottom:var(--space-5);border-top:1px solid var(--border-subtle)">
 <span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--text-muted)">© 2026 SquidBay · squidbay.ai</span>
@@ -93,7 +101,20 @@ ${col('Legal', [['Legal', '/legal'], ['Refunds', '/legal/refund']])}</div>
 <button class="back-to-top" id="sb-btt" aria-label="Back to top">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
 </button>
-<style>.back-to-top{position:fixed;bottom:30px;left:30px;width:48px;height:48px;background:var(--dark);border:1px solid var(--gray);border-radius:50%;color:var(--primary);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(20px);transition:all var(--t-state);z-index:9998;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+<style>/* Footer columns: three equal groups. Desktop centres them; mobile lays them
+   as a 3-column grid (repeat(3,1fr)) instead of the old vertical stack, which
+   ran a full phone screen tall. A grid holds three equal columns and cannot
+   wrap 2+1 the way the flexed min-width:120px layout did. */
+.sb-foot-cols{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;gap:var(--space-12)}
+.foot-col{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3)}
+.foot-col a{color:var(--text-muted);font-size:13.5px}
+.foot-col a:hover{color:var(--white)}
+@media (max-width:767px){
+  .sb-foot-cols{grid-template-columns:repeat(3,1fr);gap:var(--space-3);width:100%;max-width:340px}
+  .foot-col{align-items:flex-start;text-align:left;gap:var(--space-2)}
+  .foot-col a{font-size:13px}
+}
+.back-to-top{position:fixed;bottom:30px;left:30px;width:48px;height:48px;background:var(--dark);border:1px solid var(--gray);border-radius:50%;color:var(--primary);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(20px);transition:all var(--t-state);z-index:9998;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
 .back-to-top:hover{background:var(--gray);border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 30px rgba(70,196,196,0.2)}
 .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
 @media (max-width:768px){.back-to-top{bottom:20px;left:20px;width:44px;height:44px}}</style>`;
