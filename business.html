@@ -63,45 +63,6 @@
 </div>
 </section>
 <section class="band container" style="border-top:1px solid var(--border-subtle)">
-<style>
-/* Device showcase — desktop ops center + native apps. The chat header (squid
-   mark + wordmark + green dot) always sits ON the screen, never on the bezel. */
-.devrow{display:grid;grid-template-columns:1fr auto;gap:52px;align-items:center;margin-top:26px}
-.devrow.rev{grid-template-columns:auto 1fr}
-.devcopy{max-width:460px}
-.devfeat{display:flex;flex-direction:column;gap:12px;margin-top:22px}
-.devfeat .row{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--text-muted);line-height:1.5}
-.devfeat .row b{color:var(--white)}
-.devfeat .row svg{flex-shrink:0;margin-top:3px;color:var(--primary)}
-.deskframe{width:min(540px,90vw);border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle);box-shadow:0 24px 60px rgba(0,0,0,0.42);background:var(--black)}
-.deskbar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1618;border-bottom:1px solid var(--border-subtle)}
-.deskbar i{width:10px;height:10px;border-radius:50%;background:#2a3b3e}
-.deskurl{margin-left:12px;flex:1;height:24px;border-radius:6px;background:var(--darker);display:flex;align-items:center;padding:0 12px;font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted)}
-.dvscreen{display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0%, rgba(70,196,196,0.07), transparent 62%),var(--black);text-align:left}
-.deskframe .dvscreen{aspect-ratio:16/10}
-.dvhead{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--border-subtle);font-size:12.5px;font-weight:600;color:var(--white)}
-.dvavatar{width:19px;height:19px;border-radius:50%;background:var(--avatar-tile);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.dvavatar img{width:13px;height:13px;object-fit:contain}
-.dvdot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
-.dvmark span{color:var(--primary)}
-.dvbody{flex:1;display:flex;flex-direction:column;gap:8px;padding:16px}
-.deskframe .dvbody{justify-content:center}
-.dvmsg{max-width:82%;padding:8px 11px;font-size:12px;line-height:1.5;border-radius:13px}
-.dvmsg.bot{align-self:flex-start;background:var(--surface-card);border:1px solid var(--border-subtle);color:var(--white);border-bottom-left-radius:4px}
-.dvmsg.me{align-self:flex-end;background:var(--primary);color:var(--text-on-primary);border-bottom-right-radius:4px;font-weight:500}
-.dvphone{width:248px;flex-shrink:0}
-.dvphone-body{background:#0c1618;border:2px solid #26383b;border-radius:38px;padding:10px;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
-.dvphone-screen{background:#040f11;border-radius:30px;overflow:hidden;aspect-ratio:9/19.3;position:relative}
-.dvphone-notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:66px;height:18px;background:#000;border-radius:11px;z-index:3}
-.dvphone .dvhead{padding-top:46px}
-.appbadges{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
-.appbadge{display:inline-flex;align-items:center;gap:11px;padding:8px 18px;min-height:48px;border:1px solid var(--border-default);border-radius:10px;background:var(--surface-card);color:var(--white)}
-.appbadge:hover{border-color:var(--primary)}
-.appbadge .t{display:flex;flex-direction:column;gap:2px;line-height:1.15;text-align:left}
-.appbadge .t small{font-size:9.5px;color:var(--text-muted);letter-spacing:.3px}
-.appbadge .t b{font-size:14px;font-weight:600}
-@media(max-width:860px){.devrow,.devrow.rev{grid-template-columns:1fr;justify-items:center;text-align:center;gap:34px}.devcopy{max-width:520px}.devfeat{text-align:left;display:inline-flex}.appbadges{justify-content:center}}
-</style>
 <div class="devrow">
 <div class="devcopy">
 <span class="eyebrow">On the desktop</span>
