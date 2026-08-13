@@ -11,6 +11,14 @@
 name = "squidbay-ai-preview"
 compatibility_date = "2026-08-01"
 
+# Until 2026-08-13 this Worker had no `main` at all — it was assets-only, so no code
+# of ours ever ran and a path with no file behind it could only be a 404. That is what
+# made /skill/<seller>/<slug> serve the 404 page on the live site. The script below is
+# the smallest program that answers those paths; read its header before changing it.
+# It lives under workers/ because .assetsignore already excludes that directory, so
+# adding it here cannot publish source at https://squidbay.ai/.
+main = "workers/site/index.js"
+
 # An account ID is an identifier, not a secret — it is useless without a token, and it
 # already appears in this repo (workers/squidbot-chat/wrangler.toml) for the same reason.
 account_id = "d41593267b9908b65780b8904e5cd2fe"
@@ -27,6 +35,28 @@ account_id = "d41593267b9908b65780b8904e5cd2fe"
 
 [assets]
 directory = "."
+
+# The name workers/site/index.js reaches the asset server by. Cloudflare's docs are
+# explicit that `binding` is only valid when a `main` script is set — it was correctly
+# absent from this file while there was none, and is correct to add now that there is.
+binding = "ASSETS"
+
+# Which paths run the script BEFORE the asset server answers. The default is the
+# opposite: assets win and the script is only reached when nothing matched — which is
+# no use here, because /skill/<seller>/<slug> matches no asset and the 404 handling
+# below would already have fired by then.
+#
+# This is a route-pattern array (wrangler ≥ 4.20 — verified against Cloudflare's
+# current docs, not from memory), so it is scoped to exactly one prefix rather than
+# `true`, which would put every request on squidbay.ai through our code.
+#
+# /agent/* is deliberately NOT here. The /agent/<name> vanity route collides in path
+# space with the real agent/ folder in this repo, and that needs its own analysis
+# before anything routes it.
+#
+# Note the pattern needs the trailing slash to match: `/skill` itself does not match
+# `/skill/*`, so the bare page keeps being served by the asset server, untouched.
+run_worker_first = [ "/skill/*" ]
 
 # Both values below were verified against the live site on 2026-08-11 before being
 # written down. They are stated explicitly so that a deploy cannot quietly change the
