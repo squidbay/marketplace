@@ -11,6 +11,7 @@
 //
 //   /skill/<seller>/<slug>/security  → the security-report page
 //   /skill/<seller>/<slug>           → the skill page
+//   /agent/                          → 301 to /personal (the page it replaced)
 //   anything else                    → handed straight back to the asset server
 //
 // Two details that are load-bearing, so nobody has to rediscover them:
@@ -26,8 +27,8 @@
 //    no asset still gets 404.html WITH a 404 status. A genuine 404 must stay a 404.
 //
 // Only paths listed in wrangler.toml's `run_worker_first` reach this script at all
-// (`/skill/*` today). Everything else on squidbay.ai is served by the asset server
-// without invoking this code, exactly as it was before.
+// (`/skill/*` and `/agent*` today). Everything else on squidbay.ai is served by the
+// asset server without invoking this code, exactly as it was before.
 
 export default {
   async fetch(request, env) {
@@ -43,6 +44,21 @@ export default {
       if (segments.length === 3) {
         return env.ASSETS.fetch(new Request(new URL("/skill", url), request));
       }
+    }
+
+    // The /agent/ page was retired on 2026-08-13 and its folder is gone from this repo.
+    // The path itself keeps its promise by pointing at the page that carries the
+    // personal agent now — the same treatment /factory already gets to /business.
+    //
+    // Deliberately ONE segment only. A deeper /agent/<something> is NOT claimed here:
+    // it falls through to the asset server and stays an honest 404. Whether anything
+    // ever lives under that shape is an open question in the wireframe, and a redirect
+    // written today would answer it silently. Widening this to a prefix match is a
+    // one-line change if that question is ever ruled.
+    if (segments.length === 1 && segments[0] === "agent") {
+      const target = new URL("/personal", url);
+      target.search = url.search; // a campaign link keeps its ?utm_* across the hop
+      return Response.redirect(target.toString(), 301);
     }
 
     return env.ASSETS.fetch(request);
