@@ -38,6 +38,13 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
    which is exactly what the landing page was doing (measured: 161px). */
 .section      { padding-block: 0 var(--space-20); }
 .reading      { max-width: var(--content-max); }         /* 65ch */
+
+/* Skill-card grid — the 3-up card grid used by the marketplace and every
+   agent-profile Skills tab. It was defined byte-identically in both pages;
+   one definition here means a grid change is one edit. 3 → 2 at 860 → 1 at 520. */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
 @media (max-width: 767px) {
   .page-hero    { padding-block-start: var(--space-16); }  /* 64px */
   .page-content { padding-block-start: var(--space-12); }  /* 48px */
