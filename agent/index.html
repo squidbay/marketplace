@@ -51,7 +51,11 @@
     <!-- Styles -->
     <!-- Design system: tokens + self-hosted Sora / Fragment Mono. No web fonts. -->
     <link rel="stylesheet" href="/design-system/styles.css">
-    <link rel="stylesheet" href="https://squidbay.ai/css/styles.css">
+    <!-- css/styles.css was linked here, absolutely, off squidbay.ai. It was the ONLY
+         live reference to css/*.css anywhere in the repo, and it was cross-host: this
+         page is served at agent.squidbay.io but pulled its base styles from the apex.
+         The 49 rules it actually used are now inlined at the top of squid.css, in the
+         cascade position that link held. Same bytes, same origin, one less round trip. -->
     <link rel="stylesheet" href="squid.css">
 
     <!-- JSON-LD Structured Data -->

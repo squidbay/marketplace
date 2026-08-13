@@ -1,7 +1,79 @@
+/* ==========================================================================
+   Ported from css/styles.css — 2026-08-13
+
+   css/*.css was twelve legacy per-page stylesheets that no page loaded any
+   more, with one exception: THIS page still linked css/styles.css, and it was
+   the last thing keeping the whole directory alive.
+
+   Of that file's 455 rules, exactly the 49 below matched anything in
+   agent/index.html — the reset, the base type scale, .container, and the
+   chat-demo mock block — plus @keyframes fadeInUp, which squid.css animates
+   with in five places (lines ~60/78/102/135/144) and never defined itself.
+
+   They sit at the TOP of this file on purpose: css/styles.css loaded AFTER
+   /design-system/styles.css and BEFORE squid.css, so this is the cascade
+   position they held. Moving them anywhere else changes which rule wins.
+   ========================================================================== */
+
+*, ::before, ::after { margin: 0px; padding: 0px; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; background: var(--black); }
+body { font-family: var(--font-display); background: var(--black); color: var(--white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; min-height: 100vh; padding-top: env(safe-area-inset-top); }
+.container { max-width: 1200px; margin: 0px auto; padding: 0px 24px; position: relative; z-index: 1; width: 100%; }
+h1, h2, h3 { font-weight: 700; line-height: 1.15; }
+h1 { font-size: clamp(2.25rem, 5vw, 4rem); margin-bottom: 24px; letter-spacing: -0.01em; }
+h2 { font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: 48px; }
+h3 { font-size: 1.25rem; font-weight: 700; }
+.chat-demo { padding: 120px 0px; background: transparent; overflow: hidden; }
+.chat-window { width: 100%; max-width: 480px; background: var(--dark); border: 1px solid var(--gray); border-radius: var(--radius-card); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.4) 0px 20px 60px; }
+.chat-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: var(--black); border-bottom: 1px solid var(--gray); }
+.chat-header-left { display: flex; align-items: center; gap: 12px; }
+.chat-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.chat-avatar.agent { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+.chat-header-info { display: flex; flex-direction: column; }
+.chat-header-name { font-weight: 600; font-size: 0.95rem; }
+.chat-header-status { font-size: 0.75rem; color: var(--green); }
+.chat-badge { background: rgba(70, 196, 196, 0.1); color: var(--primary); padding: 4px 10px; border-radius: var(--radius-full); font-size: 0.7rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px; }
+.chat-demo .chat-messages { height: 420px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.chat-input-area { display: flex; gap: 10px; padding: 16px 20px; background: var(--black); border-top: 1px solid var(--gray); }
+.chat-input-area input { flex: 1 1 0%; background: var(--dark); border: 1px solid var(--gray); border-radius: var(--radius-full); padding: 12px 18px; color: var(--text); font-size: 0.9rem; }
+.chat-send-btn { width: 44px; height: 44px; background: var(--primary); border: none; border-radius: 50%; color: var(--black); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition-base); }
+.chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+code { font-family: var(--font-mono); }
+@keyframes fadeInUp { 
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0px); }
+}
+@media (max-width: 768px) {
+  .chat-demo { padding: 80px 0px; }
+  .chat-window { max-width: 100%; border-radius: var(--radius); }
+  .chat-header { padding: 12px 16px; }
+  .chat-header-name { font-size: 0.9rem; }
+  .chat-badge { font-size: 0.65rem; padding: 3px 8px; }
+  .chat-demo .chat-messages { height: 360px; padding: 16px; gap: 12px; }
+  .chat-input-area { padding: 12px 16px; }
+  .chat-input-area input { padding: 10px 14px; font-size: 0.85rem; }
+  .chat-send-btn { width: 40px; height: 40px; }
+}
+@media (max-width: 480px) {
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+  .container { padding: 0px 16px; }
+  .how-it-works, .code-section, .features, .pricing, .waitlist, .why-lightning, .use-case, .chat-demo { padding: 80px 0px; }
+  .chat-messages { height: 320px; }
+}
+html, body { overflow-x: hidden; max-width: 100vw; }
+pre, code, .code-block-small, .agent-code-block pre { max-width: 100%; overflow-x: auto; word-break: break-all; }
+@media (max-width: 480px) {
+  .container { padding: 0px 12px; }
+}
+@media (max-width: 360px) {
+  .container { padding: 0px 10px; }
+}
+
 /* ============================================
    SQUID AGENT LANDING PAGE
-   Extends SquidBay styles.css — do not duplicate
-   Bubble CSS moved to styles.css (loaded site-wide)
+   Extended css/styles.css until 2026-08-13, when that file was deleted with the
+   rest of css/*.css. The part of it this page used is now the block above.
    ============================================ */
 
 /* ===================================
