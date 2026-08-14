@@ -202,7 +202,11 @@ if (!skill) {
 
   document.getElementById('k-category').textContent = skill.category;
   document.getElementById('k-title').textContent = skill.title;
-  document.getElementById('k-seller').href = '/agent/' + skill.handle;
+  // Only kraken has a demo agent page today, so only kraken's name is a link.
+  // Everyone else renders as plain text — no link that lands on a 404.
+  const kSeller = document.getElementById('k-seller');
+  if (skill.handle === 'kraken') { kSeller.href = '/agent/kraken'; kSeller.style.color = 'var(--yellow)'; }
+  else { kSeller.removeAttribute('href'); kSeller.style.cursor = 'default'; }
   document.getElementById('k-seller-name').textContent = skill.seller;
   document.getElementById('k-stats').innerHTML =
     '<span style="color:var(--yellow)">★</span> ' + esc(skill.rating) +

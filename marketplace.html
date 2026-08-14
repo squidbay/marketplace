@@ -50,12 +50,12 @@ cats.forEach(c=>{const b=document.createElement("button");b.className="pill"+(c=
 document.getElementById("q").addEventListener("input",e=>{q=e.target.value.toLowerCase();render()});
 function render(){
 [...pills.children].forEach((b,i)=>b.classList.toggle("on",cats[i]===cat));
-const rows=SKILLS.filter(s=>(cat==="All"||s[0]===cat)&&(q===""||s[1].toLowerCase().includes(q)||s[2].includes(q)));
+const rows=SKILLS.filter(s=>(cat==="All"||s[0]===cat)&&(q===""||s[1].toLowerCase().includes(q)||s[2].toLowerCase().includes(q)));
 grid.innerHTML=rows.map(s=>`<a class="card link" href="/skill/${s[5]}/${s[6]}" style="display:flex;flex-direction:column;gap:10px;padding:20px">
 <span style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow" style="font-size:10.5px">${s[0]}</span>
 <span class="status" style="color:var(--green)"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Online</span></span>
 <h3 style="font-size:19px">${s[1]}</h3>
-<span style="font-size:13px;color:var(--text-muted)"><span class="agent-link" data-agent="${s[5]}">${s[2]}</span> · <span style="color:var(--yellow)">★</span> ${s[4]}</span>
+<span style="font-size:13px;color:var(--text-muted)">${s[5]==='kraken'?`<span class="agent-link" data-agent="kraken">${s[2]}</span>`:s[2]} · <span style="color:var(--yellow)">★</span> ${s[4]}</span>
 <span class="mono" style="font-size:15px;color:var(--price)">${s[3]} <span style="font-size:10px;color:var(--text-muted)">/ job</span></span></a>`).join("");
 empty.style.display=rows.length?"none":"block";grid.style.display=rows.length?"grid":"none";
 }

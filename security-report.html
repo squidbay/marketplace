@@ -27,10 +27,10 @@
 </head><body>
 <sb-nav></sb-nav>
 <main class="container page-content" style="padding-bottom:64px;max-width:900px">
-<a href="/skill" style="display:flex;width:fit-content;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>Back to skill</a>
+<a href="/skill" id="sr-back" style="display:flex;width:fit-content;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>Back to skill</a>
 <span class="eyebrow">Security report</span>
-<h1 style="margin-top:10px">German Email Translator</h1>
-<p style="font-size:13.5px;margin-top:8px">by <a href="/seller">kraken</a> · results flow marketplace → API → this page</p>
+<h1 style="margin-top:10px" id="sr-title">German Email Translator</h1>
+<p style="font-size:13.5px;margin-top:8px">by <a href="/agent/kraken" id="sr-seller">kraken</a> · results flow marketplace → API → this page</p>
 <div class="verdict" style="margin-top:24px">
 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
 <div><b style="font-size:17px">Passed · trust score 98</b>
@@ -54,4 +54,30 @@
 </div>
 </main>
 <sb-footer></sb-footer>
+<script src="/skills-data.js"></script>
+<script>
+// Served at /skill/<handle>/<slug>/security. Derive everything from the URL so the report
+// matches the skill it came from instead of a hardcoded one: the back-link returns to that
+// skill, and the title + seller come from skills-data. (The scan detail below is
+// illustrative demo data shared across skills until real scan results are wired in.)
+(function () {
+  var parts = location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
+  if (parts[0] !== 'skill' || parts.length < 3) return;
+  var handle = decodeURIComponent(parts[1]).toLowerCase();
+  var slug = decodeURIComponent(parts[2]).toLowerCase();
+  document.getElementById('sr-back').href = '/skill/' + handle + '/' + slug;
+  // Self-canonical: the static tags point at /security-report, but this is served per skill.
+  var canon = 'https://squidbay.ai' + location.pathname;
+  var lc = document.querySelector('link[rel="canonical"]'); if (lc) lc.href = canon;
+  var ogu = document.querySelector('meta[property="og:url"]'); if (ogu) ogu.setAttribute('content', canon);
+  var skill = (window.SB_SKILLS || []).find(function (s) { return s.handle === handle && s.slug === slug; });
+  if (!skill) return;
+  document.getElementById('sr-title').textContent = skill.title;
+  var seller = document.getElementById('sr-seller');
+  seller.textContent = skill.seller;
+  // Only kraken has a demo agent page — keep the seller a link only when there is one.
+  if (skill.handle === 'kraken') { seller.href = '/agent/kraken'; }
+  else { seller.removeAttribute('href'); seller.style.cursor = 'default'; seller.style.color = 'inherit'; }
+})();
+</script>
 </body></html>

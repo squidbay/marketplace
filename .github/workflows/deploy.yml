@@ -50,6 +50,30 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
+      # Cloudflare edge-caches HTML on this zone, so a stale response — e.g. a 404 cached
+      # before a worker route existed — can outlive a deploy and be served to real browsers
+      # while the new worker never runs (cf-cache-status: HIT, worker not invoked). That is
+      # the "deployed but still 404 in the browser" gremlin. Purge the zone on every deploy
+      # so merge = ship actually reaches visitors. Zone is looked up by name (nothing
+      # hardcoded). Requires the token to have Zone → Cache Purge; if it does not, this logs
+      # exactly what to add and does not fail the deploy.
+      - name: Purge Cloudflare cache
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          ZONE_ID=$(curl -sS "https://api.cloudflare.com/client/v4/zones?name=squidbay.ai" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const j=JSON.parse(s);process.stdout.write((j.result&&j.result[0]&&j.result[0].id)||"")}catch(e){}})')
+          if [ -z "$ZONE_ID" ]; then
+            echo "::error::Could not resolve zone id for squidbay.ai. The CLOUDFLARE_API_TOKEN likely lacks Zone:Read + Cache Purge. Add those so deploys self-purge and stale 404s stop reaching browsers."
+            exit 0
+          fi
+          RESP=$(curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+          echo "$RESP" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const j=JSON.parse(s);if(j.success){console.log("Cloudflare cache purged.")}else{console.log("::error::Cache purge failed: "+JSON.stringify(j.errors)+" — add Zone:Cache Purge to CLOUDFLARE_API_TOKEN.")}}catch(e){console.log("::error::purge response unparseable: "+s)}})'
+          sleep 6
+
       # Proves the deploy actually changed the live site, rather than reporting success
       # because the command exited 0. Compares the site.js served by squidbay.ai against
       # the site.js in this commit — the exact check that caught "merge does not ship".
