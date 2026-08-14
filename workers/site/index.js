@@ -1,4 +1,4 @@
-// The SITE Worker's script — the vanity skill/agent routes, and nothing else.
+// The SITE Worker's script — the vanity skill/agent routes, the page-map, and nothing else.
 //
 // Until this file existed, squidbay.ai was assets-only: wrangler.toml declared
 // [assets] with no `main`, so every request was answered by Workers Static Assets
@@ -12,6 +12,8 @@
 //   /skill/<seller>/<slug>/security  → the security-report page
 //   /skill/<seller>/<slug>           → the skill page
 //   /agent/<handle>                  → the agent seller/profile page
+//   /<one of the 8 page names>       → pages/<name> if it exists, else <name> at the root
+//   /pages/<anything>                → 301 to the extensionless root URL
 //   anything else                    → handed straight back to the asset server
 //
 // Three details are load-bearing, so nobody has to rediscover them the hard way:
@@ -38,9 +40,36 @@
 //    WITH a 404 status. A genuine 404 must stay a 404 — but it is marked no-store so a
 //    cached 404 can never pin itself to a path that later becomes valid.
 //
-// wrangler.toml's `run_worker_first` lists `/skill/*` and `/agent/*`, so both reach this
-// script before the asset server answers. /agent/* had to be added: as an asset-miss
-// fallback it 404'd real browsers and never ran under local Miniflare at all.
+// wrangler.toml sets `run_worker_first = true` — not a list of route patterns — so this
+// script runs before the asset server on EVERY request. The array form was tried first and
+// does not work: it leaves `assets_navigation_prefers_asset_serving` in effect, and that
+// flag answers navigation requests (`Sec-Fetch-Mode: navigate`, i.e. every real browser
+// hit) from the asset-serving logic BEFORE the Worker is invoked — so a path with no file
+// behind it served 404.html to humans while curl, which sends no such header, reached the
+// Worker and got a 200. Only `true` disables the flag. wrangler.toml's own comment carries
+// the full account; the consequence for this file is that every path below is reachable,
+// including for browser navigations, and anything not claimed here is handed straight back
+// to the asset server by the passthrough at the bottom.
+
+// The pages that live at the URL root today and move into pages/ later. The URL a visitor
+// types NEVER changes — this map is what makes the file location and the URL independent,
+// so the files can move in a separate change without a single live URL moving with them.
+//
+// Read the fetch handler's page-map block for how it is used. The short version: on
+// `/<name>` the Worker asks the asset server for `/pages/<name>` first and falls back to
+// `/<name>` at the root, so the SAME code is correct both before the files move and after.
+// That is deliberate — the assets and the Worker deploy on two different lanes and can ship
+// minutes apart, and a visitor must see a working page at every point in between.
+const PAGES = new Set([
+  "app",
+  "business",
+  "docs",
+  "legal",
+  "marketplace",
+  "personal",
+  "register",
+  "support",
+]);
 
 // A subrequest to the asset binding for `path`, carrying the visitor's headers MINUS
 // the navigation markers that would make Static Assets serve the 404 page (see note 2).
@@ -84,6 +113,39 @@ export default {
     // when there is somewhere to land.
     if (segments[0] === "agent" && segments.length === 2 && segments[1] === "kraken") {
       return noStore(await env.ASSETS.fetch(assetRequest("/seller", url, request)));
+    }
+
+    // The page-map. `url.pathname` is matched WHOLE and extensionless — `/business`, never
+    // `/business/` and never `/business.html`. Both of those already have correct behavior
+    // from html_handling ("auto-trailing-slash" 307s them to `/business`), and claiming them
+    // here would turn one URL into three that all answer 200 — the exact duplication the
+    // /pages guard below exists to prevent.
+    //
+    // Ask for the moved location first, fall back to the root one. `env.ASSETS.fetch` is a
+    // subrequest straight to the asset server, so neither of these re-enters this Worker and
+    // no loop is possible. The 404 test is what makes the fallback work: with the navigation
+    // headers stripped (see note 2) a real asset resolves 200 and a missing one is an honest
+    // 404, so a 404 here means "not moved yet", not "broken".
+    const pageName = url.pathname.slice(1);
+    if (PAGES.has(pageName)) {
+      const moved = await env.ASSETS.fetch(assetRequest(`/pages/${pageName}`, url, request));
+      if (moved.status !== 404) return noStore(moved);
+      return noStore(await env.ASSETS.fetch(assetRequest(`/${pageName}`, url, request)));
+    }
+
+    // The URL guard. Once the files live under pages/, the asset server would happily serve
+    // them at `/pages/business` too — a second URL for identical content, which splits
+    // inbound links and is the kind of thing that is very hard to take back later. So the
+    // file location is never a URL: any /pages/* request is redirected to the canonical
+    // extensionless root URL. 301 (permanent) because this is a fact about the site's URL
+    // shape, not a temporary state.
+    if (segments[0] === "pages" && segments.length >= 2) {
+      const canonical = new URL(
+        "/" + segments.slice(1).join("/").replace(/\.html$/, ""),
+        url,
+      );
+      canonical.search = url.search;
+      return Response.redirect(canonical.toString(), 301);
     }
 
     // Genuine 404s must never be cached: a cached 404 is exactly what poisons a path
