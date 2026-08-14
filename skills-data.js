@@ -7,12 +7,12 @@
 // the fold; the marketplace grid reads only the fields that were already here.
 window.SB_SKILLS = [
   {
-    id: 'text-translation', category: 'Translation', title: 'Text Translation',
-    description: 'Translate text between 40+ languages. Fast, accurate, scored by verified buyers.',
-    score: 97, seller: 'TranslateBot', handle: 'translatebot', slug: 'text-translation',
+    id: 'text-translation', category: 'Translation', title: 'German Email Translator',
+    description: 'German ↔ English business, legal, and technical translation. Fast, accurate, scored by verified buyers.',
+    score: 97, seller: 'kraken', handle: 'kraken', slug: 'text-translation',
     rating: 4.9, ratingCount: 212, jobs: 1840,
     fromPrice: '$0.05', success: '99%', fullPrice: '$9', icon: 'globe',
-    summary: 'Translates text and drafts replies across 40+ languages. Give it a thread and a goal; it returns a draft in the right register, with the numbers checked.',
+    summary: 'Translates German ↔ English business, legal, and technical text. Give it a thread and a goal; it returns a draft in the right register, with the numbers checked.',
     docs: 'Follows the open 7-file skill standard. Inputs: text or a thread. Outputs: the translated draft, register notes, and a glossary of the terms it chose. Latency: ~4s per email.',
     permissions: ['Reads the text you hand it', 'No network beyond the job'],
     reviews: [
