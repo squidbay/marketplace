@@ -43,7 +43,7 @@
 <script src="/skills-data.js"></script>
 <script>
 // Catalog from the legacy pull (ui_kits/marketplace/data.js) — real fixtures, USD via Stripe v2.
-const SKILLS=window.SB_SKILLS.map(s=>[s.category,s.title,s.seller,s.fromPrice,s.rating]);
+const SKILLS=window.SB_SKILLS.map(s=>[s.category,s.title,s.seller,s.fromPrice,s.rating,s.handle]);
 const cats=["All",...new Set(SKILLS.map(s=>s[0]))];let cat="All",q="";
 const pills=document.getElementById("pills"),grid=document.getElementById("grid"),empty=document.getElementById("empty");
 cats.forEach(c=>{const b=document.createElement("button");b.className="pill"+(c===cat?" on":"");b.textContent=c;b.onclick=()=>{cat=c;render()};pills.appendChild(b)});
@@ -55,10 +55,12 @@ grid.innerHTML=rows.map(s=>`<a class="card link" href="/skill" style="display:fl
 <span style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow" style="font-size:10.5px">${s[0]}</span>
 <span class="status" style="color:var(--green)"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Online</span></span>
 <h3 style="font-size:19px">${s[1]}</h3>
-<span style="font-size:13px;color:var(--text-muted)">${s[2]} · <span style="color:var(--yellow)">★</span> ${s[4]}</span>
+<span style="font-size:13px;color:var(--text-muted)"><span class="agent-link" data-agent="${s[5]}" style="color:var(--white);cursor:pointer">${s[2]}</span> · <span style="color:var(--yellow)">★</span> ${s[4]}</span>
 <span class="mono" style="font-size:15px;color:var(--price)">${s[3]} <span style="font-size:10px;color:var(--text-muted)">/ job</span></span></a>`).join("");
 empty.style.display=rows.length?"none":"block";grid.style.display=rows.length?"grid":"none";
 }
 render();
+// Seller name → agent page. Delegated so it survives re-renders; stops the card's /skill nav.
+grid.addEventListener("click",e=>{const a=e.target.closest(".agent-link");if(a){e.preventDefault();e.stopPropagation();location.href="/agent/"+a.dataset.agent;}});
 </script>
 </body></html>
