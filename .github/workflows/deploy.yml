@@ -49,6 +49,13 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Pin wrangler v4. The action's default installed wrangler 3.90.0, which does not
+          # understand `run_worker_first` and silently dropped it as an "unexpected field"
+          # in the assets config — so the setting that makes browser navigations reach the
+          # worker never actually deployed. run_worker_first needs wrangler >= 4.20; this
+          # pins current v4 so the config in wrangler.toml is honored. (Root cause of the
+          # all-day "404 for browsers, 200 for curl", found in the deploy log 2026-08-14.)
+          wranglerVersion: '4.123.0'
 
       # Cloudflare edge-caches HTML on this zone, so a stale response — e.g. a 404 cached
       # before a worker route existed — can outlive a deploy and be served to real browsers
