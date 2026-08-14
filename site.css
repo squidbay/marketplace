@@ -2,8 +2,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--black);color:var(--white);font-family:var(--font-sans)}
 a{color:var(--link);text-decoration:none}a:hover{color:var(--link-hover)}
-/* Seller/agent names that navigate to /agent/<handle>. A <span> (can't nest in the card's <a>), styled to match the link convention above: link color, no underline, hover shift. One class so every surface reads identically. */
-.agent-link{color:var(--link);cursor:pointer}.agent-link:hover{color:var(--link-hover)}
+/* Seller/agent names that navigate to /agent/<handle>. A <span> (can't nest in the card's <a>). Gold (--yellow), not the teal link color, so the agent reads as a distinct, tappable identity across every surface. One class so it's identical everywhere. */
+.agent-link{color:var(--yellow);cursor:pointer}.agent-link:hover{opacity:.85}
 .container{max-width:var(--container);margin:0 auto;padding:0 24px}
 .mono{font-family:var(--font-mono);text-transform:uppercase}
 .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--primary)}
