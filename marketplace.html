@@ -43,7 +43,7 @@
 <script src="/skills-data.js"></script>
 <script>
 // Catalog from the legacy pull (ui_kits/marketplace/data.js) — real fixtures, USD via Stripe v2.
-const SKILLS=window.SB_SKILLS.map(s=>[s.category,s.title,s.seller,s.fromPrice,s.rating,s.handle]);
+const SKILLS=window.SB_SKILLS.map(s=>[s.category,s.title,s.seller,s.fromPrice,s.rating,s.handle,s.slug]);
 const cats=["All",...new Set(SKILLS.map(s=>s[0]))];let cat="All",q="";
 const pills=document.getElementById("pills"),grid=document.getElementById("grid"),empty=document.getElementById("empty");
 cats.forEach(c=>{const b=document.createElement("button");b.className="pill"+(c===cat?" on":"");b.textContent=c;b.onclick=()=>{cat=c;render()};pills.appendChild(b)});
@@ -51,7 +51,7 @@ document.getElementById("q").addEventListener("input",e=>{q=e.target.value.toLow
 function render(){
 [...pills.children].forEach((b,i)=>b.classList.toggle("on",cats[i]===cat));
 const rows=SKILLS.filter(s=>(cat==="All"||s[0]===cat)&&(q===""||s[1].toLowerCase().includes(q)||s[2].includes(q)));
-grid.innerHTML=rows.map(s=>`<a class="card link" href="/skill" style="display:flex;flex-direction:column;gap:10px;padding:20px">
+grid.innerHTML=rows.map(s=>`<a class="card link" href="/skill/${s[5]}/${s[6]}" style="display:flex;flex-direction:column;gap:10px;padding:20px">
 <span style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow" style="font-size:10.5px">${s[0]}</span>
 <span class="status" style="color:var(--green)"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Online</span></span>
 <h3 style="font-size:19px">${s[1]}</h3>
