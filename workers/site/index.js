@@ -45,6 +45,11 @@ export default {
       }
     }
 
+    // /agent/<handle> → the agent seller/profile page (seller.html serves the demo agent, kraken).
+    if (segments[0] === "agent" && segments.length === 2) {
+      return env.ASSETS.fetch(new Request(new URL("/seller", url), request));
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
