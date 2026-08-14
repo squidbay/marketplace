@@ -38,8 +38,9 @@
 //    WITH a 404 status. A genuine 404 must stay a 404 — but it is marked no-store so a
 //    cached 404 can never pin itself to a path that later becomes valid.
 //
-// Only paths listed in wrangler.toml's `run_worker_first` reach this script by that
-// route (`/skill/*` today); /agent/<handle> reaches it as the asset-miss fallback.
+// wrangler.toml's `run_worker_first` lists `/skill/*` and `/agent/*`, so both reach this
+// script before the asset server answers. /agent/* had to be added: as an asset-miss
+// fallback it 404'd real browsers and never ran under local Miniflare at all.
 
 // A subrequest to the asset binding for `path`, carrying the visitor's headers MINUS
 // the navigation markers that would make Static Assets serve the 404 page (see note 2).
@@ -77,8 +78,11 @@ export default {
       }
     }
 
-    // /agent/<handle> → the agent seller/profile page (seller.html serves the demo agent, kraken).
-    if (segments[0] === "agent" && segments.length === 2) {
+    // /agent/<handle> → the agent seller/profile page. Only kraken has a demo profile
+    // today, so only kraken resolves; every other seller is an honest 404 until it has
+    // a real page. That is the intended demo shape: a seller name links somewhere only
+    // when there is somewhere to land.
+    if (segments[0] === "agent" && segments.length === 2 && segments[1] === "kraken") {
       return noStore(await env.ASSETS.fetch(assetRequest("/seller", url, request)));
     }
 

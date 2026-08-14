@@ -22,6 +22,18 @@ const root = process.argv[2] || '.';
 const SKIP = new Set(['node_modules', '.git', 'reference', 'uploads']);
 const SAME_ORIGIN = /^https?:\/\/(www\.)?squidbay\.(ai|io)(?=\/|$)/i;
 
+// Vanity paths the site Worker (workers/site/index.js) serves from real files that do
+// NOT sit at the URL's path. Without this, a legitimate worker URL like
+// /skill/kraken/text-translation reads as a dead link and fails the gate — which is
+// exactly what froze the worker deploy after the per-skill links landed. KEEP IN SYNC
+// with the Worker: it rewrites /skill/<seller>/<slug> → skill.html,
+// /skill/<seller>/<slug>/security → security-report.html, and /agent/kraken → seller.html.
+const WORKER_ROUTES = [
+  /^\/skill\/[^/]+\/[^/]+\/security\/?$/,
+  /^\/skill\/[^/]+\/[^/]+\/?$/,
+  /^\/agent\/kraken\/?$/,
+];
+
 const pages = [];
 const walk = (dir) => {
   for (const name of readdirSync(dir)) {
@@ -38,6 +50,7 @@ const resolves = (fromDir, ref) => {
   let u = ref.replace(SAME_ORIGIN, '');
   u = u.split('#')[0].split('?')[0];
   if (!u) return true;                                   // pure fragment or bare origin
+  if (u.startsWith('/') && WORKER_ROUTES.some((re) => re.test(u))) return true; // served by the Worker
   const base = u.startsWith('/') ? root : join(root, fromDir);
   const rel = u.startsWith('/') ? u.slice(1) : u;
   const candidates = u.endsWith('/') || rel === ''
