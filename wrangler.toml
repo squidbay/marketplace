@@ -50,13 +50,17 @@ binding = "ASSETS"
 # current docs, not from memory), so it is scoped to exactly one prefix rather than
 # `true`, which would put every request on squidbay.ai through our code.
 #
-# /agent/* is deliberately NOT here. The /agent/<name> vanity route collides in path
-# space with the real agent/ folder in this repo, and that needs its own analysis
-# before anything routes it.
+# /agent/* IS here too, and has to be. /agent/<handle> matches no asset, so without
+# this the worker only ran as an asset-miss fallback — which 404'd real browsers on the
+# live site and did not run at all under local Miniflare (verified). The path-space
+# collision with the real agent/ folder is resolved in code, not by exclusion: the
+# worker claims ONLY /agent/kraken (the one demo profile) and passes everything else —
+# /agent itself, /agent/squid.css, /agent/images/* — straight to the asset server
+# untouched. Confirmed there is no asset at /agent/kraken for this to shadow.
 #
-# Note the pattern needs the trailing slash to match: `/skill` itself does not match
-# `/skill/*`, so the bare page keeps being served by the asset server, untouched.
-run_worker_first = [ "/skill/*" ]
+# Note the pattern needs the extra segment to match: `/agent` itself does not match
+# `/agent/*`, so the bare agent template page keeps being served by the asset server.
+run_worker_first = [ "/skill/*", "/agent/*" ]
 
 # Both values below were verified against the live site on 2026-08-11 before being
 # written down. They are stated explicitly so that a deploy cannot quietly change the
