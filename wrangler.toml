@@ -41,26 +41,26 @@ directory = "."
 # absent from this file while there was none, and is correct to add now that there is.
 binding = "ASSETS"
 
-# Which paths run the script BEFORE the asset server answers. The default is the
-# opposite: assets win and the script is only reached when nothing matched — which is
-# no use here, because /skill/<seller>/<slug> matches no asset and the 404 handling
-# below would already have fired by then.
+# Run the script BEFORE the asset server for EVERY request. This must be `true`, not a
+# route-pattern array, and the reason cost a full day to find (verified live 2026-08-14):
 #
-# This is a route-pattern array (wrangler ≥ 4.20 — verified against Cloudflare's
-# current docs, not from memory), so it is scoped to exactly one prefix rather than
-# `true`, which would put every request on squidbay.ai through our code.
+# Cloudflare's compatibility flag `assets_navigation_prefers_asset_serving` is ON by
+# default for any compatibility_date >= 2025-04-01 (ours is 2026-08-01). With it on, a
+# **navigation request** (one carrying `Sec-Fetch-Mode: navigate` — i.e. every real
+# browser address-bar/link hit) is answered by the asset-serving logic, serving the
+# nearest `404.html` for a path that matches no file, **before the Worker is ever
+# invoked**. Non-navigation requests (curl, fetch, monitoring) still reach the Worker.
+# Result: /skill/<seller>/<slug> and /agent/kraken 404'd for humans and 200'd for every
+# automated check — a phantom that reads exactly like an edge-cache bug.
 #
-# /agent/* IS here too, and has to be. /agent/<handle> matches no asset, so without
-# this the worker only ran as an asset-miss fallback — which 404'd real browsers on the
-# live site and did not run at all under local Miniflare (verified). The path-space
-# collision with the real agent/ folder is resolved in code, not by exclusion: the
-# worker claims ONLY /agent/kraken (the one demo profile) and passes everything else —
-# /agent itself, /agent/squid.css, /agent/images/* — straight to the asset server
-# untouched. Confirmed there is no asset at /agent/kraken for this to shadow.
-#
-# Note the pattern needs the extra segment to match: `/agent` itself does not match
-# `/agent/*`, so the bare agent template page keeps being served by the asset server.
-run_worker_first = [ "/skill/*", "/agent/*" ]
+# The route-pattern ARRAY form does NOT disable that flag, so navigation requests were
+# still short-circuited to 404.html. Per Cloudflare's own docs, only
+# `run_worker_first = true` "ensures the Worker script executes before any asset-serving
+# logic" and makes the flag have no effect. So it is `true`. Every request now enters the
+# Worker; anything the Worker does not claim is handed straight back via
+# `env.ASSETS.fetch(request)` (the passthrough), so the agent/ folder and every real
+# asset are served exactly as before — genuine 404s still get 404.html with a 404 status.
+run_worker_first = true
 
 # Both values below were verified against the live site on 2026-08-11 before being
 # written down. They are stated explicitly so that a deploy cannot quietly change the
