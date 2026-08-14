@@ -19,8 +19,24 @@
 @media (max-width:767px){
 main{padding-bottom:96px}
 .buybar{display:flex}
+#buy{display:none}
 }
-@media (max-height:480px) and (min-width:700px){main{padding-bottom:84px}.buybar{display:flex}}
+@media (max-height:480px) and (min-width:700px){main{padding-bottom:84px}.buybar{display:flex}#buy{display:none}}
+/* Demo checkout modal — the visual Stripe pathway; real Stripe Connect drops in here at launch. */
+.co-overlay{position:fixed;inset:0;z-index:100;background:rgba(3,10,12,0.74);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px}
+.co-overlay.on{display:flex}
+.co{position:relative;width:100%;max-width:400px;background:var(--dark);border:1px solid var(--gray);border-radius:16px;padding:26px 24px;display:flex;flex-direction:column;gap:14px}
+.co-x{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--text-muted);font-size:24px;line-height:1;cursor:pointer}
+.co-eye{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--primary);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.co-demo{color:var(--yellow);border:1px solid rgba(212,167,44,0.5);border-radius:20px;padding:2px 8px;font-size:8.5px;letter-spacing:1px}
+.co-h{font-size:20px;margin:0}
+.co-sub{font-size:13px;color:var(--text-muted);line-height:1.6;margin:0}
+.co-line{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--darker);border-radius:10px;font-size:14px}
+.co-line b{font-family:var(--font-mono);color:var(--price)}
+.co-card{background:var(--darker);border:1px solid var(--gray);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:9px;font-family:var(--font-mono);font-size:13px;color:var(--text-muted)}
+.co-cardrow{display:flex;justify-content:space-between}.co-cardno{color:var(--white);letter-spacing:2px}
+.co-btn{width:100%;min-height:46px}
+.co-foot{font-size:11px;color:var(--text-muted);line-height:1.6;margin:0;text-align:center}
 .added{display:none;align-items:flex-start;gap:9px;padding:12px 14px;border:1px solid var(--green);border-radius:var(--radius-md);background:rgba(23,178,106,0.06);font-size:13px;line-height:1.6}
 /* Unknown seller/slug: the page still has a nav, a footer and a way out. */
 .notfound{display:none;flex-direction:column;align-items:flex-start;gap:14px;max-width:560px}
@@ -107,6 +123,26 @@ main{padding-bottom:96px}
 </div>
 </main>
 <div class="buybar"><span class="p" id="barprice"></span><span style="flex:1"></span><button class="btn btn-primary" id="barbuy" style="min-height:44px">Sign in</button></div>
+<div class="co-overlay" id="co">
+<div class="co" role="dialog" aria-modal="true">
+<button class="co-x" id="co-x" aria-label="Close">&times;</button>
+<div id="co-signin">
+<div class="co-eye">Sign in</div>
+<h3 class="co-h">Sign in to your ops center</h3>
+<p class="co-sub">Only SquidBay agents can buy. The purchase installs on your own agent and runs on your own Stripe — SquidBay never holds the money or the keys.</p>
+<div class="co-line"><span>Ops center</span><b>kraken.squidbay.ai</b></div>
+<button class="btn btn-primary co-btn" id="co-signbtn">Sign in</button>
+</div>
+<div id="co-pay" style="display:none">
+<div class="co-eye">Checkout<span class="co-demo">Demo · no real charge</span></div>
+<h3 class="co-h" id="co-title"></h3>
+<div class="co-line"><span id="co-tier"></span><b id="co-price"></b></div>
+<div class="co-card"><div class="co-cardrow"><span>Card</span><span class="co-cardno">4242 4242 4242 4242</span></div><div class="co-cardrow"><span>12 / 34</span><span>CVC ···</span></div></div>
+<button class="btn btn-primary co-btn" id="co-paybtn">Pay</button>
+<p class="co-foot">Runs on your Stripe · seller keeps 90% · <b>Stripe Connect at launch.</b></p>
+</div>
+</div>
+</div>
 <sb-footer></sb-footer>
 <script src="/skills-data.js"></script>
 <script>
@@ -258,21 +294,44 @@ if (!skill) {
     tiers.forEach(x => x.classList.remove('on'));
     t.classList.add('on'); tier = t.dataset.t; bar(); labels();
   });
-  function act() {
-    if (bought) return;
-    if (!signedIn) {
-      signedIn = true; signedline.style.display = 'inline-flex';
-      buynote.textContent = 'Stripe connected. The purchase runs on your Stripe — seller keeps 90%.';
-      labels(); return;
-    }
-    bought = true;
-    buy.textContent = '✓ Added to Kraken'; buy.style.background = 'var(--green)';
-    buy.disabled = true; buy.style.cursor = 'default';
-    barbuy.textContent = '✓ Added to Kraken'; barbuy.style.background = 'var(--green)';
-    barbuy.disabled = true;
-    added.style.display = 'flex';
+  // Demo checkout — the visual Stripe pathway. Real Stripe Connect replaces the modal internals at launch.
+  const co = document.getElementById('co'),
+    coSignin = document.getElementById('co-signin'), coPay = document.getElementById('co-pay'),
+    coTitle = document.getElementById('co-title'), coTierEl = document.getElementById('co-tier'),
+    coPrice = document.getElementById('co-price'), coPaybtn = document.getElementById('co-paybtn');
+  function syncPay() {
+    coTitle.textContent = skill.title;
+    coTierEl.textContent = tier === 'full' ? 'Full Skill · own it' : 'Remote Execution · per job';
+    coPrice.textContent = priceOf(tier) + (tier === 'full' ? '' : ' / job');
+    coPaybtn.textContent = 'Pay ' + priceOf(tier);
   }
-  buy.onclick = act; barbuy.onclick = act;
+  function openCheckout() {
+    if (bought) return;
+    coSignin.style.display = signedIn ? 'none' : 'block';
+    coPay.style.display = signedIn ? 'block' : 'none';
+    if (signedIn) syncPay();
+    co.classList.add('on');
+  }
+  function closeCheckout() { co.classList.remove('on'); }
+  document.getElementById('co-x').onclick = closeCheckout;
+  co.onclick = e => { if (e.target === co) closeCheckout(); };
+  document.getElementById('co-signbtn').onclick = () => {
+    signedIn = true; signedline.style.display = 'inline-flex';
+    buynote.textContent = 'Stripe connected. The purchase runs on your Stripe — seller keeps 90%.';
+    labels();
+    coSignin.style.display = 'none'; coPay.style.display = 'block'; syncPay();
+  };
+  coPaybtn.onclick = () => {
+    coPaybtn.textContent = 'Processing…'; coPaybtn.disabled = true;
+    setTimeout(() => {
+      bought = true;
+      buy.textContent = '✓ Added to Kraken'; buy.style.background = 'var(--green)'; buy.disabled = true; buy.style.cursor = 'default';
+      barbuy.textContent = '✓ Added to Kraken'; barbuy.style.background = 'var(--green)'; barbuy.disabled = true;
+      added.style.display = 'flex';
+      closeCheckout(); coPaybtn.disabled = false; coPaybtn.textContent = 'Pay';
+    }, 900);
+  };
+  buy.onclick = openCheckout; barbuy.onclick = openCheckout;
   bar(); labels();
 }
 </script>
