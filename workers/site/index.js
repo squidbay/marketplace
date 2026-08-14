@@ -77,8 +77,11 @@ export default {
       }
     }
 
-    // /agent/<handle> → the agent seller/profile page (seller.html serves the demo agent, kraken).
-    if (segments[0] === "agent" && segments.length === 2) {
+    // /agent/<handle> → the agent seller/profile page. Only kraken has a demo profile
+    // today, so only kraken resolves; every other seller is an honest 404 until it has
+    // a real page. That is the intended demo shape: a seller name links somewhere only
+    // when there is somewhere to land.
+    if (segments[0] === "agent" && segments.length === 2 && segments[1] === "kraken") {
       return noStore(await env.ASSETS.fetch(assetRequest("/seller", url, request)));
     }
 
