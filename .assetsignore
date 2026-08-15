@@ -40,3 +40,8 @@ workers
 # This is the one intentional change from the current live boundary, which does serve
 # design-system/ci/kill-list.mjs. Nothing in the site fetches these at runtime (checked).
 design-system/ci
+
+# A build tool, not site content. Run by a human to regenerate images/og/*.png; fetched by
+# no page at runtime. It answered 200 on production until 2026-08-15 - the third file this
+# denylist did not name.
+design-system/og-template.html
