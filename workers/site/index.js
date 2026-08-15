@@ -13,6 +13,7 @@
 //   /skill/<seller>/<slug>           → the skill page
 //   /agent/<handle>                  → the agent seller/profile page
 //   /<one of the 8 page names>       → pages/<name> if it exists, else <name> at the root
+//   /<name>.html  and  /<name>/      → 301 to /<name>, the one canonical URL
 //   /pages/<anything>                → 301 to the extensionless root URL
 //   anything else                    → handed straight back to the asset server
 //
@@ -115,11 +116,9 @@ export default {
       return noStore(await env.ASSETS.fetch(assetRequest("/seller", url, request)));
     }
 
-    // The page-map. `url.pathname` is matched WHOLE and extensionless — `/business`, never
-    // `/business/` and never `/business.html`. Both of those already have correct behavior
-    // from html_handling ("auto-trailing-slash" 307s them to `/business`), and claiming them
-    // here would turn one URL into three that all answer 200 — the exact duplication the
-    // /pages guard below exists to prevent.
+    // The page-map. `url.pathname` is matched WHOLE and extensionless — `/business` serves,
+    // while `/business.html` and `/business/` redirect to it in the block below. Exactly one
+    // of the three answers 200; the other two point at it. That is the whole URL contract.
     //
     // Ask for the moved location first, fall back to the root one. `env.ASSETS.fetch` is a
     // subrequest straight to the asset server, so neither of these re-enters this Worker and
@@ -131,6 +130,28 @@ export default {
       const moved = await env.ASSETS.fetch(assetRequest(`/pages/${pageName}`, url, request));
       if (moved.status !== 404) return noStore(moved);
       return noStore(await env.ASSETS.fetch(assetRequest(`/${pageName}`, url, request)));
+    }
+
+    // The `.html` and trailing-slash forms of those same 8 names, 301'd to the canonical
+    // extensionless URL.
+    //
+    // These two shapes answer correctly TODAY without any help from this Worker:
+    // html_handling = "auto-trailing-slash" 307s `/business.html` and `/business/` to
+    // `/business`. But that only works while `business.html` sits at the URL root — it is the
+    // asset server redirecting a request for a file it can see. Once the file moves into
+    // pages/, there is nothing at the root to redirect FROM, and both shapes become honest
+    // 404s. Measured, not predicted: a dev run against a tree with the pages already moved
+    // returned 404 for `/business.html`, `/business/` and `/legal/`.
+    //
+    // So the Worker takes ownership of the redirect before the move removes it. Nothing
+    // changes for visitors today (307 → 301 to the same place); the difference only shows up
+    // on the far side of the move, which is precisely when it would otherwise break. 301
+    // rather than 307 because a name's canonical URL is a permanent fact, not a temporary one.
+    const canonicalName = pageName.replace(/\/$/, "").replace(/\.html$/, "");
+    if (canonicalName !== pageName && PAGES.has(canonicalName)) {
+      const canonical = new URL(`/${canonicalName}`, url);
+      canonical.search = url.search;
+      return Response.redirect(canonical.toString(), 301);
     }
 
     // The URL guard. Once the files live under pages/, the asset server would happily serve
