@@ -34,6 +34,14 @@ const WORKER_ROUTES = [
   /^\/agent\/kraken\/?$/,
 ];
 
+// The Worker's page-map, same KEEP IN SYNC contract as WORKER_ROUTES above. Eight pages
+// live in pages/ but are served at the URL root: /business is pages/business.html. So a
+// root-relative reference may resolve one directory in, and this is where the gate learns
+// that — deliberately as an extra CANDIDATE PATH rather than a blanket allow, so the
+// referenced file still has to exist. A pattern that waves the reference through would
+// pass just as happily the day someone deletes the page.
+const PAGES_DIR = 'pages';
+
 const pages = [];
 const walk = (dir) => {
   for (const name of readdirSync(dir)) {
@@ -56,6 +64,10 @@ const resolves = (fromDir, ref) => {
   const candidates = u.endsWith('/') || rel === ''
     ? [join(base, rel, 'index.html')]
     : [join(base, rel), join(base, rel + '.html'), join(base, rel, 'index.html')];
+  // Root-relative references may be served out of pages/ (see PAGES_DIR above).
+  if (u.startsWith('/') && rel !== '') {
+    candidates.push(join(root, PAGES_DIR, rel), join(root, PAGES_DIR, rel + '.html'));
+  }
   return candidates.some(existsSync);
 };
 
