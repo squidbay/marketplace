@@ -1,0 +1,1 @@
+negative control for the DOOR 1 gate. If this file is on main, the gate did not work.
