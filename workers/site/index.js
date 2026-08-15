@@ -70,6 +70,15 @@ const PAGES = new Set([
   "personal",
   "register",
   "support",
+  // The three template pages the vanity routes rewrite to. They are in this set for a
+  // reason that is easy to miss: /skill, /seller and /security-report are not only rewrite
+  // TARGETS, they are live URLs a visitor can type, and sitemap.xml lists all three. The
+  // rewrites alone would keep /skill/<seller>/<slug> working while the three direct URLs
+  // 404'd the moment their files moved. Being in this set is also what gives them their
+  // .html and trailing-slash 301s and the /pages/* guard, exactly like the other eight.
+  "skill",
+  "seller",
+  "security-report",
 ]);
 
 // URLs that once served their own file and now point at the canonical one.
@@ -101,6 +110,27 @@ function noStore(response) {
   const r = new Response(response.body, response);
   r.headers.set("Cache-Control", "no-store");
   return r;
+}
+
+// Serve a mapped page BY NAME, wherever its file currently lives: ask the asset server for
+// `pages/<name>` and fall back to `/<name>` at the root.
+//
+// Every route that serves a page goes through here — the page-map and all three vanity
+// rewrites — so no caller has to know where the file sits. That is what keeps this Worker
+// correct on BOTH sides of a file move, and it is not a theoretical nicety: assets and the
+// Worker deploy on two different lanes that can land minutes apart. A rewrite pointed
+// straight at `/pages/skill` would 404 every vanity URL in the window where the Worker has
+// shipped and the moved files have not — or the reverse. With the fallback there is no
+// window, and the same code is correct before, during and after.
+//
+// The 404 test is what makes it work: with the navigation headers stripped (note 2) a real
+// asset resolves 200 and a missing one is an honest 404, so a 404 here means "not moved
+// yet", never "broken". `env.ASSETS.fetch` is a subrequest straight to the asset server, so
+// neither call re-enters this Worker and no loop is possible.
+async function servePage(name, url, request, env) {
+  const moved = await env.ASSETS.fetch(assetRequest(`/pages/${name}`, url, request));
+  if (moved.status !== 404) return noStore(moved);
+  return noStore(await env.ASSETS.fetch(assetRequest(`/${name}`, url, request)));
 }
 
 // ── The security headers ─────────────────────────────────────────────────────────────
@@ -184,10 +214,10 @@ async function route(request, env) {
 
     if (segments[0] === "skill") {
       if (segments.length === 4 && segments[3] === "security") {
-        return noStore(await env.ASSETS.fetch(assetRequest("/security-report", url, request)));
+        return servePage("security-report", url, request, env);
       }
       if (segments.length === 3) {
-        return noStore(await env.ASSETS.fetch(assetRequest("/skill", url, request)));
+        return servePage("skill", url, request, env);
       }
     }
 
@@ -196,23 +226,15 @@ async function route(request, env) {
     // a real page. That is the intended demo shape: a seller name links somewhere only
     // when there is somewhere to land.
     if (segments[0] === "agent" && segments.length === 2 && segments[1] === "kraken") {
-      return noStore(await env.ASSETS.fetch(assetRequest("/seller", url, request)));
+      return servePage("seller", url, request, env);
     }
 
     // The page-map. `url.pathname` is matched WHOLE and extensionless — `/business` serves,
     // while `/business.html` and `/business/` redirect to it in the block below. Exactly one
     // of the three answers 200; the other two point at it. That is the whole URL contract.
-    //
-    // Ask for the moved location first, fall back to the root one. `env.ASSETS.fetch` is a
-    // subrequest straight to the asset server, so neither of these re-enters this Worker and
-    // no loop is possible. The 404 test is what makes the fallback work: with the navigation
-    // headers stripped (see note 2) a real asset resolves 200 and a missing one is an honest
-    // 404, so a 404 here means "not moved yet", not "broken".
     const pageName = url.pathname.slice(1);
     if (PAGES.has(pageName)) {
-      const moved = await env.ASSETS.fetch(assetRequest(`/pages/${pageName}`, url, request));
-      if (moved.status !== 404) return noStore(moved);
-      return noStore(await env.ASSETS.fetch(assetRequest(`/${pageName}`, url, request)));
+      return servePage(pageName, url, request, env);
     }
 
     // The `.html` and trailing-slash forms of those same 8 names, 301'd to the canonical
