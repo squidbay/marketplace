@@ -109,7 +109,9 @@ if (reasons.length === 0) {
   process.exit(0);
 }
 
-for (const r of reasons) console.error(`PAGES ${r}`);
+// Evidence on stdout, the annotation on stderr — the runner interleaves the two streams by
+// flush order, and reasons printed above the config they are about read as noise.
+for (const r of reasons) console.log(`PAGES ${r}`);
 console.log(`${HEAD}: RED`);
 console.error('::error::DOOR 2 RED — GitHub Pages is still configured on this repository. ' +
   reasons.join('; ') + '. A 404 on the live Pages URL is not proof the switch is off; this gate reads the ' +

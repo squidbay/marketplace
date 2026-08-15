@@ -164,7 +164,11 @@ if (stale.length) {
 }
 
 if (unexpected.length) {
-  for (const p of unexpected.sort()) console.error(`UNEXPECTED ${p}`);
+  // Evidence on stdout, the annotation on stderr. The runner interleaves the two streams by
+  // flush order, so writing the offending paths to stderr prints them ABOVE the header that
+  // explains them — a gate is read at the moment something breaks, and out-of-order evidence
+  // is the wrong thing to hand someone then.
+  for (const p of unexpected.sort()) console.log(`UNEXPECTED ${p}`);
   fail(`DOOR 1 RED — ${unexpected.length} path(s) would be published at https://squidbay.ai/ ` +
        `that are not in ${EXPECTED_FILE}. Either add the path to ${IGNORE_FILE} (it should not be ` +
        `public) or add it to the expected set (it should). Do not do both.`);
