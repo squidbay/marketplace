@@ -27,6 +27,14 @@ package-lock.json
 railway.toml
 server.js
 
+# The Worker's own config, and the CI gates' input list. Both were reachable on the live
+# site — retired-values.json answered 200 — which is config and process leaking onto a
+# public marketing surface for no benefit to anyone visiting it. Neither is fetched by any
+# page at runtime; the gates read retired-values.json from the Actions checkout, not over
+# HTTP, so hiding it from the asset upload does not touch CI.
+wrangler.toml
+retired-values.json
+
 # The chat Worker's source and config are deployed as a Worker, never served as files.
 workers
 

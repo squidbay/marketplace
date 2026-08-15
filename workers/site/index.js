@@ -72,6 +72,17 @@ const PAGES = new Set([
   "support",
 ]);
 
+// URLs that once served their own file and now point at the canonical one.
+//
+// `/legal-refund` and `/legal/refund` were byte-identical twins — the same 2678-byte
+// refunds page reachable at two URLs. Everything that actually links to it already used
+// `/legal/refund`: sitemap.xml, the card on the legal page, the footer nav in site.js,
+// and — the tell — the canonical link tag inside legal-refund.html itself. So the flat
+// file was the accident, and it has been deleted. This keeps its URL working.
+//
+// A retired URL never just 404s. Someone out there has the old link.
+const RETIRED_URLS = new Map([["/legal-refund", "/legal/refund"]]);
+
 // A subrequest to the asset binding for `path`, carrying the visitor's headers MINUS
 // the navigation markers that would make Static Assets serve the 404 page (see note 2).
 function assetRequest(path, url, request) {
@@ -150,6 +161,18 @@ export default {
     const canonicalName = pageName.replace(/\/$/, "").replace(/\.html$/, "");
     if (canonicalName !== pageName && PAGES.has(canonicalName)) {
       const canonical = new URL(`/${canonicalName}`, url);
+      canonical.search = url.search;
+      return Response.redirect(canonical.toString(), 301);
+    }
+
+    // Retired URLs → their canonical twin. The path is normalised the same way as the
+    // block above — trailing slash and `.html` stripped — so `/legal-refund`,
+    // `/legal-refund/` and `/legal-refund.html` all land in the same place. That matters
+    // because the file is gone: html_handling can no longer 307 the `.html` form for a
+    // file it can no longer see, which is the same lesson the block above exists for.
+    const retiredTarget = RETIRED_URLS.get(`/${canonicalName}`);
+    if (retiredTarget) {
+      const canonical = new URL(retiredTarget, url);
       canonical.search = url.search;
       return Response.redirect(canonical.toString(), 301);
     }
