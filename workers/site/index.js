@@ -103,8 +103,80 @@ function noStore(response) {
   return r;
 }
 
+// ── The security headers ─────────────────────────────────────────────────────────────
+//
+// These used to be set by server.js, an Express app with `helmet`, back when a Node
+// process served this site. That process has not answered a real request since the site
+// moved to Cloudflare — so from the move until now, the site has been shipping NO
+// security headers at all. Deleting server.js without moving the policy here would have
+// made a silent gap permanent instead of closing it.
+//
+// The CSP is NOT a copy of the Express one. It was rebuilt from what the pages actually
+// load today, measured rather than assumed, and that changed it in both directions:
+//
+//   ADDED   https://squidbot-chat.andrew-415.workers.dev — the chat widget's backend.
+//           components/chatbot.js fetches it on every page. The Express policy predates
+//           the widget's move to a Worker and does not list it, so the old policy would
+//           have broken chat the moment it was enforced.
+//   DROPPED https://squidbay-api-production.up.railway.app — nothing references it.
+//   DROPPED https://cdnjs.cloudflare.com and the Google Fonts origins — no page loads a
+//           script from a CDN, and both faces are self-hosted in design-system/fonts/.
+//   KEPT    api.squidbay.io — js/config.js names it as THE api host and four scripts
+//           call it. It stays .io until that record moves; this is not the cutover.
+//   KEPT    the two Cloudflare Insights origins. The beacon appears in no source file
+//           because Cloudflare injects it at the edge — grep the repo and you will
+//           conclude it is unused, which is exactly the wrong conclusion.
+//
+// 'unsafe-inline' is in script-src and script-src-attr because seven shipped pages carry
+// inline <script> blocks and there are eight inline handlers (7 onclick, 1 onsubmit).
+// Removing it is a real cleanup, but it is a page change, not a header change, and doing
+// it here would break those pages on merge.
+const SECURITY_HEADERS = {
+  "Content-Security-Policy": [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com",
+    "script-src-attr 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: https:",
+    "font-src 'self'",
+    "connect-src 'self' https://api.squidbay.io https://squidbot-chat.andrew-415.workers.dev https://cloudflareinsights.com",
+    "frame-src 'none'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join("; "),
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(self)",
+};
+
+// Apply the policy to documents only.
+//
+// Only HTML gets these headers: a CSP on site.css does nothing, and X-Frame-Options on an
+// image is noise. Content-type is the test rather than the route, so every document is
+// covered by construction — the eight mapped pages, the skill/seller/security-report
+// rewrites, the apex, legal/refund.html, AND 404.html, which is a real page a real person
+// reads. Redirects are skipped: they carry no document, and the Response that
+// `Response.redirect()` returns is immutable, so touching its headers would throw.
+function withSecurityHeaders(response) {
+  if (!/^text\/html/i.test(response.headers.get("Content-Type") || "")) return response;
+  const r = new Response(response.body, response);
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) r.headers.set(name, value);
+  return r;
+}
+
 export default {
   async fetch(request, env) {
+    return withSecurityHeaders(await route(request, env));
+  },
+};
+
+// The router. Unchanged by the header work above — it is wrapped, not edited, so the
+// policy lives in exactly one place and no route can forget it.
+async function route(request, env) {
     const url = new URL(request.url);
 
     // "/skill/codekraken/pull-request-review/" → ["skill","codekraken","pull-request-review"]
@@ -196,5 +268,4 @@ export default {
     // the moment it later becomes valid (a new route, a new file). Real assets cache.
     const response = await env.ASSETS.fetch(request);
     return response.status === 404 ? noStore(response) : response;
-  },
-};
+}

@@ -144,12 +144,11 @@ This repo is the public web frontend for **[squidbay.ai](https://squidbay.ai)**:
 - **Pages** — plain HTML, one file per route (`index.html`, `marketplace.html`, `skill.html`, …).
 - **Shared chrome** — `site.js` defines the `<sb-nav>` and `<sb-footer>` web components, the SquidBot chat loader, the ocean-bubble system, and the "setting up the Bay" notice. Every page gets the same nav/footer/background from two tags — no copy-paste.
 - **Design system** — `design-system/` holds the Abyssal Teal tokens (colour, type, spacing), guidelines, and CI gates. Rhythm, colour, and type come from tokens, not literals.
-- **Dev server** — `server.js` (Express + Helmet) serves the pages with the same vanity routes and security headers as production.
+- **Local runner** — `wrangler dev` runs the real Worker against the real assets, so vanity routes, the page-map, the redirects and the security headers all behave locally exactly as they do in production. There is no separate dev server to keep in sync any more.
 
 **Run it locally**
 ```bash
-npm install
-npm start           # → http://localhost:3001
+npx wrangler dev    # → http://localhost:8787
 ```
 
 **Deploy**
@@ -157,13 +156,14 @@ Merges to `main` auto-deploy to Cloudflare Workers via `.github/workflows/deploy
 
 **Layout**
 ```
-*.html                 — one file per route
+pages/*.html           — the eight mapped pages (URL stays extensionless at the root)
+*.html                 — apex, 404, and the Worker's rewrite targets
 site.js / site.css     — shared nav, footer, chat, background
 design-system/         — Abyssal Teal tokens, guidelines, CI gates, OG template
 components/             — the SquidBot chat widget
 images/og/             — 1200×630 social cards (regen: design-system/og-template.html)
 skills-data.js         — marketplace fixtures
-server.js              — dev server + vanity routing
+workers/site/index.js  — the Worker: vanity routes, page-map, redirects, security headers
 wrangler.toml          — Cloudflare Worker (assets) config
 ```
 
@@ -194,7 +194,7 @@ SquidBot is the marketplace assistant at [@squidbot](https://x.com/squidbot). As
 
 This repository — the SquidBay marketplace web frontend — is licensed under [**GNU AGPL-3.0-only**](LICENSE).
 
-**What AGPL-3.0 covers here:** the marketplace web frontend code (HTML, CSS, JavaScript, server.js) and any modifications. If you fork this repository, modify it, and run it as a service that users interact with over a network, AGPL-3.0 requires you to make the modified source code available to those users.
+**What AGPL-3.0 covers here:** the marketplace web frontend code (HTML, CSS, JavaScript, and the Worker in `workers/`) and any modifications. If you fork this repository, modify it, and run it as a service that users interact with over a network, AGPL-3.0 requires you to make the modified source code available to those users.
 
 **What AGPL-3.0 does NOT cover:**
 - **The SquidBay marketplace API responses.** Calling `api.squidbay.io` from your own agent or service does not make your code AGPL-bound. The API is a service, not a piece of code you're incorporating.

@@ -2,7 +2,7 @@
 #
 # Workers Static Assets uploads EVERYTHING under [assets].directory, and this repo's
 # asset directory is its own root — so without this file the first automated deploy
-# would publish server.js, package.json and the entire workers/ source tree at
+# would publish package.json and the entire workers/ source tree at
 # https://squidbay.ai/. The current hand-deployed site does not serve them (probed
 # 2026-08-11: all 404). This file is what keeps that true once deploys are automatic.
 #
@@ -24,8 +24,6 @@ README.md
 LICENSE
 package.json
 package-lock.json
-railway.toml
-server.js
 
 # The Worker's own config, and the CI gates' input list. Both were reachable on the live
 # site — retired-values.json answered 200 — which is config and process leaking onto a
