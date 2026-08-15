@@ -35,9 +35,29 @@ jobs:
       - run: node design-system/ci/manifest-check.mjs .
       - run: node design-system/ci/og-pixel-check.mjs .
 
+  # PUBLIC DOOR 1, as a gate on the ship. This job enumerates exactly what the `site` job
+  # below is about to upload and fails on any path not in .github/ci/expected-public-set.txt.
+  # It is its own job rather than a step in `gates` so its colour reads separately from the
+  # design gates and from the deploy itself — three files reached the live site before anyone
+  # noticed them, and each was found by hand afterwards.
+  #
+  # PUBLIC DOOR 2 (GitHub Pages) is deliberately NOT in this graph. Nothing this workflow
+  # does opens or closes that door, and gating the ship on a repository setting no automation
+  # may change would stop every merge from reaching the site over something a deploy cannot
+  # fix. It runs in guardrails.yml, on every PR and every push to main, where a human sees it.
+  publish-set:
+    name: public door 1 — cloudflare publish set
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node .github/ci/publish-set.mjs .
+
   site:
     name: deploy site worker
-    needs: gates
+    needs: [gates, publish-set]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

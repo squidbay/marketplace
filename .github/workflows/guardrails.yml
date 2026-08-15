@@ -1,4 +1,12 @@
-# Design gates. These run on every pull request and on every push to main.
+# Design gates, plus the two public-door gates. These run on every pull request and on
+# every push to main.
+#
+# The public-door jobs are deliberately SEPARATE jobs, not steps inside `design gates`.
+# This repository has TWO ways for its bytes to reach the public — the Cloudflare asset
+# upload and GitHub Pages — and they are checked by different mechanisms reading different
+# layers. Merging them into one job would let a single green mean "one lane checked", which
+# is exactly the mistake that left the Pages door wired while `.assetsignore` was treated as
+# if it covered the repository. Each door reports its own colour, under its own name.
 name: guardrails
 
 on:
@@ -38,3 +46,42 @@ jobs:
       # so regenerating any card drops its waiver automatically.
       - name: og-pixel-check
         run: node design-system/ci/og-pixel-check.mjs .
+
+  # ── PUBLIC DOOR 1 — Cloudflare Workers Static Assets ──────────────────────────────────
+  # Enumerates what `wrangler deploy` would upload out of [assets] directory = "." and
+  # fails on anything not in the committed expected set. This is also a gate on deploy.yml,
+  # where a red blocks the ship; here it is what makes the leak visible on the PR that
+  # introduces it, before anyone merges.
+  publish-set:
+    name: public door 1 — cloudflare publish set
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: publish-set vs expected-set
+        run: node .github/ci/publish-set.mjs .
+
+  # ── PUBLIC DOOR 2 — GitHub Pages ──────────────────────────────────────────────────────
+  # Asserts that this repository's Pages configuration is off, by reading the API. It is
+  # NOT a gate on deploy.yml, on purpose: the Pages door is not opened or closed by any
+  # deploy of ours, so blocking the ship on it would halt every merge over a repository
+  # setting no automation is allowed to change. Its lane is the PR, where a human can act
+  # on it. `pages: read` is granted at the job so the rest of the workflow keeps the
+  # read-only `contents` token it has today.
+  pages-off:
+    name: public door 2 — github pages is off
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: assert Pages is disabled
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/ci/pages-off.mjs "$GITHUB_REPOSITORY"
