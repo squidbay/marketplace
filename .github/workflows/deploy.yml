@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '22'
       - run: node design-system/ci/kill-list.mjs .
-      - run: node design-system/ci/manifest-check.mjs .
+      - run: node design-system/ci/manifest-check.mjs public
       - run: node design-system/ci/og-pixel-check.mjs .
 
   # PUBLIC DOOR 1, as a gate on the ship. This job enumerates exactly what the `site` job
@@ -109,7 +109,7 @@ jobs:
           sleep 10
           curl -sS --retry 3 --retry-delay 5 https://squidbay.ai/site.js -o /tmp/live-site.js
           LIVE=$(sha256sum /tmp/live-site.js | cut -d' ' -f1)
-          REPO=$(sha256sum site.js | cut -d' ' -f1)
+          REPO=$(sha256sum public/site.js | cut -d' ' -f1)
           echo "live: $LIVE"
           echo "repo: $REPO"
           if [ "$LIVE" != "$REPO" ]; then

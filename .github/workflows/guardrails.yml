@@ -38,7 +38,7 @@ jobs:
       # the Worker would actually serve. The second half is what matters on this repo:
       # after deploy.yml, a dead href reaches visitors the moment it merges.
       - name: manifest-check
-        run: node design-system/ci/manifest-check.mjs .
+        run: node design-system/ci/manifest-check.mjs public
 
       # Gate 3 — the same palette law, applied to pixels. kill-list reads text and is
       # blind to an OG card rendered in the retired palette (defect D3, 2026-08-11).
