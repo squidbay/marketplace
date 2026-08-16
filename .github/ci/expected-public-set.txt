@@ -1,131 +1,149 @@
 # The expected public set — DOOR 1 (Cloudflare Workers Static Assets).
 #
 # Every path below is a file this repository INTENDS to serve at https://squidbay.ai/.
-# `.github/ci/publish-set.mjs` walks the asset root, applies `.assetsignore`, and fails on
-# any path that would publish and is not listed here.
+# `.github/ci/publish-set.mjs` reads the boundary from wrangler.toml, walks that asset root,
+# applies the asset root's `.assetsignore`, and fails on any path that would publish and is
+# not listed here.
+#
+# ── PATH FORM CHANGED 2026-08-16. READ THIS BEFORE EDITING. ──────────────────────────
+# `[assets] directory` moved from "." to "public", so a served file's REPOSITORY path and
+# its URL are no longer the same string. Paths here are REPOSITORY-root-relative:
+#
+#     public/site.css      is the repository path
+#     /site.css            is the URL it answers at
+#
+# Repository-relative is deliberate. It encodes the publish boundary into the gate's own
+# input, so if anyone moves `[assets] directory` again every line here goes red and a human
+# has to look. Had these stayed URL-shaped they would have survived a silent boundary change
+# unchanged — which is the exact failure mode this door exists to catch.
 #
 # HOW TO CHANGE IT — the whole point is that this file is edited on purpose:
 #   * a new page, image, stylesheet or script that visitors should reach → add its path here
-#   * anything else that turned up in the publish set → add a pattern to `.assetsignore`
-#     instead, so it never uploads. Config, source, build tools and CI inputs go here never.
+#   * anything else that turned up in the publish set → add a pattern to
+#     `public/.assetsignore` instead, so it never uploads. Config, source, build tools and CI
+#     inputs go here never.
 #   Do not do both. If a path is denied it must not be listed; the gate prints a STALE line
 #   for any entry nothing publishes at.
 #
-# This file lives under .github/, which `.assetsignore` denies — so the expected set can
-# never publish itself.
+# This file lives under .github/, which is OUTSIDE the asset root — so the expected set can
+# never publish itself. That was previously true because `.assetsignore` denied `.github`;
+# it is now true by construction, which is the better guarantee.
 #
 # This list covers ONE of two public doors. GitHub Pages does not read `.assetsignore` and
 # nothing in this file constrains it; that door is asserted by `.github/ci/pages-off.mjs`.
 #
-# Generated 2026-08-15 from the tree at f4e9d20 and verified against it: 109 tracked files,
-# 17 denied by `.assetsignore`, 92 published — the 92 below.
+# Regenerated 2026-08-16 from the moved tree and verified against it: 84 files under the
+# asset root, 1 denied (`.assetsignore`, which wrangler never uploads), 92 published — the
+# 92 below. The count is unchanged from the pre-move set of 92, and the two sets were diffed
+# with the `public/` prefix stripped: IDENTICAL. Every URL this site serves is the same
+# address it was before the move.
 
 # ── Site root ────────────────────────────────────────────────────────────────────────
-404.html
-favicon.ico
-favicon.svg
-index.html
-llms.txt
-robots.txt
-site.css
-site.js
-sitemap.xml
-skills-data.js
+public/404.html
+public/favicon.ico
+public/favicon.svg
+public/index.html
+public/llms.txt
+public/robots.txt
+public/site.css
+public/site.js
+public/sitemap.xml
+public/skills-data.js
 
 # ── agent/ ──
-agent/images/agent-infrastructure-scan.jpg
-agent/images/chat-first-ops-center.jpg
-agent/images/marketplace-listing.jpg
-agent/images/og-agent.png
-agent/images/ops-center-relationship.jpg
-agent/images/skill-trust-scan.jpg
-agent/images/spawn-manager.jpg
-agent/images/token-usage-dashboard.jpg
-agent/images/website-builder.jpg
-agent/index.html
-agent/squid.css
-agent/squid.js
+public/agent/images/agent-infrastructure-scan.jpg
+public/agent/images/chat-first-ops-center.jpg
+public/agent/images/marketplace-listing.jpg
+public/agent/images/og-agent.png
+public/agent/images/ops-center-relationship.jpg
+public/agent/images/skill-trust-scan.jpg
+public/agent/images/spawn-manager.jpg
+public/agent/images/token-usage-dashboard.jpg
+public/agent/images/website-builder.jpg
+public/agent/index.html
+public/agent/squid.css
+public/agent/squid.js
 
 # ── assets/ ──
-assets/app-icons/icon-128.png
-assets/app-icons/icon-16.png
-assets/app-icons/icon-180.png
-assets/app-icons/icon-256.png
-assets/app-icons/icon-32.png
-assets/app-icons/icon-48.png
-assets/app-icons/icon-64.png
-assets/mark/mark-128.png
-assets/mark/mark-32.png
-assets/mark/mark-64.png
-assets/squidbay-core.svg
-assets/squidbay-icon.svg
-assets/squidbay-logo.png
+public/assets/app-icons/icon-128.png
+public/assets/app-icons/icon-16.png
+public/assets/app-icons/icon-180.png
+public/assets/app-icons/icon-256.png
+public/assets/app-icons/icon-32.png
+public/assets/app-icons/icon-48.png
+public/assets/app-icons/icon-64.png
+public/assets/mark/mark-128.png
+public/assets/mark/mark-32.png
+public/assets/mark/mark-64.png
+public/assets/squidbay-core.svg
+public/assets/squidbay-icon.svg
+public/assets/squidbay-logo.png
 
 # ── components/ ──
-components/chatbot.css
-components/chatbot.html
-components/chatbot.js
+public/components/chatbot.css
+public/components/chatbot.html
+public/components/chatbot.js
 
 # ── design-system/ ──
-design-system/fonts/fragment-mono-latin-ext.woff2
-design-system/fonts/fragment-mono-latin.woff2
-design-system/fonts/sora-latin-ext.woff2
-design-system/fonts/sora-latin.woff2
-design-system/styles.css
-design-system/tokens/colors.css
-design-system/tokens/effects.css
-design-system/tokens/spacing.css
-design-system/tokens/typography.css
+public/design-system/fonts/fragment-mono-latin-ext.woff2
+public/design-system/fonts/fragment-mono-latin.woff2
+public/design-system/fonts/sora-latin-ext.woff2
+public/design-system/fonts/sora-latin.woff2
+public/design-system/styles.css
+public/design-system/tokens/colors.css
+public/design-system/tokens/effects.css
+public/design-system/tokens/spacing.css
+public/design-system/tokens/typography.css
 
 # ── images/ ──
-images/agent-scan.jpeg
-images/andrew.png
-images/og-image.png
-images/og/404.png
-images/og/about.png
-images/og/agent.png
-images/og/faq.png
-images/og/help.png
-images/og/index.png
-images/og/marketplace.png
-images/og/privacy.png
-images/og/refund.png
-images/og/register.png
-images/og/security.png
-images/og/skill.png
-images/og/terms.png
-images/og/thanks.png
-images/ops-center.jpeg
-images/skill-scan.jpeg
-images/squidbay-icon.svg
-images/squidbay-logo.png
-images/squidbay-marketplace.jpeg
-images/squidbot.png
+public/images/agent-scan.jpeg
+public/images/andrew.png
+public/images/og-image.png
+public/images/og/404.png
+public/images/og/about.png
+public/images/og/agent.png
+public/images/og/faq.png
+public/images/og/help.png
+public/images/og/index.png
+public/images/og/marketplace.png
+public/images/og/privacy.png
+public/images/og/refund.png
+public/images/og/register.png
+public/images/og/security.png
+public/images/og/skill.png
+public/images/og/terms.png
+public/images/og/thanks.png
+public/images/ops-center.jpeg
+public/images/skill-scan.jpeg
+public/images/squidbay-icon.svg
+public/images/squidbay-logo.png
+public/images/squidbay-marketplace.jpeg
+public/images/squidbot.png
 
 # ── js/ ──
-js/agent.js
-js/components.js
-js/config.js
-js/faq.js
-js/help.js
-js/index.js
-js/marketplace.js
-js/register.js
-js/security.js
-js/skill.js
+public/js/agent.js
+public/js/components.js
+public/js/config.js
+public/js/faq.js
+public/js/help.js
+public/js/index.js
+public/js/marketplace.js
+public/js/register.js
+public/js/security.js
+public/js/skill.js
 
 # ── legal/ ──
-legal/refund.html
+public/legal/refund.html
 
 # ── pages/ ──
-pages/app.html
-pages/business.html
-pages/docs.html
-pages/legal.html
-pages/marketplace.html
-pages/personal.html
-pages/register.html
-pages/security-report.html
-pages/seller.html
-pages/skill.html
-pages/support.html
+public/pages/app.html
+public/pages/business.html
+public/pages/docs.html
+public/pages/legal.html
+public/pages/marketplace.html
+public/pages/personal.html
+public/pages/register.html
+public/pages/security-report.html
+public/pages/seller.html
+public/pages/skill.html
+public/pages/support.html
