@@ -1,0 +1,131 @@
+# The expected public set — DOOR 1 (Cloudflare Workers Static Assets).
+#
+# Every path below is a file this repository INTENDS to serve at https://squidbay.ai/.
+# `.github/ci/publish-set.mjs` walks the asset root, applies `.assetsignore`, and fails on
+# any path that would publish and is not listed here.
+#
+# HOW TO CHANGE IT — the whole point is that this file is edited on purpose:
+#   * a new page, image, stylesheet or script that visitors should reach → add its path here
+#   * anything else that turned up in the publish set → add a pattern to `.assetsignore`
+#     instead, so it never uploads. Config, source, build tools and CI inputs go here never.
+#   Do not do both. If a path is denied it must not be listed; the gate prints a STALE line
+#   for any entry nothing publishes at.
+#
+# This file lives under .github/, which `.assetsignore` denies — so the expected set can
+# never publish itself.
+#
+# This list covers ONE of two public doors. GitHub Pages does not read `.assetsignore` and
+# nothing in this file constrains it; that door is asserted by `.github/ci/pages-off.mjs`.
+#
+# Generated 2026-08-15 from the tree at f4e9d20 and verified against it: 109 tracked files,
+# 17 denied by `.assetsignore`, 92 published — the 92 below.
+
+# ── Site root ────────────────────────────────────────────────────────────────────────
+404.html
+favicon.ico
+favicon.svg
+index.html
+llms.txt
+robots.txt
+site.css
+site.js
+sitemap.xml
+skills-data.js
+
+# ── agent/ ──
+agent/images/agent-infrastructure-scan.jpg
+agent/images/chat-first-ops-center.jpg
+agent/images/marketplace-listing.jpg
+agent/images/og-agent.png
+agent/images/ops-center-relationship.jpg
+agent/images/skill-trust-scan.jpg
+agent/images/spawn-manager.jpg
+agent/images/token-usage-dashboard.jpg
+agent/images/website-builder.jpg
+agent/index.html
+agent/squid.css
+agent/squid.js
+
+# ── assets/ ──
+assets/app-icons/icon-128.png
+assets/app-icons/icon-16.png
+assets/app-icons/icon-180.png
+assets/app-icons/icon-256.png
+assets/app-icons/icon-32.png
+assets/app-icons/icon-48.png
+assets/app-icons/icon-64.png
+assets/mark/mark-128.png
+assets/mark/mark-32.png
+assets/mark/mark-64.png
+assets/squidbay-core.svg
+assets/squidbay-icon.svg
+assets/squidbay-logo.png
+
+# ── components/ ──
+components/chatbot.css
+components/chatbot.html
+components/chatbot.js
+
+# ── design-system/ ──
+design-system/fonts/fragment-mono-latin-ext.woff2
+design-system/fonts/fragment-mono-latin.woff2
+design-system/fonts/sora-latin-ext.woff2
+design-system/fonts/sora-latin.woff2
+design-system/styles.css
+design-system/tokens/colors.css
+design-system/tokens/effects.css
+design-system/tokens/spacing.css
+design-system/tokens/typography.css
+
+# ── images/ ──
+images/agent-scan.jpeg
+images/andrew.png
+images/og-image.png
+images/og/404.png
+images/og/about.png
+images/og/agent.png
+images/og/faq.png
+images/og/help.png
+images/og/index.png
+images/og/marketplace.png
+images/og/privacy.png
+images/og/refund.png
+images/og/register.png
+images/og/security.png
+images/og/skill.png
+images/og/terms.png
+images/og/thanks.png
+images/ops-center.jpeg
+images/skill-scan.jpeg
+images/squidbay-icon.svg
+images/squidbay-logo.png
+images/squidbay-marketplace.jpeg
+images/squidbot.png
+
+# ── js/ ──
+js/agent.js
+js/components.js
+js/config.js
+js/faq.js
+js/help.js
+js/index.js
+js/marketplace.js
+js/register.js
+js/security.js
+js/skill.js
+
+# ── legal/ ──
+legal/refund.html
+
+# ── pages/ ──
+pages/app.html
+pages/business.html
+pages/docs.html
+pages/legal.html
+pages/marketplace.html
+pages/personal.html
+pages/register.html
+pages/security-report.html
+pages/seller.html
+pages/skill.html
+pages/support.html
