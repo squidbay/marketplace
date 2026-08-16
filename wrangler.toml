@@ -34,7 +34,23 @@ account_id = "d41593267b9908b65780b8904e5cd2fe"
 # ALLOWED_ORIGINS, so setting `workers_dev = false` would silently break the widget there.
 
 [assets]
-directory = "."
+# THE PUBLISH BOUNDARY. Until 2026-08-16 this said ".", which welded two unrelated things
+# together: every file the REPOSITORY needed became a file the WEBSITE published, and every
+# tidy-up became a URL change. Three files reached https://squidbay.ai/ that way before
+# anyone noticed them — wrangler.toml, retired-values.json, design-system/og-template.html —
+# each found by hand, each already public.
+#
+# `public/` inverts the control. A denylist publishes anything nobody remembered to name; a
+# served folder publishes only what someone put in it. `public/site.css` still answers
+# /site.css, because wrangler serves assets at their path RELATIVE TO THIS DIRECTORY — so
+# this change moved 92 files and changed zero URLs and zero hrefs.
+#
+# Two consequences that are easy to get wrong, both measured rather than assumed:
+#   1. `.assetsignore` is read at <this directory>/.assetsignore — i.e. public/.assetsignore
+#      — and NOWHERE else. One left at the repository root is inert, not weakened.
+#   2. Its patterns anchor to THIS directory, not to the repository root.
+# The evidence for both is quoted in public/.assetsignore's header.
+directory = "public"
 
 # The name workers/site/index.js reaches the asset server by. Cloudflare's docs are
 # explicit that `binding` is only valid when a `main` script is set — it was correctly
