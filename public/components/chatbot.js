@@ -364,7 +364,7 @@ function initChatbot() {
         
         // Conversation length check
         if (conversationHistory.length >= SQUIDBOT_CONFIG.maxConversationLength * 2) {
-            return { valid: false, reason: "We've had a great chat! For longer discussions, please email andrew@ghost081280.com or refresh to start fresh." };
+            return { valid: false, reason: "This chat has reached its length limit. Refresh to start a new one, or open squidbay.ai/support and a human will pick it up." };
         }
         
         // Basic injection detection (prompt injection attempts)
