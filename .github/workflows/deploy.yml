@@ -33,7 +33,10 @@ jobs:
           node-version: '22'
       - run: node design-system/ci/kill-list.mjs .
       - run: node design-system/ci/manifest-check.mjs public
-      - run: node design-system/ci/og-pixel-check.mjs .
+      # `public` is the asset root — the directory images/og lives under. This gate fails
+      # closed on a subject it cannot find, so the argument has to name where the images
+      # actually are; guardrails.yml carries the same line and the reasoning in full.
+      - run: node design-system/ci/og-pixel-check.mjs public
 
   # PUBLIC DOOR 1, as a gate on the ship. This job enumerates exactly what the `site` job
   # below is about to upload and fails on any path not in .github/ci/expected-public-set.txt.

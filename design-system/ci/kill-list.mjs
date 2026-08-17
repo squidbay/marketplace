@@ -1,13 +1,24 @@
 // SquidBay CI gate 1 — the kill list. A build containing any retired hex
 // (including rgb()/rgba() forms), retired token name, or retired font family
 // FAILS. Exemptions are by file path only (retired-values.json exempt_paths).
-// Usage: node ci/kill-list.mjs [rootDir]
+// Usage: node design-system/ci/kill-list.mjs [rootDir]
 // (Node-only; guarded so the in-browser design-system bundler can parse it.)
-function killListMain(fs, path) {
-  const { readFileSync, readdirSync, statSync } = fs;
-  const { join, relative } = path;
+function killListMain(fs, path, url) {
+  const { existsSync, readFileSync, readdirSync, statSync } = fs;
+  const { dirname, join, relative } = path;
   const root = process.argv[2] || '.';
-  const law = JSON.parse(readFileSync(join(root, 'retired-values.json'), 'utf8'));
+  // The law sits with the other gate inputs in .github/ci/, a directory that is outside
+  // the asset root and so can never publish. It is resolved from THIS FILE's location,
+  // not from the scan root: the two are independent, so pointing the scan at another
+  // tree still reads this repository's law rather than looking for a copy inside it.
+  const lawPath = join(dirname(url.fileURLToPath(import.meta.url)), '..', '..', '.github', 'ci', 'retired-values.json');
+  if (!existsSync(lawPath)) {
+    console.error(`FAIL CLOSED — ${lawPath} is missing. This gate's entire assertion set ` +
+      `lives in that file; without it there is nothing to check and nothing is proven. ` +
+      `A gate that cannot find its input has NOT passed.`);
+    process.exit(1);
+  }
+  const law = JSON.parse(readFileSync(lawPath, 'utf8'));
   const needles = [
     ...law.retired_hex.map(h => ({ kind: 'hex', s: h.toLowerCase() })),
     ...(law.retired_rgb_forms || []).map(h => ({ kind: 'rgb', s: h.toLowerCase() })),
@@ -59,5 +70,5 @@ function killListMain(fs, path) {
 }
 if (typeof process !== 'undefined' && process.versions && process.versions.node) {
   const ns = 'node:';
-  Promise.all([import(ns + 'fs'), import(ns + 'path')]).then(([fs, path]) => killListMain(fs, path));
+  Promise.all([import(ns + 'fs'), import(ns + 'path'), import(ns + 'url')]).then(([fs, path, url]) => killListMain(fs, path, url));
 }
