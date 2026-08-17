@@ -5,8 +5,8 @@
 // this repository's two public doors, and if the Pages site ever resolves, every one of
 // those files is public at a second address immediately, with no deploy of ours:
 //
-//   wrangler.toml · retired-values.json · package.json · README.md · the whole workers/
-//   source tree · design-system/ci/ · design-system/og-template.html
+//   wrangler.toml · .github/ci/retired-values.json · package.json · README.md · the whole
+//   workers/ source tree · design-system/ci/ · design-system/og-template.html
 //
 // WHY IT READS THE API AND NOT THE BROWSER
 //   A 404 on https://squidbay.github.io/marketplace/ is NOT proof the switch is off. Read
@@ -27,8 +27,10 @@
 // FAIL CLOSED — the API cannot be read at all (no token, 401, 403, 5xx, unparseable).
 //         A gate that cannot read its input has NOT passed.
 //
-// THIS GATE NEVER CHANGES THE SETTING. Turning Pages off is Settings → Pages →
-// Source → None, a repository setting, and no automation makes it. This asserts state.
+// THIS GATE NEVER CHANGES THE SETTING — it asserts state and nothing else. Clearing the
+// record IS automation, though: DELETE /repos/<owner>/<repo>/pages does it in one call.
+// This gate deliberately does not make that call; a gate that repairs what it measures
+// can never report the thing it was built to report.
 //
 // Usage: node .github/ci/pages-off.mjs [owner/repo]
 //   token from GITHUB_TOKEN or GH_TOKEN; repo defaults to GITHUB_REPOSITORY.
@@ -114,7 +116,17 @@ if (reasons.length === 0) {
 for (const r of reasons) console.log(`PAGES ${r}`);
 console.log(`${HEAD}: RED`);
 console.error('::error::DOOR 2 RED — GitHub Pages is still configured on this repository. ' +
-  reasons.join('; ') + '. A 404 on the live Pages URL is not proof the switch is off; this gate reads the ' +
-  'configuration record, which is the layer that describes the switch. FIX (a repository setting, ' +
-  'the operator\'s hands, not automation): Settings → Pages → Build and deployment → Source → None.');
+  reasons.join('; ') + '. ' +
+  'THREE LAYERS, and they can each say something different: the RECORD (this repository\'s Pages ' +
+  'configuration, GET /repos/' + repo + '/pages) · the BUILDS (Pages workflow runs, which go quiet ' +
+  'on their own once nothing triggers them) · the SERVING surface (what the Pages URL returns to a ' +
+  'browser). THIS GATE READS THE RECORD, and only the record, because the record is the layer that ' +
+  'describes the switch: builds can be idle and the live URL can 404 while the record still names a ' +
+  'branch — and every file in that branch is then one resolve away from being public, with no deploy ' +
+  'of ours. FIX — delete the record. It is one API call, and it is automation, not hands: ' +
+  '`gh api -X DELETE /repos/' + repo + '/pages` (needs a token carrying administration: write). ' +
+  'SECOND OPTION, less reliable: Settings → Pages → Build and deployment → Source → None. That UI ' +
+  'action has been observed to stop the builds and darken the site while LEAVING THE RECORD IN ' +
+  'PLACE — the one layer this gate reads — so if you use it, re-run this gate to confirm it took ' +
+  'rather than assuming it did.');
 process.exit(1);
