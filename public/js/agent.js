@@ -154,7 +154,7 @@ async function loadScanBadges() {
             slot.innerHTML = `
                 <a href="${reportLink}" class="card-scan-badge" onclick="event.stopPropagation();" title="Trust Score: ${trustScore}/100">
                     <svg class="card-scan-ring" width="48" height="48" viewBox="0 0 48 48">
-                        <circle cx="24" cy="24" r="19" fill="rgba(10,14,20,0.85)" stroke="#1a2530" stroke-width="3"/>
+                        <circle cx="24" cy="24" r="19" fill="rgba(6,23,26,0.85)" stroke="#1a2530" stroke-width="3"/>
                         <circle cx="24" cy="24" r="19" fill="none" stroke="${ringColor}" stroke-width="3"
                             stroke-dasharray="${circumference}" stroke-dashoffset="${dashOffset}"
                             stroke-linecap="round" transform="rotate(-90 24 24)"/>

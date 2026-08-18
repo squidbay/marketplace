@@ -24,6 +24,14 @@ sb-footer{display:block}
    Mac and is plainly visible with "Show scroll bars: Always". */
 html{scrollbar-gutter:stable}
 a{color:var(--link);text-decoration:none}a:hover{color:var(--link-hover)}
+/* Form controls do not inherit the page font — the UA stylesheet gives them its own
+   (Chrome: Arial). `.btn` declares var(--font-sans) so every CTA was always correct, but
+   any button WITHOUT that class fell back. Audited 2026-08-18: button.chatbot-btn
+   ("SquidBot"), button.chatbot-send ("Send") and two nav/chatbot close glyphs rendered in
+   Arial on 14 of 14 routes — a retired family per .github/ci/retired-values.json, reaching
+   the page through a UA default rather than a declaration, which is why no grep and no gate
+   could see it. `inherit` is one line and cannot regress .btn, which wins on specificity. */
+button,textarea,select{font-family:inherit}
 /* Seller/agent names that navigate to /agent/<handle>. A <span> (can't nest in the card's <a>). Gold (--yellow), not the teal link color, so the agent reads as a distinct, tappable identity across every surface. One class so it's identical everywhere. */
 .agent-link{color:var(--yellow);cursor:pointer}.agent-link:hover{opacity:.85}
 .container{max-width:var(--container);margin:0 auto;padding:0 24px}

@@ -328,18 +328,36 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
   }, { passive: true });
 
   // ── "The abyss is setting up the Bay" — under-construction notice ──────────
-  // A once-per-session, dismissible modal so a first-time visitor knows the site
-  // is still being built. It uses the official squid mark with the design
+  // A once-per-VISITOR, dismissible corner notice so a first-time visitor knows
+  // the site is still being built. It uses the official squid mark with the design
   // system's sbFlair "slow breath" (translateY + opacity, rotation stays
   // illegal), which the DS reserves for earned moments — this is one.
+  //
+  // It used to be a centre-screen modal behind a full-viewport scrim at
+  // rgba(4,15,17,0.74) — a 74%-opacity near-black film over the whole page. That
+  // scrim WAS the "missing teal": the ocean painted underneath it, perfectly
+  // healthy, and could not be seen through it. Measured, not guessed: the paint
+  // chain at x=8,y=400 read `DIV.sb-construct-scrim > DIV.sb-construct` on 14 of
+  // the 15 served routes, with BODY.ocean-bg beneath. A storefront must not greet
+  // a visitor by covering its own brand.
+  //
+  // The memory was also per-TAB, not per-visitor: it wrote sessionStorage, so a
+  // new tab, a private window or a fresh visit showed the film again. Measured:
+  // arrive at / -> mounted; dismiss -> sessionStorage=1; navigate to /marketplace
+  // in the SAME tab -> no notice; open a NEW tab -> mounted again. That is the
+  // whole reason the landing looked black while /marketplace looked fine — the
+  // landing was simply the first page in the tab, not a page with different CSS.
+  // localStorage makes "seen" a fact about the visitor. sessionStorage is still
+  // written and still read, so a browser that refuses localStorage (private modes
+  // that throw) degrades to the old once-per-tab behaviour instead of nagging.
   function mountConstructionNotice() {
+    try { if (localStorage.getItem('sb-construct-seen')) return; } catch (e) {}
     try { if (sessionStorage.getItem('sb-construct-seen')) return; } catch (e) {}
     if (document.querySelector('.sb-construct')) return;
     const wrap = document.createElement('div');
     wrap.className = 'sb-construct';
     wrap.innerHTML = `
-<div class="sb-construct-scrim"></div>
-<div class="sb-construct-card" role="dialog" aria-modal="true" aria-labelledby="sb-construct-h">
+<div class="sb-construct-card" role="status" aria-labelledby="sb-construct-h">
 <button class="sb-construct-x" aria-label="Close">×</button>
 <div class="sb-construct-mark"><img src="/assets/squidbay-logo.png" alt=""></div>
 <span class="mono sb-construct-tag">The tide is coming in</span>
@@ -348,16 +366,16 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
 <button class="btn btn-primary sb-construct-go">Dive in</button>
 </div>
 <style>
-.sb-construct{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;animation:sbFade .3s ease both}
-.sb-construct-scrim{position:absolute;inset:0;background:rgba(4,15,17,0.74);backdrop-filter:blur(6px)}
-.sb-construct-card{position:relative;z-index:1;width:100%;max-width:400px;background:radial-gradient(ellipse at 50% 0%, rgba(70,196,196,0.12), transparent 55%),var(--dark);border:1px solid var(--border-subtle);border-radius:var(--radius-card);box-shadow:var(--shadow-2);padding:34px 28px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;animation:sbConstructIn .42s cubic-bezier(.2,.7,.3,1) both}
-.sb-construct-x{position:absolute;top:10px;right:12px;background:transparent;border:none;color:var(--text-muted);font-size:24px;line-height:1;cursor:pointer;width:40px;height:40px}
-.sb-construct-mark{width:96px;height:96px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim),var(--glow-primary);display:flex;align-items:center;justify-content:center}
-.sb-construct-mark img{width:60px;height:60px;object-fit:contain;animation:sbFlair 2.6s ease-in-out infinite}
+.sb-construct{position:fixed;top:79px;right:14px;z-index:9000;width:352px;max-width:calc(100vw - 28px);pointer-events:none;animation:sbFade .3s ease both}
+@media (max-width:600px){.sb-construct{top:75px;right:10px;left:10px;width:auto;max-width:none}}
+.sb-construct-card{pointer-events:auto;position:relative;z-index:1;width:100%;background:radial-gradient(ellipse at 50% 0%, rgba(70,196,196,0.12), transparent 55%),var(--dark);border:1px solid var(--border-subtle);border-radius:var(--radius-card);box-shadow:var(--shadow-2);padding:18px 20px 20px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:9px;animation:sbConstructIn .42s cubic-bezier(.2,.7,.3,1) both}
+.sb-construct-x{position:absolute;top:6px;right:8px;background:transparent;border:none;color:var(--text-muted);font-size:22px;line-height:1;cursor:pointer;width:40px;height:40px}
+.sb-construct-mark{width:52px;height:52px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim),var(--glow-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-construct-mark img{width:33px;height:33px;object-fit:contain;animation:sbFlair 2.6s ease-in-out infinite}
 .sb-construct-tag{font-size:10px;letter-spacing:2.5px;color:var(--patent-gold)}
-.sb-construct-card h2{font-size:24px;line-height:1.2}
-.sb-construct-card p{font-size:14px;line-height:1.6;max-width:310px}
-.sb-construct-go{margin-top:6px;min-width:150px}
+.sb-construct-card h2{font-size:19px;line-height:1.25}
+.sb-construct-card p{font-size:13.5px;line-height:1.55}
+.sb-construct-go{margin-top:4px;min-height:44px}
 @keyframes sbFlair{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(-2px);opacity:1}}
 @keyframes sbFade{from{opacity:0}to{opacity:1}}
 @keyframes sbConstructIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
@@ -365,6 +383,10 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
 </style>`;
     document.body.appendChild(wrap);
     const close = () => {
+      // Both, deliberately: localStorage is the once-per-visitor fact, and
+      // sessionStorage keeps the notice from re-mounting inside this tab if
+      // localStorage is unavailable and threw above.
+      try { localStorage.setItem('sb-construct-seen', '1'); } catch (e) {}
       try { sessionStorage.setItem('sb-construct-seen', '1'); } catch (e) {}
       wrap.remove();
       document.removeEventListener('keydown', onKey);
@@ -372,7 +394,6 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
     function onKey(e) { if (e.key === 'Escape') close(); }
     wrap.querySelector('.sb-construct-go').onclick = close;
     wrap.querySelector('.sb-construct-x').onclick = close;
-    wrap.querySelector('.sb-construct-scrim').onclick = close;
     document.addEventListener('keydown', onKey);
   }
   if (document.readyState === 'loading') {
