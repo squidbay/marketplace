@@ -1,6 +1,28 @@
 /* Shared chrome for squidbay.ai pages — nav (1a canon: Marketplace · Sell · Docs + CTA), drawer, footer (14ar). */
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--black);color:var(--white);font-family:var(--font-sans)}
+/* THE SHAKE, part 1 of 2 — reserve the shared chrome's height BEFORE it exists.
+   <sb-nav> is a custom element defined in site.js, which loads `defer`. Until that
+   script runs, the element is an UNSTYLED INLINE box of height 0, so the browser
+   paints the first frame with the page content at y=0 — then connectedCallback fills
+   it and every element on the page drops by exactly the nav's height. Measured live
+   on squidbay.ai 2026-08-18: a y:0->65 jump on / /business /marketplace /docs
+   /support /legal/refund /register — i.e. every page, every load. It is invisible on
+   a local server only because site.js arrives in under a millisecond there.
+   65px is not a guess: the nav is min-height:64px + a 1px bottom border, and it
+   measures exactly 65.0px at 375/414/768/1024/1280/1600. Reserving it makes the
+   first painted frame identical to the mounted one. display:block because an inline
+   element ignores min-height entirely — that is the actual bug, not the value. */
+sb-nav{display:block;min-height:65px}
+sb-footer{display:block}
+/* THE SHAKE, part 2 of 2 — a page that scrolls and a page that does not must not
+   have different content widths. With classic (non-overlay) scrollbars, navigating
+   from a tall page to a short one removes the scrollbar and everything centred on
+   the page slides sideways by the scrollbar's width. `stable` always reserves the
+   gutter, so the content box is the same on all 15 pages. It is a no-op where the
+   platform draws overlay scrollbars, which is why this cannot be seen on a default
+   Mac and is plainly visible with "Show scroll bars: Always". */
+html{scrollbar-gutter:stable}
 a{color:var(--link);text-decoration:none}a:hover{color:var(--link-hover)}
 /* Seller/agent names that navigate to /agent/<handle>. A <span> (can't nest in the card's <a>). Gold (--yellow), not the teal link color, so the agent reads as a distinct, tappable identity across every surface. One class so it's identical everywhere. */
 .agent-link{color:var(--yellow);cursor:pointer}.agent-link:hover{opacity:.85}
@@ -39,6 +61,15 @@ p{margin:0;font-size:17px;line-height:1.7;color:var(--text-muted)}
 /* One side owns the seam, so two adjacent sections cannot double to 160px —
    which is exactly what the landing page was doing (measured: 161px). */
 .section      { padding-block: 0 var(--space-20); }
+/* THE SHAKE, part 3 of 3 — why every page <head> preloads sora-latin.woff2.
+   --content-max is 65ch, and `ch` is the width of the "0" glyph OF THE FONT IN USE.
+   Until Sora arrives the fallback's ch applies, so this column is laid out twice:
+   measured on /docs and /legal it jumped 655px -> 773px (x 312 -> 254) at ~840ms,
+   which was the entire residual shift left after the nav reservation above (CLS
+   0.0478 and 0.0420). The preload raises the font from "discovered after CSS parses"
+   to a first-wave fetch: /docs went 0.0478 -> 0.0005 with it while /legal, left as
+   the control, stayed at 0.0420. font-display:swap and the 65ch token are both
+   design-system property and are deliberately untouched. */
 .reading      { max-width: var(--content-max); }         /* 65ch */
 
 /* Skill-card grid — the 3-up card grid used by the marketplace and every
