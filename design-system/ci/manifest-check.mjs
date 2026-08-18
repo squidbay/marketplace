@@ -27,11 +27,21 @@ const SAME_ORIGIN = /^https?:\/\/(www\.)?squidbay\.(ai|io)(?=\/|$)/i;
 // /skill/kraken/text-translation reads as a dead link and fails the gate — which is
 // exactly what froze the worker deploy after the per-skill links landed. KEEP IN SYNC
 // with the Worker: it rewrites /skill/<seller>/<slug> → skill.html,
-// /skill/<seller>/<slug>/security → security-report.html, and /agent/kraken → seller.html.
+// /skill/<seller>/<slug>/security → security-report.html, and /agent/kraken → seller.html,
+// and it 301s bare /agent and /agent/ → /personal.
+//
+// The bare /agent line is here because a REDIRECT is a live answer too. `public/agent/` is
+// deleted, so `/agent/` resolves to no file and the marketplace grid's seller-link handler
+// — `location.href="/agent/"+a.dataset.agent`, which this gate's (?:src|href)="…" regex
+// reads straight out of the JS — went red the moment the folder went. The honest fix is the
+// Worker route, not a quieter regex: the gate asks "would the Worker serve this?", and once
+// the Worker 301s the path the answer is genuinely yes. Delete that route and this line must
+// go with it, or the gate starts waving a dead URL through.
 const WORKER_ROUTES = [
   /^\/skill\/[^/]+\/[^/]+\/security\/?$/,
   /^\/skill\/[^/]+\/[^/]+\/?$/,
   /^\/agent\/kraken\/?$/,
+  /^\/agent\/?$/,
 ];
 
 // The Worker's page-map, same KEEP IN SYNC contract as WORKER_ROUTES above. Eight pages
