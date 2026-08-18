@@ -12,6 +12,7 @@
 //   /skill/<seller>/<slug>/security  → the security-report page
 //   /skill/<seller>/<slug>           → the skill page
 //   /agent/<handle>                  → the agent seller/profile page
+//   /agent  and  /agent/             → 301 to /personal (the agent page is gone)
 //   /<one of the 8 page names>       → pages/<name> if it exists, else <name> at the root
 //   /<name>.html  and  /<name>/      → 301 to /<name>, the one canonical URL
 //   /pages/<anything>                → 301 to the extensionless root URL
@@ -89,8 +90,23 @@ const PAGES = new Set([
 // and — the tell — the canonical link tag inside legal-refund.html itself. So the flat
 // file was the accident, and it has been deleted. This keeps its URL working.
 //
+// `/agent` is the second entry, and it is retired for a different reason: the page it
+// served is deleted, not duplicated. `public/agent/` was a 1557-line standalone microsite
+// with its own CSS and JS, superseded by `/personal`, and it was removed file-by-file in
+// the PR this line ships with. Its URL keeps answering — to `/personal`, the page that now
+// tells that story — because the marketplace grid, the index grid and years of outbound
+// links all point into `/agent`, and a deleted page whose URL 404s is a break, not a
+// cleanup.
+//
+// EXACT PATH ONLY. `/agent/<handle>` is a live route (the seller page) and is matched
+// higher up in the router, before this block is reached — that ordering is load-bearing,
+// and the rehearsal matrix in the PR proves it: `/agent/kraken` 200, `/agent` 301.
+//
 // A retired URL never just 404s. Someone out there has the old link.
-const RETIRED_URLS = new Map([["/legal-refund", "/legal/refund"]]);
+const RETIRED_URLS = new Map([
+  ["/legal-refund", "/legal/refund"],
+  ["/agent", "/personal"],
+]);
 
 // A subrequest to the asset binding for `path`, carrying the visitor's headers MINUS
 // the navigation markers that would make Static Assets serve the 404 page (see note 2).
@@ -252,7 +268,16 @@ async function route(request, env) {
     // changes for visitors today (307 → 301 to the same place); the difference only shows up
     // on the far side of the move, which is precisely when it would otherwise break. 301
     // rather than 307 because a name's canonical URL is a permanent fact, not a temporary one.
-    const canonicalName = pageName.replace(/\/$/, "").replace(/\.html$/, "");
+    // `/agent/index.html` is stripped too. A deleted DIRECTORY has three public shapes, not
+    // two — `/agent`, `/agent/` and the index file people bookmarked from the address bar —
+    // and while the folder existed the asset server 307'd the third to the second for free.
+    // It cannot any more: html_handling can only redirect for a file it can still see, which
+    // is the same lesson the `.html` strip above exists for. Stripping it here is what makes
+    // all three shapes normalise to one name for both blocks below.
+    const canonicalName = pageName
+      .replace(/\/index\.html$/, "")
+      .replace(/\/$/, "")
+      .replace(/\.html$/, "");
     if (canonicalName !== pageName && PAGES.has(canonicalName)) {
       const canonical = new URL(`/${canonicalName}`, url);
       canonical.search = url.search;
