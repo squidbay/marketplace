@@ -1,0 +1,1534 @@
+[
+ {
+  "state": "notice",
+  "route": "/",
+  "name": "index",
+  "fams": {
+   "Sora": 102,
+   "Fragment Mono": 29
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "section.container.doors gap=20",
+   "div.card.door gap=14",
+   "a.card.link paddingTop=20",
+   "a.card.link paddingBottom=20",
+   "a.card.link gap=10",
+   "div.container.mband gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 2746,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/business",
+  "name": "business",
+  "fams": {
+   "Sora": 102,
+   "Fragment Mono": 22
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.card gap=12",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 2929,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    28,
+    31
+   ],
+   [
+    9,
+    29,
+    32
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/personal",
+  "name": "personal",
+  "fams": {
+   "Sora": 101,
+   "Fragment Mono": 16
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 3039,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    8,
+    28,
+    30
+   ],
+   [
+    9,
+    30,
+    32
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/app",
+  "name": "app",
+  "fams": {
+   "Sora": 73,
+   "Fragment Mono": 8
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.card gap=10",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1273,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    32
+   ],
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    8,
+    26,
+    29
+   ],
+   [
+    8,
+    25,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/marketplace",
+  "name": "marketplace",
+  "fams": {
+   "Sora": 114,
+   "Fragment Mono": 48
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "header.container.page-content paddingBottom=20",
+   "a.card.link paddingTop=20",
+   "a.card.link paddingBottom=20",
+   "a.card.link gap=10",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1358,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    25,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/docs",
+  "name": "docs",
+  "fams": {
+   "Sora": 78,
+   "Fragment Mono": 8
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link paddingTop=18",
+   "a.card.link paddingBottom=18",
+   "a.card.link gap=4",
+   "section marginTop=44",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1499,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/support",
+  "name": "support",
+  "fams": {
+   "Sora": 66,
+   "Fragment Mono": 9
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1108,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    8,
+    25,
+    28
+   ],
+   [
+    9,
+    26,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/register",
+  "name": "register",
+  "fams": {
+   "Sora": 67,
+   "Fragment Mono": 16
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1058,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    29,
+    31
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    7,
+    24,
+    28
+   ],
+   [
+    9,
+    25,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/legal",
+  "name": "legal",
+  "fams": {
+   "Sora": 77,
+   "Fragment Mono": 11
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link paddingTop=18",
+   "a.card.link paddingBottom=18",
+   "a.card.link gap=12",
+   "section marginTop=44",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1322,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    24,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/legal/refund",
+  "name": "legal-refund",
+  "fams": {
+   "Sora": 65,
+   "Fragment Mono": 8
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "main.container.page-content gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1000,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    26,
+    28
+   ],
+   [
+    8,
+    25,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/skill/codekraken/pull-request-review",
+  "name": "skill",
+  "fams": {
+   "Sora": 109,
+   "Fragment Mono": 35
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link gap=14",
+   "aside.card.buy gap=14",
+   "main.container.page-content gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "main|main 64+80=144",
+   "main|div 64+12=76",
+   "div|div 12+20=32"
+  ],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 2004,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    29,
+    31
+   ],
+   [
+    9,
+    29,
+    31
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/agent/kraken",
+  "name": "seller",
+  "fams": {
+   "Sora": 91,
+   "Fragment Mono": 33
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link paddingTop=20",
+   "a.card.link paddingBottom=20",
+   "a.card.link gap=10",
+   "div.card paddingTop=14",
+   "div.card paddingBottom=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1019,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    10,
+    28,
+    31
+   ],
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    9,
+    25,
+    28
+   ],
+   [
+    10,
+    26,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/skill/codekraken/pull-request-review/security",
+  "name": "security-report",
+  "fams": {
+   "Sora": 75,
+   "Fragment Mono": 24
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1356,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    24,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/agent/",
+  "name": "agent-index",
+  "fams": {
+   "Sora": 367,
+   "Fragment Mono": 75,
+   "Arial": 34
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "section.sa-hero paddingBottom=60"
+  ],
+  "seams": [
+   "section|section 60+80=140",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 20845,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    11,
+    31,
+    38
+   ],
+   [
+    11,
+    35,
+    38
+   ]
+  ]
+ },
+ {
+  "state": "notice",
+  "route": "/__nonexistent__",
+  "name": "404",
+  "fams": {
+   "Sora": 65,
+   "Fragment Mono": 8
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "main.container.page-content gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": true,
+  "scrim": false,
+  "docH": 1000,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    26,
+    28
+   ],
+   [
+    8,
+    25,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/",
+  "name": "index",
+  "fams": {
+   "Sora": 97,
+   "Fragment Mono": 28
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "section.container.doors gap=20",
+   "div.card.door gap=14",
+   "a.card.link paddingTop=20",
+   "a.card.link paddingBottom=20",
+   "a.card.link gap=10",
+   "div.container.mband gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 2746,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/business",
+  "name": "business",
+  "fams": {
+   "Sora": 97,
+   "Fragment Mono": 21
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.card gap=12",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 2929,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    28,
+    31
+   ],
+   [
+    9,
+    29,
+    32
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/personal",
+  "name": "personal",
+  "fams": {
+   "Sora": 96,
+   "Fragment Mono": 15
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 3039,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    8,
+    28,
+    30
+   ],
+   [
+    9,
+    30,
+    32
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/app",
+  "name": "app",
+  "fams": {
+   "Sora": 68,
+   "Fragment Mono": 7
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.card gap=10",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1273,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    32
+   ],
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    8,
+    26,
+    29
+   ],
+   [
+    8,
+    25,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/marketplace",
+  "name": "marketplace",
+  "fams": {
+   "Sora": 109,
+   "Fragment Mono": 47
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "header.container.page-content paddingBottom=20",
+   "a.card.link paddingTop=20",
+   "a.card.link paddingBottom=20",
+   "a.card.link gap=10",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1358,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    25,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/docs",
+  "name": "docs",
+  "fams": {
+   "Sora": 73,
+   "Fragment Mono": 7
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link paddingTop=18",
+   "a.card.link paddingBottom=18",
+   "a.card.link gap=4",
+   "section marginTop=44",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1499,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    31
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/support",
+  "name": "support",
+  "fams": {
+   "Sora": 61,
+   "Fragment Mono": 8
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1108,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    8,
+    25,
+    28
+   ],
+   [
+    9,
+    26,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/register",
+  "name": "register",
+  "fams": {
+   "Sora": 62,
+   "Fragment Mono": 15
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1058,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    29,
+    31
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    7,
+    24,
+    28
+   ],
+   [
+    9,
+    25,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/legal",
+  "name": "legal",
+  "fams": {
+   "Sora": 72,
+   "Fragment Mono": 10
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link paddingTop=18",
+   "a.card.link paddingBottom=18",
+   "a.card.link gap=12",
+   "section marginTop=44",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1322,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    24,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/legal/refund",
+  "name": "legal-refund",
+  "fams": {
+   "Sora": 60,
+   "Fragment Mono": 7
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "main.container.page-content gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1000,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    26,
+    28
+   ],
+   [
+    8,
+    25,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/skill/codekraken/pull-request-review",
+  "name": "skill",
+  "fams": {
+   "Sora": 104,
+   "Fragment Mono": 34
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link gap=14",
+   "aside.card.buy gap=14",
+   "main.container.page-content gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [
+   "main|main 64+80=144",
+   "main|div 64+12=76",
+   "div|div 12+20=32"
+  ],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 2004,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    29,
+    31
+   ],
+   [
+    9,
+    29,
+    31
+   ],
+   [
+    7,
+    24,
+    27
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/agent/kraken",
+  "name": "seller",
+  "fams": {
+   "Sora": 86,
+   "Fragment Mono": 32
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "a.card.link paddingTop=20",
+   "a.card.link paddingBottom=20",
+   "a.card.link gap=10",
+   "div.card paddingTop=14",
+   "div.card paddingBottom=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1019,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    10,
+    28,
+    31
+   ],
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    9,
+    25,
+    28
+   ],
+   [
+    10,
+    26,
+    29
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/skill/codekraken/pull-request-review/security",
+  "name": "security-report",
+  "fams": {
+   "Sora": 70,
+   "Fragment Mono": 23
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1356,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    28,
+    30
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    8,
+    27,
+    30
+   ],
+   [
+    7,
+    24,
+    28
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/agent/",
+  "name": "agent-index",
+  "fams": {
+   "Sora": 367,
+   "Fragment Mono": 75,
+   "Arial": 34
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "section.sa-hero paddingBottom=60"
+  ],
+  "seams": [
+   "section|section 60+80=140",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160",
+   "section|section 80+80=160"
+  ],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 20845,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    27,
+    29
+   ],
+   [
+    11,
+    31,
+    38
+   ],
+   [
+    11,
+    35,
+    38
+   ]
+  ]
+ },
+ {
+  "state": "dismissed",
+  "route": "/__nonexistent__",
+  "name": "404",
+  "fams": {
+   "Sora": 60,
+   "Fragment Mono": 7
+  },
+  "preload": [
+   "/design-system/fonts/sora-latin.woff2"
+  ],
+  "offLadder": [
+   "div.container gap=28",
+   "main.container.page-content gap=14",
+   "div.container paddingBottom=20",
+   "div.container gap=12"
+  ],
+  "seams": [],
+  "ocean": true,
+  "notice": false,
+  "scrim": false,
+  "docH": 1000,
+  "overflowX": false,
+  "fontsReady": "loaded",
+  "soraLoaded": true,
+  "samples": [
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    9,
+    27,
+    30
+   ],
+   [
+    8,
+    26,
+    28
+   ],
+   [
+    8,
+    25,
+    28
+   ]
+  ]
+ }
+]
