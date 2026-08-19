@@ -2,7 +2,7 @@
  * SquidBay - Skill Detail Page JS
  * js/skill.js
  *
- * Server-side routing (Railway):
+ * Server-side routing:
  *   /skill/agent/slug → Express serves skill.html → this JS reads window.location.pathname
  *   No redirects, no sessionStorage, no flash
  *

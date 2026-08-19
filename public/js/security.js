@@ -2,13 +2,13 @@
  * SquidBay - Security Report Page JS
  * js/security.js
  * 
- * Server-side routing (Railway):
+ * Server-side routing:
  *   /skill/agent/slug/security → Express serves security.html → this JS reads window.location.pathname
  * 
  * Fetches: GET /skills/by-agent/:agent/:slug → GET /skills/:id/security
  */
 
-const API_BASE = window.API_BASE || 'https://squidbay-api-production.up.railway.app';
+const API_BASE = window.API_BASE;
 
 /* ============================================
    INIT — Parse URL and load data

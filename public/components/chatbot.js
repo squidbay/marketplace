@@ -3,15 +3,13 @@
    Powered by Claude | Mobile-optimized
    ============================================ */
 
-// API Configuration - Calls Railway backend proxy (key stays server-side)
+// API Configuration - Calls the backend proxy (key stays server-side)
 const SQUIDBOT_CONFIG = {
     // Read from the one place the API host is declared (js/config.js, F-01),
     // falling back to the literal so the widget still works on a page that
     // does not load config.js. Before this, the host was hard-coded here too,
     // which meant the ".ai cutover is one line" promise was quietly false —
     // there were two lines, and this was the one nobody would remember.
-    // Cloudflare Worker, not Railway. This is rebuild brick #1: the chat path
-    // is the first SquidBay surface with no Railway service behind it.
     //
     // Deliberately NOT derived from SQUIDBAY_CONFIG.API_BASE — that names the
     // legacy API host, and pointing chat at it is exactly what we are undoing.
@@ -393,7 +391,7 @@ function initChatbot() {
     }
     
     // ============================================
-    // BACKEND API CALL (via Railway proxy)
+    // BACKEND API CALL
     // ============================================
     async function callClaudeAPI(userMessage) {
         // Add user message to history
@@ -504,7 +502,7 @@ function initChatbot() {
         // Show typing indicator (bouncing dots)
         showTypingIndicator();
         
-        // Get response from Claude via Railway backend
+        // Get response from Claude
         const response = await callClaudeAPI(message);
         
         // Hide typing dots and type out the response

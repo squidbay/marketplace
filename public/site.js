@@ -103,7 +103,7 @@ ${DRAWER_ROWS.map(([l, h]) => `<a href="${h}" style="display:flex;align-items:ce
 <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px;padding:18px;border-top:1px solid var(--border-subtle)">
 <a class="btn btn-primary" href="/business">Deploy a Factory</a>
 <a class="btn btn-secondary" href="/personal" style="border-color:var(--primary);color:var(--primary)">Meet your agent</a>
-<span class="mono" style="font-size:9px;letter-spacing:1.5px;color:var(--patent-gold);text-align:center;margin-top:2px">Fire, returned.</span>
+<span class="mono" style="font-size:9px;letter-spacing:1.5px;color:var(--yellow);text-align:center;margin-top:2px">Fire, returned.</span>
 </div>
 </div></div></div>
 <style>@media (max-width:767px){sb-nav .nav-links{display:none!important}sb-nav .nav-burger{display:inline-flex!important}}
@@ -131,7 +131,7 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
 <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3)">
 <span style="display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:17px">${wordmark(24)}</span>
 <span style="font-size:13px;color:var(--text-muted);line-height:1.6">Work gets done. You stay the gate.</span>
-<span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--patent-gold)">Fire, returned.</span></div>
+<span class="mono" style="font-size:10px;letter-spacing:1.5px;color:var(--yellow)">Fire, returned.</span></div>
 <div class="sb-foot-cols">${NAV_GROUPS.map(([t, rows]) => col(t, rows)).join('')}</div>
 </div>
 <div class="container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);padding-top:var(--space-4);padding-bottom:var(--space-5);border-top:1px solid var(--border-subtle)">
@@ -372,7 +372,7 @@ body.drawer-open .chatbot-container,body.drawer-open .back-to-top,body.drawer-op
 .sb-construct-x{position:absolute;top:6px;right:8px;background:transparent;border:none;color:var(--text-muted);font-size:22px;line-height:1;cursor:pointer;width:40px;height:40px}
 .sb-construct-mark{width:52px;height:52px;border-radius:50%;background:var(--avatar-tile);box-shadow:inset 0 0 0 1px var(--avatar-rim),var(--glow-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sb-construct-mark img{width:33px;height:33px;object-fit:contain;animation:sbFlair 2.6s ease-in-out infinite}
-.sb-construct-tag{font-size:10px;letter-spacing:2.5px;color:var(--patent-gold)}
+.sb-construct-tag{font-size:10px;letter-spacing:2.5px;color:var(--yellow)}
 .sb-construct-card h2{font-size:19px;line-height:1.25}
 .sb-construct-card p{font-size:13.5px;line-height:1.55}
 .sb-construct-go{margin-top:4px;min-height:44px}

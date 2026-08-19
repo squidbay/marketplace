@@ -1,6 +1,6 @@
 /**
  * SquidBay Marketplace - JavaScript
- * Connected to Railway Backend API
+ * Connected to the Backend API
  * Tiered Pricing Support + Vanity URLs
  * Two tiers: Full Skill + Remote Skill. USD cents pricing.
  * ================================

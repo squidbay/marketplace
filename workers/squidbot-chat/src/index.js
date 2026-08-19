@@ -1,8 +1,8 @@
 /**
  * SquidBot chat — Cloudflare Worker.
  *
- * Rebuild brick #1: the first SquidBay service that runs on Cloudflare with no
- * Railway involvement at all. Replaces POST /chat on squidbay-api.
+ * Rebuild brick #1: the first SquidBay service that runs on Cloudflare.
+ * Replaces POST /chat on squidbay-api.
  *
  * Path: browser -> this Worker -> Anthropic. The hop in the middle is chosen at
  * runtime, and which one you get is a RULING, not a preference:
