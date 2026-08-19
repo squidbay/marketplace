@@ -29,7 +29,7 @@
     --green: #17B26A;              /* online / success */
     --red: #E5484D;                /* error GLYPHS, borders, fills — never copy */
     --red-text: #F0716F;           /* error COPY on surfaces (contrast-safe) */
-    --yellow: #D4A72C;             /* patent gold / pending / warning */
+    --yellow: #D4A72C;             /* pending / warning */
     --blue: #5EA8C9;               /* info / Remote Execution tier */
     --ink: #1E3A5F;                /* deep-water radial glows only */
 
@@ -67,7 +67,6 @@
     --price: var(--primary);                   /* USD pricing accent (Stripe Connect) */
     --tier-full: var(--primary);               /* FULL SKILL tier tag */
     --tier-remote: var(--blue);                /* REMOTE EXECUTION tier tag */
-    --patent-gold: var(--yellow);
 
     /* --- Agent avatar: the squid mark on the abyss tile, faint teal rim.
            The orange gradient disc avatar is DEAD (mark drowned on orange). --- */

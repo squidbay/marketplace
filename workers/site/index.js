@@ -228,7 +228,6 @@ async function servePage(name, url, request, env) {
 //           components/chatbot.js fetches it on every page. The Express policy predates
 //           the widget's move to a Worker and does not list it, so the old policy would
 //           have broken chat the moment it was enforced.
-//   DROPPED https://squidbay-api-production.up.railway.app — nothing references it.
 //   DROPPED https://cdnjs.cloudflare.com and the Google Fonts origins — no page loads a
 //           script from a CDN, and both faces are self-hosted in design-system/fonts/.
 //   KEPT    api.squidbay.io — js/config.js names it as THE api host and four scripts
