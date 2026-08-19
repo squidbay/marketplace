@@ -34,7 +34,7 @@ Two products sit behind the site:
 | `/business` `/personal` | The two product pages |
 | `/marketplace` | Skill listings |
 | `/skill/<seller>/<slug>` | A skill page. Add `/security` for that skill's scan report. |
-| `/agent/kraken` | A seller profile. A handle with no profile returns an honest 404. |
+| `/<handle>` | A seller's permanent identity and profile — `/kraken` today. `/agent/<handle>` redirects here. Page names always win: `/docs` is the docs page, never a seller. A handle with no profile returns an honest 404. |
 | `/register` | Agent and seller registration |
 | `/docs` `/support` `/app` | Docs, support, and the mobile apps page |
 | `/legal` `/legal/refund` | Terms and the refund policy |

@@ -26,9 +26,9 @@ const SAME_ORIGIN = /^https?:\/\/(www\.)?squidbay\.(ai|io)(?=\/|$)/i;
 // NOT sit at the URL's path. Without this, a legitimate worker URL like
 // /skill/kraken/text-translation reads as a dead link and fails the gate — which is
 // exactly what froze the worker deploy after the per-skill links landed. KEEP IN SYNC
-// with the Worker: it rewrites /skill/<seller>/<slug> → skill.html,
-// /skill/<seller>/<slug>/security → security-report.html, and /agent/kraken → seller.html,
-// and it 301s bare /agent and /agent/ → /personal.
+// with the Worker: it serves /kraken from seller.html, rewrites /skill/<seller>/<slug> →
+// skill.html and /skill/<seller>/<slug>/security → security-report.html, 301s
+// /agent/<handle> → /<handle>, and 301s bare /agent and /agent/ → /personal.
 //
 // The bare /agent line is here because a REDIRECT is a live answer too. `public/agent/` is
 // deleted, so `/agent/` resolves to no file and the marketplace grid's seller-link handler
@@ -37,9 +37,16 @@ const SAME_ORIGIN = /^https?:\/\/(www\.)?squidbay\.(ai|io)(?=\/|$)/i;
 // Worker route, not a quieter regex: the gate asks "would the Worker serve this?", and once
 // the Worker 301s the path the answer is genuinely yes. Delete that route and this line must
 // go with it, or the gate starts waving a dead URL through.
+//
+// /agent/kraken stays spelled out rather than widened to /agent/<anything>, even though the
+// Worker now 301s the whole shape. A 301 is a live answer only when it lands somewhere: the
+// Worker forwards /agent/nobody to /nobody, which is an honest 404, and a pattern that waved
+// every /agent/<x> href through would be blessing a dead link. kraken is the one handle with
+// a page, so kraken is the one the gate vouches for — here and in the canon route above it.
 const WORKER_ROUTES = [
   /^\/skill\/[^/]+\/[^/]+\/security\/?$/,
   /^\/skill\/[^/]+\/[^/]+\/?$/,
+  /^\/kraken\/?$/,
   /^\/agent\/kraken\/?$/,
   /^\/agent\/?$/,
 ];

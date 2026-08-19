@@ -9,9 +9,10 @@
 // This script is that rewrite. It is deliberately the smallest program that can do
 // the job: no dependencies, no imports, no state, no config of its own.
 //
+//   /<handle>                        → the seller identity + profile page
+//   /agent/<handle>                  → 301 to /<handle>
 //   /skill/<seller>/<slug>/security  → the security-report page
 //   /skill/<seller>/<slug>           → the skill page
-//   /agent/<handle>                  → the agent seller/profile page
 //   /agent  and  /agent/             → 301 to /personal (the agent page is gone)
 //   /<one of the 8 page names>       → pages/<name> if it exists, else <name> at the root
 //   /<name>.html  and  /<name>/      → 301 to /<name>, the one canonical URL
@@ -82,6 +83,68 @@ const PAGES = new Set([
   "security-report",
 ]);
 
+// ── The seller identity ──────────────────────────────────────────────────────────────
+//
+// A seller's address is `squidbay.ai/<handle>` — at the root, alongside the page names, not
+// under a folder. The registered map (business/SQUIDBAY-GROUNDING-THE-ABYSS.md §The
+// addresses) is where that comes from: the handle IS the identity, permanent and immutable,
+// so it gets the shortest URL the site has. `/agent/<handle>` is a serving route rather than
+// an address, and it forwards here.
+//
+// The shape is deliberately narrow: lowercase letters, digits and hyphens, first and last
+// character alphanumeric, 32 characters at most. NO DOT is the load-bearing part — it is what
+// keeps a filename from ever being read as a handle, and it is why `/agent/index.html` still
+// reaches the bare-shape 301 further down instead of being forwarded to `/index.html`.
+const HANDLE = /^[a-z0-9](?:[a-z0-9-]{0,30}[a-z0-9])?$/;
+
+// The handles that have a profile page today.
+//
+// One entry, and that is the honest state of the site: `pages/seller.html` is kraken's
+// profile, written out rather than generated, so kraken is the only handle there is a page
+// for. Every other handle is an honest 404 — a seller name links somewhere only when there
+// is somewhere to land. When profiles become real, this set is what grows.
+const HANDLES = new Set(["kraken"]);
+
+// Names a handle may never take, so a page can never be shadowed by a seller.
+//
+// DERIVED FROM THE TREE, not from memory. Three sources, each of which is a URL the site
+// already answers at the first path segment:
+//
+//   1. every entry the asset root serves at the root level — `ls public/`
+//   2. every page under `public/pages/` — which is PAGES, spread in below
+//   3. every first segment the Worker already claims — `agent` and `skill`
+//
+// PAGES is spread in rather than copied so that adding a page reserves its name in the same
+// edit. ROOT_NAMES is the list that has to be re-derived by hand when the asset root gains a
+// root-level entry, and it carries both spellings of the two .html files, because
+// html_handling serves `404.html` at `/404` as well.
+//
+// This runs BEFORE the handle route, never after: a reserved name is answered by the blocks
+// that own it and never reaches the seller lookup. That ordering is the whole guarantee, and
+// it is what "page names take precedence" means mechanically.
+const ROOT_NAMES = [
+  "404",
+  "404.html",
+  "assets",
+  "components",
+  "design-system",
+  "favicon.ico",
+  "favicon.svg",
+  "images",
+  "index",
+  "index.html",
+  "js",
+  "legal",
+  "llms.txt",
+  "pages",
+  "robots.txt",
+  "site.css",
+  "site.js",
+  "sitemap.xml",
+  "skills-data.js",
+];
+const RESERVED = new Set([...PAGES, ...ROOT_NAMES, "agent", "skill"]);
+
 // URLs that once served their own file and now point at the canonical one.
 //
 // `/legal-refund` and `/legal/refund` were byte-identical twins — the same 2678-byte
@@ -98,9 +161,10 @@ const PAGES = new Set([
 // links all point into `/agent`, and a deleted page whose URL 404s is a break, not a
 // cleanup.
 //
-// EXACT PATH ONLY. `/agent/<handle>` is a live route (the seller page) and is matched
-// higher up in the router, before this block is reached — that ordering is load-bearing,
-// and the rehearsal matrix in the PR proves it: `/agent/kraken` 200, `/agent` 301.
+// EXACT PATH ONLY. `/agent/<handle>` is its own route — a 301 to `/<handle>`, the canon
+// address — and is matched higher up in the router, before this block is reached. That
+// ordering is load-bearing, and the rehearsal matrix in the PR proves it: `/agent/kraken`
+// 301s to `/kraken`, `/agent` 301s to `/personal`, and the two never cross.
 //
 // A retired URL never just 404s. Someone out there has the old link.
 const RETIRED_URLS = new Map([
@@ -237,12 +301,22 @@ async function route(request, env) {
       }
     }
 
-    // /agent/<handle> → the agent seller/profile page. Only kraken has a demo profile
-    // today, so only kraken resolves; every other seller is an honest 404 until it has
-    // a real page. That is the intended demo shape: a seller name links somewhere only
-    // when there is somewhere to land.
-    if (segments[0] === "agent" && segments.length === 2 && segments[1] === "kraken") {
-      return servePage("seller", url, request, env);
+    // /agent/<handle> → 301 to /<handle>. The serving route dies and forwards in the same
+    // commit, so there is no window where a profile goes dark and no old link breaks: the
+    // marketplace grid, the index grid, both skill pages and years of outbound links all
+    // point into /agent/<handle>.
+    //
+    // The WHOLE shape forwards, not just the handles that have a page. `/agent/nobody` lands
+    // on `/nobody` and gets its honest 404 there — the address moved, and whether a handle
+    // exists is a question the new address answers. A retired URL never just 404s.
+    //
+    // The HANDLE shape is what keeps this block off `/agent/index.html`: that segment has a
+    // dot, so it is not a handle, and it falls through to the bare-shape 301 below where it
+    // belongs. `/agent` and `/agent/` never reach here at all — they are one segment.
+    if (segments[0] === "agent" && segments.length === 2 && HANDLE.test(segments[1])) {
+      const canonical = new URL(`/${segments[1]}`, url);
+      canonical.search = url.search;
+      return Response.redirect(canonical.toString(), 301);
     }
 
     // The page-map. `url.pathname` is matched WHOLE and extensionless — `/business` serves,
@@ -309,6 +383,26 @@ async function route(request, env) {
       );
       canonical.search = url.search;
       return Response.redirect(canonical.toString(), 301);
+    }
+
+    // /<handle> → the seller identity + profile page, the canon address.
+    //
+    // It sits HERE, last of the claiming routes, and that position is the mechanism rather
+    // than a style choice: every block above has already answered for the page names, the
+    // canonical .html and trailing-slash forms, the retired URLs and the /pages/* guard, so
+    // by the time a request reaches this line no reserved name is left in it. RESERVED is
+    // checked anyway — the same guarantee stated twice, because the cost of getting this
+    // wrong is a seller quietly shadowing a page nobody notices for a week.
+    //
+    // A handle with no profile falls through to the passthrough and gets an honest 404 from
+    // the asset server, exactly like any other path with nothing behind it.
+    if (
+      segments.length === 1 &&
+      HANDLE.test(segments[0]) &&
+      !RESERVED.has(segments[0]) &&
+      HANDLES.has(segments[0])
+    ) {
+      return servePage("seller", url, request, env);
     }
 
     // Genuine 404s must never be cached: a cached 404 is exactly what poisons a path
