@@ -135,16 +135,14 @@
   ],
   "exempt_paths": [
     "retired-values.json",
-    "ci/kill-list.mjs",
     "reference/**",
     "wireframe/**",
     "uploads/**",
     "**/favicon*",
     "**/app-icon*",
-    "**/squidbay-icon.svg",
-    "public/agent/squid.css"
+    "**/squidbay-icon.svg"
   ],
-  "exempt_paths_note": "Exemption is by file path, never by value. reference/** holds the imported authority set (SPEC, tokens, wireframe copy, Andrew's pre-mapping code-source originals), wireframe/** the wireframe rendered at the bottom of the design guide (a record: it quotes retired values on purpose), and uploads/** the raw inputs. Nothing under tokens/, components/, ui_kits/, guidelines/ is exempt. public/agent/squid.css is exempt ONLY because widening the law to decimal notation (v1.2.0) surfaced a retired #0A0E14 at squid.css:601 on a page JOB AE is forbidden to touch and whose retirement is already ruled (JOB Y interim redirect / JOB AA flip). REMOVE THIS EXEMPTION the moment /agent/ is retired or adopted \u2014 it is a deferral tied to a ruling, not a judgement that the value is acceptable.",
+  "exempt_paths_note": "Exemption is by file path, never by value. reference/** holds the imported authority set (SPEC, tokens, wireframe copy, Andrew's pre-mapping code-source originals), wireframe/** the wireframe rendered at the bottom of the design guide (a record: it quotes retired values on purpose), and uploads/** the raw inputs. Nothing under tokens/, components/, ui_kits/, guidelines/ is exempt. TWO ENTRIES WERE REMOVED 2026-08-19, and both removals are subtractions on purpose. (1) ci/kill-list.mjs matched nothing: the gate's own source lives at design-system/ci/kill-list.mjs, and the exempt() test compares this pattern against the repository-relative path and the bare filename \u2014 neither is 'ci/kill-list.mjs'. The entry was REMOVED rather than corrected, because a corrected path would newly exempt a file that is scanned today and clean today: the gate holds no literal retired value, it reads every one of them from this file. (2) public/agent/squid.css was a deferral tied to a ruling, and this file's own note ordered its removal 'the moment /agent/ is retired'. mp#89 deleted the file and landed the ruled 301 for the bare path, and mp#91 flipped /agent/<handle> to /<handle>, so the deferral is spent. An exemption that names a deleted file is not harmless clutter \u2014 it is a standing invitation to re-create the file under cover of it.",
   "notes": [
     "Old Deep Ocean surface scale (#0A0E14 family) is fully replaced by the trench scale in tokens/.",
     "#E8F4F8 off-white is replaced by #E7F3F2. Both must not coexist.",

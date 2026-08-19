@@ -37,6 +37,23 @@
 # 92 below. The count is unchanged from the pre-move set of 92, and the two sets were diffed
 # with the `public/` prefix stripped: IDENTICAL. Every URL this site serves is the same
 # address it was before the move.
+#
+# Trued 2026-08-19 (JOB Z). The 12 `public/agent/*` lines and `public/js/agent.js` are gone:
+# mp#89 deleted the agent page and landed the ruled 301, mp#91 flipped /agent/<handle> to
+# /<handle> — and this file went on naming the twelve deleted files while door 1 printed
+# them as STALE and stayed green: the gate fails on the publish direction only, so a stale
+# line is reported, never enforced. That is exactly why it had to be cleaned by hand: the next person to edit
+# this file would read thirteen paths that no longer exist as though they were the site.
+# `public/js/agent.js` was verified referenced by no page before deletion, not assumed.
+#
+# The count below is COPIED FROM THE GATE'S OWN OUTPUT on this tree, never arrived at by
+# arithmetic on the old number — `node .github/ci/publish-set.mjs .`:
+#
+#     walked       : 80 files
+#     ignored      : 1 (denylist + .assetsignore itself)
+#     would publish: 79 paths; 79 expected; 0 unexpected
+#
+# 79 paths, zero STALE lines. Every line below is a file that exists and publishes.
 
 # ── Site root ────────────────────────────────────────────────────────────────────────
 public/404.html
@@ -49,20 +66,6 @@ public/site.css
 public/site.js
 public/sitemap.xml
 public/skills-data.js
-
-# ── agent/ ──
-public/agent/images/agent-infrastructure-scan.jpg
-public/agent/images/chat-first-ops-center.jpg
-public/agent/images/marketplace-listing.jpg
-public/agent/images/og-agent.png
-public/agent/images/ops-center-relationship.jpg
-public/agent/images/skill-trust-scan.jpg
-public/agent/images/spawn-manager.jpg
-public/agent/images/token-usage-dashboard.jpg
-public/agent/images/website-builder.jpg
-public/agent/index.html
-public/agent/squid.css
-public/agent/squid.js
 
 # ── assets/ ──
 public/assets/app-icons/icon-128.png
@@ -121,7 +124,6 @@ public/images/squidbay-marketplace.jpeg
 public/images/squidbot.png
 
 # ── js/ ──
-public/js/agent.js
 public/js/components.js
 public/js/config.js
 public/js/faq.js
