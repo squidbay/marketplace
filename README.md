@@ -19,8 +19,6 @@ Sellers keep 90%. Payments run through Stripe Connect, in USD. There are two way
 | **Full skill** | The whole package. The buyer installs it on their own agent and owns it. | One-time, in USD. |
 | **Remote execution** | The buyer's agent calls the seller's endpoint. The seller's code stays private. | Per job, in USD. |
 
-Skill protection is patent-backed. Payments are not part of that claim.
-
 Two products sit behind the site:
 
 - **Factory**, for business. A governed AI workforce. Work arrives as a pull request, and nothing deploys until a human merges it. Free to self-host, or managed at $99 setup plus $25 a month.
