@@ -22,6 +22,31 @@ const root = process.argv[2] || '.';
 const SKIP = new Set(['node_modules', '.git', 'reference', 'uploads']);
 const SAME_ORIGIN = /^https?:\/\/(www\.)?squidbay\.(ai|io)(?=\/|$)/i;
 
+// ── FAIL CLOSED — absence of a subject is never absence of a problem ──────────────────
+// Same shape as og-pixel-check's, and for the same reason. Until 2026-08-19 this gate had
+// two ways to check nothing: pointed at a path that does not exist it died on an unhandled
+// readdirSync throw (a stack trace, not a designed error), and pointed at a real directory
+// holding no HTML it printed `0 page(s), 0 @dsCard, 0 local reference(s) checked` followed
+// by `clean` and exited 0. The second is the dangerous one: green is exactly what a gate
+// prints when it has verified something, and the publish boundary has already moved once
+// under this repository (2026-08-16, "." → "public") — the move that silently disarmed
+// gate 3 while it reported clean. A gate that cannot find its subject has NOT passed.
+//
+// There is deliberately NO waiver lane here, unlike gate 3's `images_absent`. This
+// repository always serves pages; a legitimate zero-page state would be a new ruling, not
+// something a gate should let through quietly.
+const failClosed = (msg) => {
+  console.error(`manifest-check: FAIL CLOSED — ${msg}`);
+  console.error('::error::GATE 2 FAIL CLOSED — a gate that cannot find its subject has NOT passed.');
+  process.exit(1);
+};
+
+if (!existsSync(root) || !statSync(root).isDirectory()) {
+  failClosed(`${root} is not a directory, so this gate scanned NOTHING. Point the argument ` +
+    `at the tree whose pages should be checked — the asset root wrangler publishes ` +
+    `(\`public\`), which is what .github/workflows/guardrails.yml passes.`);
+}
+
 // Vanity paths the site Worker (workers/site/index.js) serves from real files that do
 // NOT sit at the URL's path. Without this, a legitimate worker URL like
 // /skill/kraken/text-translation reads as a dead link and fails the gate — which is
@@ -69,6 +94,14 @@ const walk = (dir) => {
   }
 };
 walk(root);
+
+// Same shape, one layer in: a directory that exists but holds no HTML is still a scan of
+// nothing, and reporting that as clean is the same lie by a narrower route.
+if (pages.length === 0) {
+  failClosed(`${root} exists but contains no .html files, so this gate scanned NOTHING — ` +
+    `no page, no card, no reference. Either the pages moved out from under this path or ` +
+    `they are gone; both are a human's call, not a green tick.`);
+}
 
 // Does this reference resolve to something the Worker would actually serve?
 const resolves = (fromDir, ref) => {
