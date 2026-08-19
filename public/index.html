@@ -5,14 +5,7 @@
 .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media (max-width:767px){.strip{grid-template-columns:1fr}}
 .mband{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;text-align:center}
-.b{position:absolute;border-radius:50%;border:1px solid rgba(70,196,196,0.28);background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);animation:sbRise linear infinite}
-/* Section seam. A band pays var(--space-20) on each side, so where two bands stack the
-   seam is that token twice — a value the 8px scale does not carry (it stops at
-   --space-32). The upper band stops paying, so a stacked seam is the section token once:
-   80px desktop, 48px mobile, 32px short-landscape, each from the band below it.
-   The lower band keeps its padding because it is the one that may carry the hairline,
-   and a border-top reads as the start of its own section, not the end of the last. */
-.band:has(+ .band){padding-block-end:var(--space-0)}</style>
+.b{position:absolute;border-radius:50%;border:1px solid rgba(70,196,196,0.28);background:radial-gradient(circle at 32% 28%, rgba(231,243,242,0.12), transparent);animation:sbRise linear infinite}</style>
 
 <link rel="canonical" href="https://squidbay.ai/">
 <meta name="description" content="Squid agents buy. Any agent can sell. Scanned and signed before it sells. Stripe Connect v2 payments. Sellers keep 90%.">
